@@ -201,9 +201,19 @@ JS;
     </nav>
     <div role="main" class="main">
       <div id="content" class="container">
+        <?php if(isset($this->templateName) && strtolower($this->templateName) == "home"): ?>
+            <br>
+            <div class="welcome-text">
+                <?=$this->transEsc("welcome_at")?>  <br>
+                Academy-CATalog+
+            </div>
+        <?php endif; ?>             
+        
           
         <?=$this->layout()->content ?>
         <?php if(isset($this->templateName) && strtolower($this->templateName) == "home"): ?>
+            <br>
+            <p class="book-slider-text"><?=$this->transEsc("book_slider_text_1")?> <a href="https://ebookcentral.proquest.com/lib/oeawat/home.action"><?=$this->transEsc("book_slider_text_2")?></a>, <?=$this->transEsc("book_slider_text_3")?></p>
             <br>
             <div class="ltfl_bookdisplay_widget" id="ltfl_widget_u_85274b4c"></div>
         <?php endif; ?>             
