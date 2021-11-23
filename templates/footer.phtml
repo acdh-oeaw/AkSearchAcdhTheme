@@ -1,35 +1,34 @@
 <footer class="main-footer" role="contentinfo">
     <div class="container">
-    	<div class="footer-wrapper">
-            
+        <div class="footer-wrapper">
+
             <div class="footer-sep">
-                <i class="fa fa-comment-o" aria-hidden="true"></i><?=$this->transEsc('Contact')?> 
+                <i class="fa fa-comment-o" aria-hidden="true"></i><?= $this->transEsc('Contact') ?> 
             </div>
 
-            <div class="el-block col-lg-6 col-md-6 first">
-                 <!-- <a href="https://www.oeaw.ac.at/acdh/" style="border-bottom: none !important;"><img src="<?=$this->imageLink('acdh_logo.svg')?>" class="image" alt="ACDH Logo" style="max-width: 100%; height: auto;" title="ACDH Logo"></a> -->
-              <div class="">
-                  <p class="bodytext">
-                    <?=$this->transEsc('austrian_academy_of_sciences')?>                    
-                    <br>
-                    <?=$this->transEsc('BAS:IS (Bibliothek, Archiv, Sammlungen : Information & Service)')?>   
-                  </p>
-                  <p class="bodytext">Dr. Ignaz Seipel-Platz 2<br>1010 <?=$this->transEsc('Vienna')?>   
-                  </p>
-                  <p class="bodytext">T: +43 1 51581-0<br>E: <a style="font-weight:600;" href="mailto:mailto:Bibliothek@oeaw.ac.at">mailto:Bibliothek(at)oeaw.ac.at</a></p>
-              </div>
+            <div class="el-block col-lg-4 col-md-4 first">
+                 <!-- <a href="https://www.oeaw.ac.at/acdh/" style="border-bottom: none !important;"><img src="<?= $this->imageLink('acdh_logo.svg') ?>" class="image" alt="ACDH Logo" style="max-width: 100%; height: auto;" title="ACDH Logo"></a> -->
+                <div class="">
+                    <p class="bodytext">
+                        <?= $this->transEsc('austrian_academy_of_sciences') ?>                    
+                        <br>
+                        <?= $this->transEsc('BAS:IS (Bibliothek, Archiv, Sammlungen : Information & Service)') ?>   
+                    </p>
+                    <p class="bodytext">Dr. Ignaz Seipel-Platz 2<br>1010 <?= $this->transEsc('Vienna') ?>   
+                    </p>
+                    <p class="bodytext">T: +43 1 51581-0<br>E: <a style="font-weight:600;" href="mailto:mailto:Bibliothek@oeaw.ac.at">mailto:Bibliothek(at)oeaw.ac.at</a></p>
+                </div>
             </div>
-
-            <div class="el-block col-md-3 last">
-                <h3><?=$this->transEsc('HELPDESK')?></h3>
-                <p class="bodytext">
-                    <?=$this->transEsc('helpdesk_text')?>
-                </p>
-                <p class="bodytext"><a href="mailto:acdh-helpdesk@oeaw.ac.at" class="helpdesk-button"><?=$this->transEsc('CONTACT')?></a></p>
-            </div>
+            <div class="el-block col-lg-8 col-md-8">
+                <iframe width="100%" height="250px"  frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.openstreetmap.org/export/embed.html?bbox=16.375288367271427%2C48.20800692493462%2C16.378828883171085%2C48.209633524062085&amp;layer=mapnik&amp;marker=48.208820230956306%2C16.377058625221252" style="border: 1px solid black"></iframe>
+            </div>           
         </div>    
     </div>
     <div class="footer-imprint-bar">
-    	© Copyright OEAW | <a href="<?=$this->url('content-page', ['page' => 'imprint']) ?>"><?=$this->transEsc('Impressum/Imprint')?></a>
+        © Copyright OEAW | <a href="<?= $this->url('content-page', ['page' => 'imprint']) ?>"><?= $this->transEsc('Impressum/Imprint') ?></a>
     </div>
 </footer>
+<script type="text/javascript">
+    console.log('itt');
+    alert('BrandonRegular loaded? ' + document.fonts.check('BrandonRegular'));  // false
+    </script>

@@ -204,12 +204,14 @@ JS;
         <?php if(isset($this->templateName) && strtolower($this->templateName) == "home"): ?>
             <br>
             <div class="welcome-text">
-                <?=$this->transEsc("welcome_at")?>  <br>
-                Academy-CATalog+
+                <h1 class="welcome-text-h1">
+                   <?=$this->transEsc("welcome_at")?>  <br>
+                    Academy-CATalog+ 
+                </h1>
+                
             </div>
         <?php endif; ?>             
         
-          
         <?=$this->layout()->content ?>
         <?php if(isset($this->templateName) && strtolower($this->templateName) == "home"): ?>
             <br>

@@ -4,11 +4,36 @@
 // Global variables (see theme "bootstrap3", file "less/vendor/bootstrap/variables.less")
 //@link-color:             #1079a5;
 @link-color:             #0f78a4;
-@font-family-sans-serif: "Open Sans", sans-serif;
-@font-size-base:          13px;
+//@font-family-sans-serif: "Open Sans", sans-serif;
+@font-face {
+    font-family: "BrandonRegular";
+    src: url("fonts/Brandon_reg.ttf") format("truetype");    
+}
+@font-face {
+    font-family: "BrandonBold";
+    src: url("fonts/Brandon_bld.ttf") format("truetype");    
+}
 
+@font-face {
+    font-family: "BrandonThin";
+    src: url("fonts/Brandon_thin.ttf") format("truetype");    
+}
+
+@font-face {
+    font-family: "BrandonLight";
+    src: url("fonts/Brandon_light.ttf") format("truetype");    
+}
+@font-size-base: 16px;
+
+body {
+    font-family: "BrandonRegular", "Open Sans" !important;
+}
 // Custom variables
 @font-size-larger:        ceil((@font-size-base * 1.2));
+
+h1, h2, h3, h4 {
+    font-family: "BrandonBold", "Open Sans" !important;
+}
 
 .navbar-brand {
     height: auto; // Making space for AKsearch Logo
@@ -708,9 +733,7 @@ footer .el-block.first {
 
 .welcome-text {
     color: #0061A0;
-    font-size: 2.5rem;
     text-align: center;
-    font-weight: bold;
     margin-bottom: 5px;
 }
 
