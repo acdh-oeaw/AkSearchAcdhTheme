@@ -202,13 +202,11 @@ JS;
     <div role="main" class="main">
       <div id="content" class="container">
         <?php if(isset($this->templateName) && strtolower($this->templateName) == "home"): ?>
-            <br>
             <div class="welcome-text">
-                <h1 class="welcome-text-h1">
+                <h1 class="welcome-text-h1" style="padding-top: 0px !important; margin-top: 0px !important;">
                    <?=$this->transEsc("welcome_at")?>  <br>
                     Academy-CATalog+ 
-                </h1>
-                
+                </h1>                
             </div>
         <?php endif; ?>             
         
