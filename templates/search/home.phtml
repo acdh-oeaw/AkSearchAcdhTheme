@@ -30,4 +30,5 @@
 <?php $warnConf = $this->warnings()->getConfig(); ?>
 <?=(($warnConf['homepage'] ?? false) == true) ? '<br />'.$this->render('Helpers/warning.phtml', ['heading' => 'homepage_warning_heading', 'text' => 'homepage_warning_text']) : ''?>
 
-<?=implode('', array_map([$this, 'contentBlock'], $blocks ?? []))?>
+<!-- Disable searchbox #19706 -->
+<?php  //echo implode('', array_map([$this, 'contentBlock'], $blocks ?? []))?>
