@@ -12,22 +12,24 @@ if (!isset($this->searchClassId)) {
 
 $this->layout()->breadcrumbs = false;
 ?>
-
-<div class="searchHomeContent">
-    <?php $this->slot('search-home-hero')->start() ?>
-    <?php // AK: Red background bar for search form - only on start page before first search (for others: see header.phtml)! ?>
-    <div class="akSearchboxBackground">
-        <?php // AK: For keeping margins despite whole-width background bar - only on start page before first search (for others: see header.phtml)! ?>
-        <div class="container">
-            <div class="text-center">
-                <?= $this->context($this)->renderInContext("search/searchbox.phtml", ['ignoreHiddenFilterMemory' => true]) ?>
-                <?= $this->inlineScript(\Laminas\View\Helper\HeadScript::SCRIPT, '$("#searchForm_lookfor").focus();', 'SET'); ?>
+<div class="container">
+    <div class="row">
+        <div class="searchHomeContent">
+            <?php $this->slot('search-home-hero')->start() ?>
+            <?php // AK: Red background bar for search form - only on start page before first search (for others: see header.phtml)! ?>
+            <div class="akSearchboxBackground">
+                <?php // AK: For keeping margins despite whole-width background bar - only on start page before first search (for others: see header.phtml)! ?>
+                <div class="container">
+                    <div class="col-lg-12 text-center">
+                        <?= $this->context($this)->renderInContext("search/searchbox.phtml", ['ignoreHiddenFilterMemory' => true]) ?>
+                        <?= $this->inlineScript(\Laminas\View\Helper\HeadScript::SCRIPT, '$("#searchForm_lookfor").focus();', 'SET'); ?>
+                    </div>
+                </div>
             </div>
+            <?= $this->slot('search-home-hero')->end() ?>
         </div>
-    </div>
-    <?= $this->slot('search-home-hero')->end() ?>
+    </div>    
 </div>
-
 <?php // AK: Show a warning box on the homepage ?>
 <?php $warnConf = $this->warnings()->getConfig(); ?>
 <?= (($warnConf['homepage'] ?? false) == true) ? '<br />' . $this->render('Helpers/warning.phtml', ['heading' => 'homepage_warning_heading', 'text' => 'homepage_warning_text']) : '' ?>

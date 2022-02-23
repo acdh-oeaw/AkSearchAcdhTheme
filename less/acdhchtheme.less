@@ -23,10 +23,36 @@
     font-family: "BrandonLight";
     src: url("fonts/Brandon_light.ttf") format("truetype");    
 }
-@font-size-base: 16px;
+@font-face {
+    font-family: "LatoRegular";
+    src: url("fonts/Lato-Regular.ttf") format("truetype");    
+}
+@font-face {
+    font-family: "LatoBold";
+    src: url("fonts/Lato-Bold.ttf") format("truetype");    
+}
+@font-face {
+    font-family: "LatoBoldItalic";
+    src: url("fonts/Lato-BoldItalic.ttf") format("truetype");    
+}
+
+@font-face {
+    font-family: "LatoThin";
+    src: url("fonts/Lato-Thin.ttf") format("truetype");    
+}
+
+@font-face {
+    font-family: "LatoLight";
+    src: url("fonts/Lato-Light.ttf") format("truetype");    
+}
+@font-face {
+    font-family: "LatoLightItalic";
+    src: url("fonts/Lato-LightItalic.ttf") format("truetype");    
+}
+@font-size-base: 14px;
 
 body {
-    font-family: "BrandonRegular", "Open Sans" !important;
+    font-family: "LatoRegular", "Open Sans" !important;
 }
 // Custom variables
 @font-size-larger:        ceil((@font-size-base * 1.2));
@@ -35,16 +61,35 @@ h1, h2, h3, h4 {
     font-family: "BrandonBold", "Open Sans" !important;
 }
 
+.ltfl_bookdisplay_widget {
+    max-width: 80% !important;
+    overflow: hidden;
+    margin: 0 auto !important;
+}
 .navbar-brand {
     height: auto; // Making space for AKsearch Logo
     padding-left: 0; // Align AKsearch Logo with Search field
+}
+.navbar-logo-text-container {
+    float: left;
+    position: relative;
+    min-height: 100px;
+    min-width: 200px;
+}
+.navbar-logo-text {
+    //bottom position
+    //position: absolute;
+    //bottom: 0;
+    //left: 0;
+    position: absolute;
+    
 }
 
 .akSearchboxBackground {
     background: none repeat scroll 0 0 #2856a3; // Background color
     padding: 8px 0 8px 0; // Padding top and bottom of red bar
     width: 100vw; // 100% viewport width - span bar on whole site width
-    height:70px;
+    min-height: 100px;
     // Fix left margin:
     margin-left: -50vw;
     left: 50%;
@@ -96,10 +141,10 @@ header .search.container.navbar {
     background: none repeat scroll 0 0 #fff;
     border: 0 none;
     color: #666666;
-    //font-size: 1.2em;
+    font-size: 20px;
     //height: 24px;
     //line-height: 25px;
-    height: 50px;
+    height: 80px;
     line-height: 34px;
     margin: 1px 0 0 0;
     padding-top: 0;
@@ -112,9 +157,9 @@ header .search.container.navbar {
 
 // Make search button (magnifying glass button) bigger
 .akSearchboxBackground .btn-primary {
-    font-size: 18px;
-    height: 50px;
-    width: 50px;
+    font-size: 22px;
+    height: 80px;
+    width: 80px;
     line-height: 32px;
 }
 
@@ -745,6 +790,6 @@ footer .el-block.first {
 }
 
 .book-slider-text {
-    font-size: 1.5rem;
+    font-size: 16px;
     text-align: center;
 }
