@@ -34,7 +34,7 @@
         </a>
       </div>
 
-      <?php
+         <?php
       // TODO: AK: Shorten long lines with ellipsis (see "ellipsis" class in aksearch.less - commented out at the moment).
       // The problem is that the parent div has "display: table-cell". Long lines within that parent keep it growing so that
       // the ellipsis is not shown. Maybe we could use flexbox, but we have to test it in IE11.
@@ -117,7 +117,15 @@
           <?php endif; ?>
         <?php endif; ?>
       </div>
-
+        
+        <?php
+        if($this->driver->getOpenAccessData()) { ?>
+            <div class="oa-div">
+                <br/><img src="<?=$this->imageLink('open_access_logo_white.svg')?>" height="25px" alt="Open Access"> <?=$this->transEsc('open_access_text') ?>
+            </div>
+        <?php
+        }
+        ?>  
       <?php if(!$this->driver->isCollection()): ?>
         <?php if ($snippet = $this->driver->getHighlightedSnippet()): ?>
           <?php if (!empty($snippet['caption'])): ?>
