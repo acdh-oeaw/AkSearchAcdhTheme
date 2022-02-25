@@ -1,7 +1,7 @@
 <?php $account = $this->auth()->getManager(); ?>
 <div class="banner container navbar">
     <div class="row">
-        <div class="col-lg-4" >
+        <div class="col-lg-8" >
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#header-collapse" aria-hidden="true">
                     <i class="fa fa-bars"></i>
@@ -9,15 +9,16 @@
                 <?php // AK: Remove text and add a logo image. TODO: Use logo image based on an entry in config.ini. ?>
                 <a class="navbar-brand lang-<?= $this->layout()->userLang ?>" href="<?= $this->url('home') ?>">
                     <img src="<?= $this->imageLink('logo-lang-de.png') ?>" alt="OEAW Logo" style="max-height: 80px;" /> 
-                </a> 
-            </div>
-            <div class="navbar-logo-text-container">
+                </a>
+                <div class="navbar-logo-text-container">
                 <div class="navbar-logo-text">
                     <h2>Academy-CATalog+</h2>
                 </div>
             </div>
+            </div>
+            
         </div>
-        <div class="col-lg-8">
+        <div class="col-lg-4">
             <?php if (!isset($this->layout()->renderingError)): ?>
                 <div class="collapse navbar-collapse" id="header-collapse">
                     <nav>
@@ -58,7 +59,7 @@
                                         <a href="<?= $this->url('myresearch-userlogin') ?>"><i class="fa fa-sign-in" aria-hidden="true"></i> <?= $this->transEsc("Institutional Login") ?></a>
                                     <?php else: ?>
                                         <a href="<?= $this->url('myresearch-userlogin') ?>" data-lightbox><i class="fa fa-sign-in" aria-hidden="true"></i> <?= $this->transEsc("Login") ?></a>
-                                <?php endif; ?>
+                                    <?php endif; ?>
                                 </li>
                             <?php endif; ?>
 
@@ -107,13 +108,15 @@
 
 <?php if ($this->layout()->searchbox !== false): ?>
     <div class="search container navbar">
-        <div class="nav searchbox hidden-print" role="search">
+        <div class="row">
+            <div class="nav searchbox hidden-print" role="search">
                 <?php // AK: Red background bar for search form - not start page (for this: see home.phtml)!    ?>
-            <div class="akSearchboxBackground">
-    <?php // AK: For keeping margins despite whole-width background bar - not start page (for this: see home.phtml)!    ?>
-                <div class="container">
-                    <div class="text-center">
-    <?= $this->layout()->searchbox ?>
+                <div class="akSearchboxBackground">
+                    <?php // AK: For keeping margins despite whole-width background bar - not start page (for this: see home.phtml)!    ?>
+                    <div class="container">
+
+                        <?= $this->layout()->searchbox ?>
+
                     </div>
                 </div>
             </div>

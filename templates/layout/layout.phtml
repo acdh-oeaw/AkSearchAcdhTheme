@@ -204,14 +204,18 @@ JS;
         <?=$this->layout()->content ?>
         <?php if(isset($this->templateName) && strtolower($this->templateName) == "home"): ?>
             <br>
-            <div class="">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce tincidunt nulla est, sit amet auctor eros aliquam in. Cras eget nibh in leo 
-                  faucibus posuere eget sit amet velit. In fermentum suscipit ipsum ut consequat. 
-                  Etiam sagittis congue accumsan. Vestibulum vestibulum, ipsum et rutrum tincidunt, nisl sem ultricies quam, ac sodales mauris sapien sed massa. 
+            <div class="row">
+                <div class="mainpage-info-text">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce tincidunt nulla est, sit amet auctor eros aliquam in. Cras eget nibh in leo 
+                    faucibus posuere eget sit amet velit. In fermentum suscipit ipsum ut consequat. 
+                </div>
             </div>
             <br>
-            <div class="ltfl_bookdisplay_widget" id="ltfl_widget_u_85274b4c"></div>
-            <p class="book-slider-text"><?=$this->transEsc("book_slider_text_1")?> <a href="https://ebookcentral.proquest.com/lib/oeawat/home.action"><?=$this->transEsc("book_slider_text_2")?></a>, <?=$this->transEsc("book_slider_text_3")?></p>
+            <div class="row">
+                <div class="ltfl_bookdisplay_widget" id="ltfl_widget_u_85274b4c"></div>
+                <p class="book-slider-text"><?=$this->transEsc("book_slider_text_1")?> <a href="https://ebookcentral.proquest.com/lib/oeawat/home.action"><?=$this->transEsc("book_slider_text_2")?></a>, <?=$this->transEsc("book_slider_text_3")?></p>
+
+            </div>
             <br>
         <?php endif; ?>             
       </div>
