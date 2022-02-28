@@ -1,3 +1,4 @@
+<!-- Holding TAB template -->
 <?php
     // AK: Use custom "checkRequestIsValid" function as we use another button layout
     // without the fontawesome "flag" icon.
@@ -100,7 +101,7 @@
     <h3><?=$this->transEsc('summarizedHoldings')?></h3>
     <?php foreach ($holdings['summarizedHoldings'] ?? [] as $sumHolsOfLocation): ?>
       <?php $locationName = $this->transEsc('location_' . $sumHolsOfLocation['location_external_name'], [], $sumHolsOfLocation['location_external_name']); ?>
-      <h4><?=$locationName?></h4>
+        <h4><a href="https://www.oeaw.ac.at/fileadmin/subsites/BASIS/html/info-<?=str_replace(' ', '-', strtolower($locationName))?>.html" target="_blank"><?=$locationName?></a></h4>
       <table class="table">
       <?php
         // AK: Get the holings data from the array
