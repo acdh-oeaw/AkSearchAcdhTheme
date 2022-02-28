@@ -111,12 +111,12 @@
         <div class="row">
             <div class="nav searchbox hidden-print" role="search">
                 <?php // AK: Red background bar for search form - not start page (for this: see home.phtml)!    ?>
-                <div class="akSearchboxBackground">
-                    <?php // AK: For keeping margins despite whole-width background bar - not start page (for this: see home.phtml)!    ?>
-                    <div class="container">
-
-                        <?= $this->layout()->searchbox ?>
-
+                <div class="container">
+                    <div class="row akSearchboxBackground">
+                        <?php // AK: For keeping margins despite whole-width background bar - not start page (for this: see home.phtml)!    ?>
+                        <div class="col-lg-12 text-center">
+                            <?= $this->layout()->searchbox ?>
+                        </div>
                     </div>
                 </div>
             </div>
