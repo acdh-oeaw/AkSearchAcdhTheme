@@ -100,8 +100,11 @@
   <div class='holdings'>
     <h3><?=$this->transEsc('summarizedHoldings')?></h3>
     <?php foreach ($holdings['summarizedHoldings'] ?? [] as $sumHolsOfLocation): ?>
-      <?php $locationName = $this->transEsc('location_' . $sumHolsOfLocation['location_external_name'], [], $sumHolsOfLocation['location_external_name']); ?>
-        <h4><a href="https://www.oeaw.ac.at/fileadmin/subsites/BASIS/html/info-<?=str_replace(' ', '-', strtolower($locationName))?>.html" target="_blank"><?=$locationName?></a></h4>
+      <?php
+      $library = $sumHolsOfLocation['holdings'][0]['library'];
+      $libraryName = $this->transEsc($library, [], $library);
+      ?>
+      <h4><a href="https://www.oeaw.ac.at/fileadmin/subsites/BASIS/html/info-<?=strtolower($library)?>.html" target="_blank"><?=$libraryName?></a></h4>
       <table class="table">
       <?php
         // AK: Get the holings data from the array
@@ -201,7 +204,7 @@
     <?php foreach ($holdings['holdings'] ?? [] as $holding): ?>
 
       <h4>
-        <?php $locationName = $this->transEsc('location_' . $holding['location_external_name'], [], $holding['location_external_name']); ?>
+        <?php $locationName = $this->transEsc($holding['items'][0]['library'], [], $holding['items'][0]['library']); ?>
         <?php if (isset($holding['locationhref']) && $holding['locationhref']): ?>
           <a href="<?=$holding['locationhref']?>" target="_blank"><?=$locationName?></a>
         <?php else: ?>
