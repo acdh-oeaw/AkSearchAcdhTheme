@@ -147,17 +147,19 @@
         echo '<input type="hidden" name="sort" value="' . $this->escapeHtmlAttr($lastSort) . '" />';
       }
     ?>
-    <?=$this->context($this)->renderInContext(
-      'search/filters.phtml',
-      [
-        'params' => $params ?? null,
-        'urlQuery' => isset($results) ? $results->getUrlQuery() : null,
-        'filterList' => $showFilters ? $filterList : [],
-        'checkboxFilters' => $showFilters ? $checkboxFilters : [],
-        'searchClassId' => $this->searchClassId,
-        'searchType' => $this->searchType,
-      ]
-    );?>
+    <div class="search-filters-div">
+        <?=$this->context($this)->renderInContext(
+          'search/filters.phtml',
+          [
+            'params' => $params ?? null,
+            'urlQuery' => isset($results) ? $results->getUrlQuery() : null,
+            'filterList' => $showFilters ? $filterList : [],
+            'checkboxFilters' => $showFilters ? $checkboxFilters : [],
+            'searchClassId' => $this->searchClassId,
+            'searchType' => $this->searchType,
+          ]
+        );?>
+    </div>    
   </form>
 <?php endif; ?>
 

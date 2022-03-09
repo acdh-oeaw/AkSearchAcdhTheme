@@ -74,9 +74,8 @@ h1, h2, h3, h4 {
     float: left;
     position: relative;
     min-height: 100px;
-    min-width: 350px;
+    min-width: 200px;
 }
-
 .navbar-logo-text {
     //bottom position
     //position: absolute;
@@ -85,22 +84,12 @@ h1, h2, h3, h4 {
     position: absolute;
     
 }
-.navbar-logo-text h2 {
-    margin-top: 33px !important;
-    font-size: 40px !important;
-    font-weight: normal;
-}
-.mainpage-info-text {
-    font-size: 16px;
-    text-align: center;
-    padding-top: 50px;
-    padding-bottom: 50px;
-}
+
 .akSearchboxBackground {
     background: none repeat scroll 0 0 #2856a3; // Background color
     padding: 8px 0 8px 0; // Padding top and bottom of red bar
     width: 100vw; // 100% viewport width - span bar on whole site width
-    min-height: 140px;
+    min-height: 100px;
     // Fix left margin:
     margin-left: -50vw;
     left: 50%;
@@ -113,7 +102,6 @@ h1, h2, h3, h4 {
 #searchForm {
     width: 100%; // Stretching the whole form with the searchbox in the red bar
     font-size: 0px !important;
-    padding-top: 30px;
 }
 
 #searchForm .input {
@@ -156,7 +144,7 @@ header .search.container.navbar {
     font-size: 20px;
     //height: 24px;
     //line-height: 25px;
-    height: 60px;
+    height: 80px;
     line-height: 34px;
     margin: 1px 0 0 0;
     padding-top: 0;
@@ -170,8 +158,8 @@ header .search.container.navbar {
 // Make search button (magnifying glass button) bigger
 .akSearchboxBackground .btn-primary {
     font-size: 22px;
-    height: 60px;
-    width: 60px;
+    height: 80px;
+    width: 80px;
     line-height: 32px;
 }
 
@@ -233,6 +221,7 @@ header .search.container.navbar {
 // of our buttons for them.
 .active-filters .filters .filter-value {
     background: #333;
+    font-size: 14px;
 }
 
 // Style for the "remove" X for "active filter" indicators in the search bar
@@ -244,6 +233,9 @@ header .search.container.navbar {
     text-decoration: none;
     outline: none;
 }
+.search-filters-div {
+    padding-left: 10px;
+}
 
 // White texts in search bar
 .searchForm .btn-link,
@@ -252,9 +244,17 @@ header .search.container.navbar {
 .adv_search_links, .adv_search_links a {
     color: #fff;
     font-weight: 600;
+    font-size: 14px;
+}
+.active-filters .filters {
+    flex: inherit;
 }
 .adv_search_terms {
     color: #fff;
+}
+
+.filter-value .filters-and .text {
+    font-size: 14px;
 }
 
 // X button on advanced search form that displays after having added a new search
@@ -661,19 +661,6 @@ header .search.container.navbar {
     .record .media-body {
         overflow: auto !important;
     }
-    .navbar-logo-text-container {
-        width: 100%;
-    }
-}
-
-@media (max-width:550px) {
-    .navbar-logo-text h2 {
-        margin-top: 10px !important;
-    }
-    .navbar-logo-text-container {
-        min-width: auto;
-        margin-left: 10px;
-    }
 }
 
 /* Tablet size screens and smaller */
@@ -686,14 +673,8 @@ header .search.container.navbar {
         -o-hyphens: auto;
         hyphens: auto;
     }
-    
 }
-.container, footer, header {
-    padding-right: 0px !important;
-    padding-left: 0px !important;
-    margin-right: auto !important;
-    margin-left: auto !important;
-}
+
 .main-footer {
     background-color: #FFFFFF;
     display: inline-block;
@@ -704,11 +685,7 @@ header .search.container.navbar {
     margin-top: 0px; 
 }
 .main-footer .footer-wrapper {
-    padding-left: none !important;
-    padding-right: none !important;
-    padding-top: 25px;
-    padding-bottom: 50px;
-    //padding: 25px 20px 50px 20px;
+    padding: 25px 20px 50px 20px;
     display: inline-block;
     width: 100%; 
 }
