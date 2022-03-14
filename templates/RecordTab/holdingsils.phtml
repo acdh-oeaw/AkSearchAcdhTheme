@@ -135,8 +135,8 @@
               $holdingsNotes[] = $holdingsNote;
             }
           }
-        }
-
+          }
+          
         // AK: Transform subarray data to string
         $gaps = implode(', ', array_filter($gaps));
         $callnumberNotes = implode(', ', array_filter($callnumberNotes));
@@ -244,6 +244,14 @@
       )
         ? false
         : true;
+     
+        $hasExemplarbeschreibung = empty(array_filter(array_column($holding['items'], 'exemplarbeschreibung')))
+        ? false
+        : true;
+      
+        $hasExLibris = empty(array_filter(array_column($holding['items'], 'exLibris')))
+        ? false
+        : true;
       ?>
 
       <table class="table">
@@ -266,6 +274,12 @@
           <?php if ($hasAvailability): ?>
             <th><?=$this->transEsc("Availability")?></th>
           <?php endif; ?>
+           <?php if ($hasExemplarbeschreibung): ?>
+            <th><?=$this->transEsc("Exemplarbeschreibung")?></th>
+          <?php endif; ?>
+           <?php if ($hasExLibris): ?>
+            <th><?=$this->transEsc("Ex Libris")?></th>
+          <?php endif; ?>  
           <th><?=$this->transEsc("hold_place")?></th>
         </tr>
 
@@ -327,6 +341,23 @@
                   <?php endif; ?>
                 </td>
               <?php endif; ?>
+                
+              <?php if ($hasExemplarbeschreibung): ?>
+                <td>
+                  <?php if ($item['exemplarbeschreibung']): ?>
+                      <span><?=$item['exemplarbeschreibung']?></span>                    
+                  <?php endif; ?>
+                </td>
+              <?php endif; ?>
+                
+                <?php if ($hasExLibris): ?>
+                <td>
+                  <?php if ($item['exLibris']): ?>
+                      <span><?=$item['exLibris']?></span>                    
+                  <?php endif; ?>
+                </td>
+              <?php endif; ?>
+                
               <td>
                 <?php // AK: Show "holds disabled" message if activated in config.ini at config "holds_mode" ?>
                 <?php if ($this->ils()->getHoldsMode() == 'disabled_msg'): ?>
