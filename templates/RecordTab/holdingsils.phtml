@@ -64,6 +64,7 @@
 <?=(($warnConf['holdingsils'] ?? false) == true) ? '<br />'.$this->render('Helpers/warning.phtml', ['heading' => 'holdingsils_warning_heading', 'text' => 'holdingsils_warning_text']) : ''?>
 
 <?php // Show URLs ?>
+<!-- redmine: #20244
 <?php if (!empty($urls) || $openUrlActive || $doiActive): ?>
   <div class='holdings urls'>
     <h3><?=$this->transEsc("Internet")?></h3>
@@ -86,7 +87,7 @@
     </div>
   </div>
 <?php endif; ?>
-
+-->
 <?php // Show electronic holdings ?>
 <?php if (!empty($holdings['electronic_holdings'])): ?>
   <?=$this->context($this)->renderInContext(
@@ -454,7 +455,7 @@
 <?php // No holdings available?>
 <div class='holdings noHoldings'>
 <?php // AK: Check if there are no holdings (or URLs - uncomment below) ?>
-  <?php if (empty($holdings['holdings']) /*&& empty($urls)*/ && empty($holdings['summarizedHoldings'])): ?>
+  <?php if (empty($holdings['holdings']) && empty($holdings['electronic_holdings']) /*&& empty($urls)*/ && empty($holdings['summarizedHoldings'])): ?>
     <?php // AK: If we have parent records, show a note and a link to a parent (if possible) ?>
     <h3><?=$this->transEsc("holdingNote")?></h3>
     <div class="padding-online-content">
