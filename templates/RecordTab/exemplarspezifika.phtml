@@ -1,0 +1,73 @@
+<?php
+try {
+    $holdings = $this->driver->getHolding991992();    
+    
+} catch (\VuFind\Exception\ILS $e) {
+    $holdings = [
+        'holdings' => [],
+        'total' => 0,
+        'page' => 0,
+        'itemLimit' => 0
+    ];
+    $offlineMode = 'ils-offline';
+}
+//table translated text
+$str991 = array(
+    "a" => $this->translate("Zweigstelle"), 
+    "b" => $this->translate("Exemplarspezifische bibliographische Angaben"),
+    "c" => $this->translate("Illustration(en) /Buchmalerei Schreibstoff / Beschreibstoff Wasserzeichen"),
+    "d" => $this->translate("Einband"), "e" => $this->translate("Exemplarhinweise"), "f" => $this->translate("Signaturvermerk"),
+    "g" => $this->translate("Standortvermerk (Standort, Collection)"), "h" => $this->translate("Aufstellungssystematikvermerk"),
+    "k" => $this->translate("Historische Kaufvermerke"), "l" => $this->translate("Literaturhinweise"),
+    "m" => $this->translate("Marginalien"), "p" => $this->translate("Provenienz"), "q" => $this->translate("Raubgutkennung"),
+    "r" => $this->translate("Restitutionsstatus"), "s" => $this->translate("Alte Signatur")
+);
+$str992 = array(
+    "a" => $this->translate("Maße"),
+    "b" => $this->translate("VorbesitzerIn"), "c" => $this->translate("Technik"),
+    "d" => $this->translate("VorbesitzerIn, andere Namensform"), "e" => $this->translate("Zweigstelle"),
+    "f" => $this->translate("Signaturvermerk"), "g" => $this->translate("Standortvermerk"), "i" => $this->translate("KünstlerIn"),
+    "j" => $this->translate("Jahr"), "k" => $this->translate("Kommentar"), "l" => $this->translate("KünstlerIn, andere Namensform"),
+    "m" => $this->translate("Motiv"), "t" => $this->translate("Text am Exlibris")
+);
+
+function createRow(string $label, string $text) {    
+    ?>
+    <tr>
+    <td><?=$label?></td>
+    <td><?=$text?></td>
+    </tr>
+    <?php
+}
+
+function createTable(array $data, array $labels) {
+
+    echo '<table class="table table-striped">';
+        foreach($labels as $k => $v) {
+            if(isset($data[$k][0])) {
+                createRow($v, $data[$k][0]);
+            }
+        }
+    echo '</table>';
+}
+
+?>
+
+ 
+
+<?php foreach($holdings as $name => $d) : ?>
+<?php 
+    if($d['exemplarbeschreibung']) {
+        createTable($d['exemplarbeschreibung'], $str992);
+    }
+
+    if($d['exLibris']) {
+         createTable($d['exLibris'], $str991);
+    }
+?>
+
+<?php endforeach;?> 
+
+
+       
+   
