@@ -112,7 +112,7 @@
     <td><?=$this->escapeHtml($item['alternative_call_number'])?></td>
     <td><?=$this->transEsc($item['location'])?></td>
     <td><?=$this->transEsc($item['public_note'])?></td>
-    <td><?=$this->transEsc($item['policy'])?></td>
+    <td><?=$this->transEsc('ItemPolicies::' . $item['policy'])?></td>
     <td>
       <!-- This cell's code is just copy-pasted from corresponding table cell's code in the AkSearch template -->
       <?php if ($item['availability'] ?? false): ?>
