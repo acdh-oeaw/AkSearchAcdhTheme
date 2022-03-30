@@ -145,8 +145,9 @@ class RecordDataFormatterFactory extends \AkSearch\View\Helper\Root\RecordDataFo
             ['context' => ['stackCells' => true]]
         );
 
-        // AK: Get dewey classification
-        $spec->setTemplateLine('Classification', 'getAllDeweys', 'data-localDewey.phtml');
+        // ACHD: Get Basisklassifikation (marc 084)
+        // https://redmine.acdh.oeaw.ac.at/issues/19501
+        $spec->setLine('Classification', 'getClassification');
 
         // AK: Sowidok - get geographical note
         $spec->setTemplateLine('Region', 'getSowidokGeographical', 'data-sowidokGeographical.phtml');
