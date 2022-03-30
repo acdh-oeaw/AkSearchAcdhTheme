@@ -100,6 +100,7 @@
   <tr>
     <th><?=$this->transEsc('Signature')?></th>
     <th><?=$this->transEsc('2. Signature')?></th>
+    <th><?=$this->transEsc('Description')?></th>
     <th><?=$this->transEsc('Location')?></th>
     <th><?=$this->transEsc('Remarks')?></th>
     <th><?=$this->transEsc('Status')?></th>
@@ -110,6 +111,7 @@
   <tr>
     <td><?=$this->escapeHtml($item['callnumber'])?></td>
     <td><?=$this->escapeHtml($item['alternative_call_number'])?></td>
+    <td><?=$this->transEsc($item['description'])?></td>
     <td><?=$this->transEsc($item['location'])?></td>
     <td><?=$this->transEsc($item['public_note'])?></td>
     <td><?=$this->transEsc('ItemPolicies::' . $item['policy'])?></td>
