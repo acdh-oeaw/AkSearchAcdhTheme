@@ -99,6 +99,11 @@
         <a class="btn btn-default" href="mailto:bibliothek@oeaw.ac.at?subject=<?=$this->transEsc('change_userdata') ?>">
           <i class="fa fa-fw fa-lock" aria-hidden="true"></i> <?=$this->transEsc('change_userdata') ?>
         </a>
+        
+        <a class="btn btn-default" href="https://obv-at-oeaw.alma.exlibrisgroup.com/view/resetPw?institutionCode=43ACC_OEAW">
+          <i class="fa fa-fw fa-lock" aria-hidden="true"></i> <?=$this->transEsc('Change Password') ?>
+        </a>
+        
       <?php if ($this->auth()->getManager()->supportsPasswordChange()): ?>
         <a class="btn btn-default" href="<?=$this->url('myresearch-changepassword') ?>">
           <i class="fa fa-fw fa-lock" aria-hidden="true"></i> <?=$this->transEsc('Change Password') ?>
