@@ -9,26 +9,32 @@ try {
         'page' => 0,
         'itemLimit' => 0
     ];
-    $offlineMode = 'ils-offline';
 }
 //table translated text
 $str991 = array(
-    "a" => $this->translate("Zweigstelle"), 
-    "b" => $this->translate("Exemplarspezifische bibliographische Angaben"),
-    "c" => $this->translate("Illustration(en) /Buchmalerei Schreibstoff / Beschreibstoff Wasserzeichen"),
-    "d" => $this->translate("Einband"), "e" => $this->translate("Exemplarhinweise"), "f" => $this->translate("Signaturvermerk"),
-    "g" => $this->translate("Standortvermerk (Standort, Collection)"), "h" => $this->translate("Aufstellungssystematikvermerk"),
-    "k" => $this->translate("Historische Kaufvermerke"), "l" => $this->translate("Literaturhinweise"),
-    "m" => $this->translate("Marginalien"), "p" => $this->translate("Provenienz"), "q" => $this->translate("Raubgutkennung"),
-    "r" => $this->translate("Restitutionsstatus"), "s" => $this->translate("Alte Signatur")
+    "a" => $this->translate("991a"), 
+    "b" => $this->translate("991b"),
+    "c" => $this->translate("991c"),
+    "d" => $this->translate("991d"), 
+    "e" => $this->translate("991e"), 
+    "f" => $this->translate("991f"),
+    "g" => $this->translate("991g"), 
+    "h" => $this->translate("991h"),
+    "k" => $this->translate("991k"), 
+    "l" => $this->translate("991l"),
+    "m" => $this->translate("991m"), 
+    "p" => $this->translate("991p"), 
+    "q" => $this->translate("991q"),
+    "r" => $this->translate("991r"), 
+    "s" => $this->translate("991s")
 );
 $str992 = array(
-    "a" => $this->translate("Maße"),
-    "b" => $this->translate("VorbesitzerIn"), "c" => $this->translate("Technik"),
-    "d" => $this->translate("VorbesitzerIn, andere Namensform"), "e" => $this->translate("Zweigstelle"),
-    "f" => $this->translate("Signaturvermerk"), "g" => $this->translate("Standortvermerk"), "i" => $this->translate("KünstlerIn"),
-    "j" => $this->translate("Jahr"), "k" => $this->translate("Kommentar"), "l" => $this->translate("KünstlerIn, andere Namensform"),
-    "m" => $this->translate("Motiv"), "t" => $this->translate("Text am Exlibris")
+    "a" => $this->translate("992a"),
+    "b" => $this->translate("992b"), "c" => $this->translate("992c"),
+    "d" => $this->translate("992d"), "e" => $this->translate("992e"),
+    "f" => $this->translate("992f"), "g" => $this->translate("992g"), "i" => $this->translate("992i"),
+    "j" => $this->translate("992j"), "k" => $this->translate("992k"), "l" => $this->translate("992l"),
+    "m" => $this->translate("992m"), "t" => $this->translate("992t")
 );
 
 function createRow(string $label, string $text) {    
@@ -53,19 +59,25 @@ function createTable(array $data, array $labels) {
 
 ?>
 
-<?php foreach($holdings as $name => $d) : ?>
-<?php 
-    if($d['exemplarbeschreibung']) {
-        createTable($d['exemplarbeschreibung'], $str992);
-    }
+<?php if(count($holdings) > 0) :  ?>
+    <?php foreach($holdings as $name => $d) : ?>
+    <?php 
+        if($d['exemplarbeschreibung']) {
+            createTable($d['exemplarbeschreibung'], $str992);
+        }
 
-    if($d['exLibris']) {
-         createTable($d['exLibris'], $str991);
-    }
-?>
+        if($d['exLibris']) {
+             createTable($d['exLibris'], $str991);
+        }
+    ?>
 
-<?php endforeach;?> 
+    <?php endforeach;?> 
 
+<?php else: ?>
+    <div class="alert alert-info">
+        <p><?php echo $this->transEsc("No Data"); ?></p>
+    </div>
+<?php endif; ?>
 
        
    
