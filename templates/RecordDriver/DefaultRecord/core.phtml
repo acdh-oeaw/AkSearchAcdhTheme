@@ -91,7 +91,7 @@
               </tr>
             </tr>
           <?php else: ?>
-            <tr><th><?=$this->transEsc($current['label'])?>:</th><td><?=$current['value']?></td></tr>
+            <tr><th><?=$this->transEsc($current['label'])?>:</th><td><?php echo html_entity_decode($current['value']); ?></td></tr>
           <?php endif; ?>
         <?php endforeach; ?>
       </table>
