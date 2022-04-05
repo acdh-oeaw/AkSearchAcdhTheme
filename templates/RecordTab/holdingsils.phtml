@@ -91,7 +91,7 @@
 ?>
 <h3><?=$this->transEsc('Copies')?></h3>
 <?php if (count($holdings['holdings']) === 0): ?>
-  <?=$this->transEsc('No copies found for this record')?>
+  <?=$this->transEsc('NoHoldingsExist')?>
 <?php endif; ?>
 <?php foreach ($holdings['holdings'] ?? [] as $libraryCode => $holding): ?>
 <h4>
