@@ -90,6 +90,9 @@
   }
 ?>
 <h3><?=$this->transEsc('Copies')?></h3>
+<?php if (count($holdings['holdings']) === 0): ?>
+  <?=$this->transEsc('No copies found for this record')?>
+<?php endif; ?>
 <?php foreach ($holdings['holdings'] ?? [] as $libraryCode => $holding): ?>
 <h4>
   <a href="https://www.oeaw.ac.at/fileadmin/subsites/BASIS/html/info-<?=str_replace(' ', '-', strtolower($libraryCode))?>.html" target="_blank">
