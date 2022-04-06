@@ -95,15 +95,18 @@
 <?php endif; ?>
 <?php foreach ($holdings['holdings'] ?? [] as $holdingId => $holding): ?>
   <?php
+    $prevLibraryCode = $libraryCode ?? '';
     $summary = $holdings['holdingsSummary'][(string) $holdingId];
     $libraryCode = $summary['libraryCode'];
     unset($summary['libraryCode']);
   ?>
+  <?php if ($libraryCode !== $prevLibraryCode): ?>
 <h4>
   <a href="https://www.oeaw.ac.at/fileadmin/subsites/BASIS/html/info-<?=str_replace(' ', '-', strtolower($libraryCode))?>.html" target="_blank">
     <?=$this->transEsc($libraryCode)?>
   </a>
 </h4>
+  <?php endif; ?>
 <table class="table">
   <?php foreach ($summary as $k => $v): ?>
     <?php if (!empty($v)): ?>
