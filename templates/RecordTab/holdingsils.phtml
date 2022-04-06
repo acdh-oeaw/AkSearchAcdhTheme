@@ -97,8 +97,6 @@
       'recallThis' => $recallThis, 
       'placeAHold' => $placeAHold
   ];
-    print_r(array_keys($holdings['holdingsSummary']));
-    print_r(array_keys($holdings['lkrHoldingsSummary']));
 ?>
 <h3><?=$this->transEsc('Copies')?></h3>
 <?php if (count($holdings['holdings']) === 0): ?>
@@ -125,7 +123,7 @@
 </h4>
   <?php endif; ?>
   <?php foreach ($summaries as $summary): ?>
-<table class="table" style="width: 50%;">
+<table class="table">
     <?php foreach ($summary as $k => $v): ?>
       <?php if (!empty($v)): ?>
   <tr><td><?=$this->transEsc($k)?>:</td><td><?=$this->transEsc($v)?></td></tr>
