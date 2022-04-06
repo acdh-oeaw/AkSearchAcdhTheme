@@ -1,0 +1,82 @@
+<table class="table table-striped">
+  <tr>
+    <th><?=$this->transEsc('Signature')?></th>
+    <th><?=$this->transEsc('2. Signature')?></th>
+    <th><?=$this->transEsc('Description')?></th>
+    <th><?=$this->transEsc('Location')?></th>
+    <th><?=$this->transEsc('Remarks')?></th>
+    <th><?=$this->transEsc('Status')?></th>
+    <th><?=$this->transEsc('Availbility')?></th>
+    <th><?=$this->transEsc('Order')?></th>
+  </tr>
+  <?php foreach ($this->items as $item): ?>
+  <tr>
+    <td><?=$this->escapeHtml($item['callnumber'])?></td>
+    <td><?=$this->escapeHtml($item['alternative_call_number'])?></td>
+    <td><?=$this->transEsc($item['description'])?></td>
+    <td><?=$this->transEsc($item['location'])?></td>
+    <td><?=$this->transEsc($item['public_note'])?></td>
+    <td><?=$this->transEsc('ItemPolicies::' . $item['policy'])?></td>
+    <td>
+      <!-- This cell's code is just copy-pasted from corresponding table cell's code in the AkSearch template -->
+      <?php if ($item['availability'] ?? false): ?>
+        <span class="text-success"><?=$this->transEsc("Available")?><link property="availability" href="http://schema.org/InStock"/></span>
+      <?php else: ?>
+        <span class="text-danger"><?=$this->transEsc($item['status'])?><link property="availability" href="http://schema.org/OutOfStock"/></span>
+        <?php if ($item['returnDate'] ?? false): ?>&ndash; <span><?=$this->escapeHtml($item['returnDate'])?></span><?php endif; ?>
+        <?php if ($item['duedate'] ?? false): ?>
+          &ndash; <span><?=$this->transEsc("Due")?>: <?=$this->escapeHtml($item['duedate'])?></span>
+        <?php endif; ?>
+        <?php if (($item['requests_placed'] ?? 0) > 0): ?>
+          &ndash; <span><?=$this->transEsc("Requested")?> (<?=$this->transEsc("NumberOf")?>: <?=$this->escapeHtml($item['requests_placed'])?>)</span>
+        <?php endif; ?>
+      <?php endif; ?>
+    </td>
+    <td>
+      <?php
+        // used by the AkSearch code below
+        $check = $item['check'] ?? false;
+        $isRecall = $item['isRecall'] ?? false;
+      ?>
+      <!-- This cell's code is just copy-pasted from corresponding table cell's code in the AkSearch template -->
+      <?php // Show account block message ?>
+      <?php if ($this->blocks): ?>
+        <?=$this->transEsc('account_block_no_holds')?>
+      <?php // Show location text ?>
+      <?php elseif (isset($item['locationtext'])): ?>
+        <?=$this->transEsc($item['locationtext'])?>
+      <?php else: ?>
+        <?php // Show login button or warning about missing ILS account ?>
+        <?php if ($this->ils()->getHoldsMode() == 'driver' || $this->ils()->getTitleHoldsMode() == 'driver'): ?>
+          <?php if ($this->account->loginEnabled() && $offlineMode != 'ils-offline'): ?>
+            <?php if (!$this->user): ?>
+              <?=$this->loginBtn?>
+            <?php elseif (!$this->user->cat_username): ?>
+              <span class="text-danger"><?=$this->transEsc('NoIlsAccountFound')?></span>
+            <?php endif; ?>
+          <?php endif; ?>
+        <?php endif; ?>
+        <?php // TODO: Check what happens when getHoldsMode or getTitleHoldsMode is not "driver" ?>
+        <?php // Show hold or recall buttons ?>
+        <?php if ($this->useTitleLevelHol): ?>
+          <?php // Button for title level holds ?>
+          <a class="placehold btn holIlsBtn" data-lightbox href="<?=$this->titleLevelReqUrl?>" title="<?=$this->requestPlaceText?>"><?=($isRecall) ? $this->recallThis : $this->placeAHold?></a>
+        <?php else: ?>
+          <?php // Button for item level holds ?>
+          <?php if ($item['link'] ?? false): ?>
+            <?php // TODO: Show message if link is false! ?>
+            <a class="<?=$check ? 'checkRequest disabled ' : ''?>placehold btn holIlsBtn" <?php if (!empty($item['linkLightbox'])): ?>data-lightbox <?php endif; ?>href="<?=$this->recordLink()->getRequestUrl($item['link'])?>"><i class="fa fa-spinner fa-pulse" aria-hidden="true"></i>&nbsp;<?=($check) ? $checkHold : (($isRecall) ? $recallThis : $placeAHold)?></a>
+          <?php endif; ?>
+          <?php if ($item['storageRetrievalRequestLink'] ?? false): ?>
+            <a href="<?=$this->recordLink()->getRequestUrl($item['storageRetrievalRequestLink'])?>" data-lightbox class="btn holIlsBtn" title="<?=$this->transEsc('storage_retrieval_request_place_text')?>"><?=$this->transEsc('storage_retrieval_request_place_text')?></a>
+          <?php endif; ?>
+          <?php if ($item['ILLRequestLink'] ?? false): ?>
+            <a href="<?=$this->recordLink()->getRequestUrl($item['ILLRequestLink'])?>" data-lightbox class="btn holIlsBtn" title="<?=$this->transEsc('ill_request_place_text')?>"><?=$this->transEsc('ill_request_place_text')?></a>
+          <?php endif; ?>
+          <?=$this->relais()->renderButtonIfActive($this->driver ?? null)?>
+        <?php endif; ?>
+      <?php endif; ?>
+    </td>
+  </tr>
+<?php endforeach; ?>
+</table>
