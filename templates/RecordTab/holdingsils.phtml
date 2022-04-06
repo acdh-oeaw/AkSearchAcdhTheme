@@ -93,12 +93,24 @@
 <?php if (count($holdings['holdings']) === 0): ?>
   <?=$this->transEsc('NoHoldingsExist')?>
 <?php endif; ?>
-<?php foreach ($holdings['holdings'] ?? [] as $libraryCode => $holding): ?>
+<?php foreach ($holdings['holdings'] ?? [] as $holdingId => $holding): ?>
+  <?php
+    $summary = $holdings['holdingsSummary'][(string) $holdingId];
+    $libraryCode = $summary['libraryCode'];
+    unset($summary['libraryCode']);
+  ?>
 <h4>
   <a href="https://www.oeaw.ac.at/fileadmin/subsites/BASIS/html/info-<?=str_replace(' ', '-', strtolower($libraryCode))?>.html" target="_blank">
     <?=$this->transEsc($libraryCode)?>
   </a>
 </h4>
+<table class="table">
+  <?php foreach ($summary as $k => $v): ?>
+    <?php if (!empty($v)): ?>
+  <tr><td><?=$this->transEsc($k)?>:</td><td><?=$this->transEsc($v)?></td></tr>
+    <?php endif; ?>
+  <?php endforeach; ?>
+</table>
 <table class="table table-striped">
   <tr>
     <th><?=$this->transEsc('Signature')?></th>
