@@ -69,8 +69,8 @@
             <span title="<?=implode('; ', $summAuthors)?>">
               <b><?=$this->transEsc('participants')?>:</b>
               <?php $authorCount = count($summAuthors); ?>
-              <?php foreach ($summAuthors as $i => $summAuthor): ?>              
-                <a href="<?=$this->record($this->driver)->getLink('author', $this->highlight($summAuthor, null, true, false))?>"><?=$this->highlight($summAuthor)?></a><?=$i + 1 < $authorCount ? ';' : ''?>
+              <?php foreach ($summAuthors['text'] as $i => $summAuthor): ?>
+                <a href="<?=$this->record($this->driver)->getLink('author', $this->highlight($summAuthors['url'][$i], null, true, false))?>"><?=$this->highlight($summAuthor)?></a><?=$i + 1 < $authorCount ? ';' : ''?>
               <?php endforeach; ?>
             </span>
             <br />
