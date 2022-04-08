@@ -49,7 +49,8 @@ return [
     'js' => [
         'lightbox.js',
         'vendor/klaro/klaro-config.js',
-        'vendor/klaro/klaro.js'
+        'vendor/klaro/klaro.js',
+        'acdhchtheme-common.js'
     ],
     'less' => [
         'active' => true,

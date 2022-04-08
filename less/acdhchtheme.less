@@ -841,3 +841,18 @@ footer .el-block.first {
     font-size: 16px;
     text-align: center;
 }
+
+.online-access-urls-list.closed {
+   overflow: hidden;
+   text-overflow: ellipsis;
+   display: -webkit-box;
+   -webkit-line-clamp: 3; /* number of lines to show */
+   -webkit-box-orient: vertical;
+}
+
+.online-access-urls-list.open {
+   text-overflow: ellipsis;
+   display: block; 
+   -webkit-line-clamp: 3; /* number of lines to show */
+   -webkit-box-orient: vertical;
+} 

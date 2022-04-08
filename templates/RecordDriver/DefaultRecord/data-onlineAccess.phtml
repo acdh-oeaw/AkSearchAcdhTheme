@@ -6,10 +6,21 @@
   // Account for replace_other_urls setting
   $urls = $this->record($this->driver)->getLinkDetails($openUrlActive);
 ?>
-<?php foreach ($urls as $current): ?>
-  <?php // AK: Translate the description ?>
-  <a href="<?=$this->escapeHtmlAttr($this->proxyUrl($current['url']))?>" target="_blank"><?=$this->transEsc($current['desc'])?></a><br/>
-<?php endforeach; ?>
+
+<div class="online-access-urls-list closed">
+    <div class="wrapper">
+        <div>
+            <a class="entity-fact-info-link display-all-online-access" href="#"><i class="fa fa-caret-down"></i></a>
+        </div>
+        <div>
+            <?php foreach ($urls as $current): ?>
+            <?php // AK: Translate the description ?>
+                <a href="<?=$this->escapeHtmlAttr($this->proxyUrl($current['url']))?>" target="_blank"><?=$this->transEsc($current['desc'])?></a><br/>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</div>
+
 <?php if ($openUrlActive): ?>
   <?=$openUrl->renderTemplate()?><br/>
 <?php endif; ?>
