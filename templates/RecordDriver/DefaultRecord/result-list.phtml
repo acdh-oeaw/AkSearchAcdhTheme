@@ -64,7 +64,8 @@
           </div>
 
           <?php // AK: Getting all contributors ?>
-          <?php $summAuthors = $this->driver->getContributorsForSearchListView(); if (!empty($summAuthors)): ?>
+          <?php $summAuthors = $this->driver->getContributorsForSearchListView(); 
+            if (!empty($summAuthors['text'])): ?>
       
             <span title="<?=implode('; ', $summAuthors)?>">
               <b><?=$this->transEsc('participants')?>:</b>
