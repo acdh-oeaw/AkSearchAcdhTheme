@@ -1,41 +1,21 @@
 <h3><?=$this->transEsc('Electronic')?></h3>
 <table class="table table-striped">
-  <?php foreach ($this->holdings as $item): ?>
+  <?php foreach ($this->holdings as $holding): ?>
+    <?php foreach ($holding->items as $item): ?>
     <tr>
       <td class="fullLocation">
-        <?php $locationText = $this->transEscWithPrefix('location_', $item['location']); ?>
-        <?php if ($item['locationhref'] ?? false): ?>
-          <a href="<?=$item['locationhref']?>" target="_blank"><?=$locationText?></a>
-        <?php else: ?>
-          <?=$locationText?>
-        <?php endif; ?>
+        <?=$item->description?>
       </td>
       <td class="fullAvailability">
-        <?php if ($item['use_unknown_message'] ?? false): ?>
-          <span><?=$this->transEsc('status_unknown_message')?></span>
-        <?php elseif ($item['availability']): ?>
-          <?php if(isset($item['e_url'])) { ?>
-          <span class="text-success"><a href="<?=$item['e_url']?>"><?=!empty($item['status']) ? $this->transEsc($item['status']) : $this->transEsc('Available')?></a></span> 
-          <?php
-          } else {
-          ?>
-          <span class="text-success"><?=!empty($item['status']) ? $this->transEsc($item['status']) : $this->transEsc('Available')?></span>
-          <?php } ?>
-        <?php else: ?>
-          <span class="text-danger"><?=$this->transEsc($item['status'])?></span>
-        <?php endif; ?>
-        <?php if (isset($item['item_notes'])): ?>
+        <span class="text-success"><a href="<?=$item->url?>"><?=!empty($item->status) ? $this->transEsc($item->status) : $this->transEsc('Available')?></a></span> 
+        <?php if (!empty($item->notes)): ?>
           <div class="item-notes">
-            <b><?=$this->transEsc("Item Notes")?>:</b>
-            <ul>
-              <?php foreach ($item['item_notes'] as $item_note): ?>
-                <li><?=$this->escapeHtml($item_note) ?></li>
-              <?php endforeach; ?>
-            </ul>
+            <b><?=$this->transEsc("Item Notes")?>:</b> <?=$this->escapeHtml($item->notes) ?>
           </div>
         <?php endif; ?>
       </td>
     </tr>
+    <?php endforeach; ?>
   <?php endforeach; ?>
 </table>
 

@@ -25,7 +25,7 @@
 
     // AK: Check for account blocks
     $blocks = false;
-    if (!empty($holdings['blocks'])) {
+    if (!empty($holdings->blocks)) {
       $blocks = true;
     }    
     // Set page title.
@@ -36,14 +36,14 @@
 
 <?php if ($blocks):?>
   <div id="account-block-msg" class="alert alert-danger">
-    <?=$this->transEsc('account_block_options_missing', ['%%details%%' => implode('; ', $holdings['blocks'])]) ?>
+    <?=$this->transEsc('account_block_options_missing', ['%%details%%' => implode('; ', $holdings->blocks)]) ?>
   </div>
 <?php endif; ?>
 
 <?php // Show info text if ILS is offline ?>
 <?=($offlineMode == "ils-offline") ? $this->render('Helpers/ils-offline.phtml', ['offlineModeMsg' => 'ils_offline_holdings_message']) : ''?>
 
-<?php if (($this->ils()->getHoldsMode() == 'driver' && !empty($holdings['holdings'])) || $this->ils()->getTitleHoldsMode() == 'driver'): ?>
+<?php if (($this->ils()->getHoldsMode() == 'driver' && !empty($holdings->holdings)) || $this->ils()->getTitleHoldsMode() == 'driver'): ?>
   <?php if ($account->loginEnabled() && $offlineMode != 'ils-offline'): ?>
     <?php if (!$user): ?>
       <div class="alert alert-info">
@@ -61,7 +61,7 @@
 <?php endif; ?>
 
 <?php // Show electronic holdings ?>
-<?php if (!empty($holdings['electronic_holdings'])): ?>
+<?php if (!empty($holdings['electronic_holdings']) && (int) $holdings['page'] === 1): ?>
   <?=$this->context($this)->renderInContext(
       'RecordTab/holdingsils/electronic.phtml',
       ['holdings' => $holdings['electronic_holdings']]
@@ -69,8 +69,6 @@
 <?php endif; ?>
 
 <?php
-// A block of AkSearch code used below for "availbility" and "order" columns rendering
-
   // AK: Some translations
   $checkHold = $this->transEsc("Check Hold");
   $placeAHold = $this->transEsc("Place a Hold");
@@ -97,23 +95,20 @@
       'recallThis' => $recallThis, 
       'placeAHold' => $placeAHold
   ];
+  $noHoldings = count($holdings['holdings']) === 0;
+  $noEHoldings = count($holdings['electronic_holdings']) === 0;
 ?>
-<h3><?=$this->transEsc('Copies')?></h3>
-<?php if (count($holdings['holdings']) === 0): ?>
+<?php if (!$noHoldings || $noHoldings && $noEHoldings): ?>
+  <h3><?=$this->transEsc('Copies')?></h3>
+<?php endif; ?>
+<?php if ($noHoldings && $noEHoldings): ?>
   <?=$this->transEsc('NoHoldingsExist')?>
 <?php endif; ?>
-<?php foreach ($holdings['holdings'] ?? [] as $holdingId => $holding): ?>
+<?php foreach ($holdings['holdings'] as $holding): ?>
   <?php
     $prevLibraryCode = $libraryCode ?? '';
     $summaries = [];
-    if (isset($holding['items'][0])) {
-        $summaries = $holdings['holdingsSummary'][$holding['items'][0]['group']];
-        $libraryCode = $holding['items'][0]['library'];
-    } elseif (isset($holdings['lkrItems'][0])) {
-        $libraryCode = $holding['lkrItems'][0]['library'];
-    } else {
-        $libraryCode = '';
-    }
+    $libraryCode = $holding->libraryCode;
   ?>
   <?php if ($libraryCode !== $prevLibraryCode): ?>
 <h4>
@@ -122,38 +117,27 @@
   </a>
 </h4>
   <?php endif; ?>
-  <?php foreach ($summaries as $summary): ?>
 <table class="table">
-    <?php foreach ($summary as $k => $v): ?>
-      <?php if (!empty($v)): ?>
+  <?php foreach ($holding->getSummary() as $k => $v): ?>
+    <?php if (!empty($v)): ?>
   <tr><td><?=$this->transEsc($k)?>:</td><td><?=$this->transEsc($v)?></td></tr>
-      <?php endif; ?>
-    <?php endforeach; ?>
-</table>
+    <?php endif; ?>
   <?php endforeach; ?>
-  <?php if (count($holding['items'] ?? []) > 0): ?>
+</table>
+  <?php if (count($holding->items) > 0): ?>
     <?=$this->context($this)->renderInContext(
       'RecordTab/holdingsils/itemstab.phtml',
-      array_merge($itemsContext, ['items' => $holding['items']])
+      array_merge($itemsContext, ['items' => $holding->items])
     );?>
   <?php endif; ?>
-  <?php if (count($holding['lkrItems'] ?? []) > 0): ?>
+  <?php if (count($holding->lkrItems ?? []) > 0): ?>
     <?=$this->transEsc('LKR copies')?>
     <?=$this->context($this)->renderInContext(
       'RecordTab/holdingsils/itemstab.phtml',
-      array_merge($itemsContext, ['items' => $holding['lkrItems']])
+      array_merge($itemsContext, ['items' => $holding->lkrItems])
     );?>
   <?php endif; ?>
 <?php endforeach; ?>
 <?php if (!empty($holdings['total']) && $paginator = $this->tab->getPaginator($holdings['total'], $holdings['page'], $holdings['itemLimit'])): ?>
   <?=$this->paginationControl($paginator, 'Sliding', 'Helpers/pagination.phtml', ['page' => $holdings['page']])?>
-<?php endif; ?>
-<?php $history = $this->driver->getRealTimeHistory(); ?>
-<?php if (is_array($history) && !empty($history)): ?>
-  <h3><?=$this->transEsc("Most Recent Received Issues")?></h3>
-  <table class="table table-striped">
-    <?php foreach ($history as $row): ?>
-      <tr><td><?=$this->escapeHtml($row['issue'])?></td></tr>
-    <?php endforeach; ?>
-  </table>
 <?php endif; ?>
