@@ -65,17 +65,23 @@
 
           <?php // AK: Getting all contributors ?>
           <?php $summAuthors = $this->driver->getContributorsForSearchListView(); 
+
             if (!empty($summAuthors['text'])): ?>
-      
-            <span title="<?=implode('; ', $summAuthors)?>">
-              <b><?=$this->transEsc('participants')?>:</b>
-              <?php $authorCount = count($summAuthors); ?>
-              <?php foreach ($summAuthors['text'] as $i => $summAuthor): ?>
-                <a href="<?=$this->record($this->driver)->getLink('author', $this->highlight($summAuthors['url'][$i], null, true, false))?>"><?=$this->highlight($summAuthor)?></a><?=$i + 1 < $authorCount ? ';' : ''?>
-              <?php endforeach; ?>
-            </span>
-            <br />
-          <?php endif; ?>
+                <span title="<?=implode('; ', $summAuthors['url'])?>">
+                    <b><?=$this->transEsc('participants')?>:</b>
+                    <?php $authorCount = count($summAuthors['text']); ?>
+                    <?php foreach ($summAuthors['text'] as $i => $summAuthor): ?>
+                        <?php if($i < 3) : ?>
+                            <a href="<?=$this->record($this->driver)->getLink('author', $this->highlight($summAuthors['url'][$i], null, true, false))?>"><?=$this->highlight($summAuthor)?></a><?=$i + 1 < $authorCount ? ';' : ''?>
+                        <?php endif; ?>
+                            
+                    <?php endforeach; ?>
+                    <?php if($authorCount > 3 ) : ?>
+                    ...
+                    <?php endif; ?>
+                </span>
+                <br />
+            <?php endif; ?>
 
           <?php
           // AK: Removed this "Published in" section. We use our own code further above.

@@ -48,31 +48,43 @@
 
 
 <?php if (!empty($data)): ?>
-  <?php foreach ($data as $entries): ?>
-    <?php foreach ($entries as $authId => $name): ?>
-      <span class="author-data" property="<?=$this->escapeHtml($this->transEsc('CreatorRoles::'.$role))?>">
-        <a href="<?=$this->record($this->driver)->getLink('author', $name)?>">
-          <?=$this->escapeHtml($name)?>
-        </a>
-      </span>
+    <div class="authors-list closed">
+        <div class="wrapper">
+            <div>
+                <?php if (count($data) > 5): ?>
+                    <a class="entity-fact-info-link display-all-authors" href="#"><i class="fa fa-caret-down"></i></a>
+                <?php endif; ?>
+            </div>
+            <div>
+                <?php foreach ($data as $entries): ?>
+                  <?php foreach ($entries as $authId => $name): ?>
 
-      <?php // AK: Add info button for entity facts ?>
-      <?php if ($authId != 'NoGndId'): ?>
-        <a
-        class="entity-fact-info-link"
-        tabindex="0"
-        role="button"
-        title="<?=trim($this->escapeHtmlAttr($this->transEsc('EntityFacts::moreInfomation')))?>"
-        data-trigger="focus"
-        data-toggle="popover-entity-facts"
-        data-auth-id="<?=trim($this->escapeHtmlAttr($this->escapeHtml($authId)))?>"
-        rel="nofollow"
-        >
-          <i class="fa fa-info-circle entity-fact-info-icon" aria-hidden="true"></i>
-        </a>
-      <?php endif; ?>
+                    <span class="author-data" property="<?=$this->escapeHtml($this->transEsc('CreatorRoles::'.$role))?>">
+                      <a href="<?=$this->record($this->driver)->getLink('author', $name)?>">
+                        <?=$this->escapeHtml($name)?>
+                      </a>
+                    </span>
 
-      <br />
-    <?php endforeach; ?>
-  <?php endforeach; ?>
+                    <?php // AK: Add info button for entity facts ?>
+                    <?php if ($authId != 'NoGndId'): ?>
+                      <a
+                      class="entity-fact-info-link"
+                      tabindex="0"
+                      role="button"
+                      title="<?=trim($this->escapeHtmlAttr($this->transEsc('EntityFacts::moreInfomation')))?>"
+                      data-trigger="focus"
+                      data-toggle="popover-entity-facts"
+                      data-auth-id="<?=trim($this->escapeHtmlAttr($this->escapeHtml($authId)))?>"
+                      rel="nofollow"
+                      >
+                        <i class="fa fa-info-circle entity-fact-info-icon" aria-hidden="true"></i>
+                      </a>
+                    <?php endif; ?>
+
+                    <br />
+                  <?php endforeach; ?>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>    
 <?php endif; ?>

@@ -8,10 +8,13 @@
 ?>
 
 <?php  if(count($urls) > 0) : ?>
+
 <div class="online-access-urls-list closed">
     <div class="wrapper">
         <div>
-            <a class="entity-fact-info-link display-all-online-access" href="#"><i class="fa fa-caret-down"></i></a>
+            <?php if(count($urls) > 3) : ?>
+                <a class="entity-fact-info-link display-all-online-access" href="#"><i class="fa fa-caret-down"></i></a>
+            <?php endif; ?>
         </div>
         <div>
             <?php foreach ($urls as $current): ?>

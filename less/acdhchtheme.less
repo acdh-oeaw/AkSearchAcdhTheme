@@ -856,3 +856,18 @@ footer .el-block.first {
    -webkit-line-clamp: 3; /* number of lines to show */
    -webkit-box-orient: vertical;
 } 
+
+.authors-list.closed {
+   overflow: hidden;
+   text-overflow: ellipsis;
+   display: -webkit-box;
+   -webkit-line-clamp: 5; /* number of lines to show */
+   -webkit-box-orient: vertical;
+}
+
+.authors-list.open {
+   text-overflow: ellipsis;
+   display: block; 
+   -webkit-line-clamp: 5; /* number of lines to show */
+   -webkit-box-orient: vertical;
+} 

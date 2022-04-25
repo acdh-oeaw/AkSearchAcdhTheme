@@ -11,4 +11,16 @@ $( document ).ready(function() {
             $('.display-all-online-access > i').removeClass('fa-caret-up').addClass('fa fa-caret-down');
         }
     });
+    
+    $('.display-all-authors').click(function(e){
+        e.preventDefault();
+        if($( ".authors-list" ).hasClass( "closed" )) {
+            $('.authors-list').removeClass('closed').addClass('opened');
+            $('.display-all-authors > i').removeClass('fa-caret-down').addClass('fa fa-caret-up');            
+        } else {
+            $('.authors-list').removeClass('opened').addClass('closed'); 
+            $('.display-all-authors > i').removeClass('fa-caret-up').addClass('fa fa-caret-down');
+        }
+    });
+    
 });
