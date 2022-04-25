@@ -14,12 +14,13 @@ $( document ).ready(function() {
     
     $('.display-all-authors').click(function(e){
         e.preventDefault();
-        if($( ".authors-list" ).hasClass( "closed" )) {
-            $('.authors-list').removeClass('closed').addClass('opened');
-            $('.display-all-authors > i').removeClass('fa-caret-down').addClass('fa fa-caret-up');            
+       
+        if($(this).parent("div").parent().parent('.authors-list').hasClass( "closed" )) {
+            $(this).parent("div").parent().parent('.authors-list').removeClass('closed').addClass('opened');
+            $(this).children('i').removeClass('fa-caret-down').addClass('fa fa-caret-up');            
         } else {
-            $('.authors-list').removeClass('opened').addClass('closed'); 
-            $('.display-all-authors > i').removeClass('fa-caret-up').addClass('fa fa-caret-down');
+            $(this).parent("div").parent().parent('.authors-list').removeClass('opened').addClass('closed'); 
+            $(this).children('i').removeClass('fa-caret-up').addClass('fa fa-caret-down');
         }
     });
     

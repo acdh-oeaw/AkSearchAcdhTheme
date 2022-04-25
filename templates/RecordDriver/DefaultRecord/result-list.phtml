@@ -71,12 +71,12 @@
                     <b><?=$this->transEsc('participants')?>:</b>
                     <?php $authorCount = count($summAuthors['text']); ?>
                     <?php foreach ($summAuthors['text'] as $i => $summAuthor): ?>
-                        <?php if($i < 3) : ?>
+                        <?php if($i < 5) : ?>
                             <a href="<?=$this->record($this->driver)->getLink('author', $this->highlight($summAuthors['url'][$i], null, true, false))?>"><?=$this->highlight($summAuthor)?></a><?=$i + 1 < $authorCount ? ';' : ''?>
                         <?php endif; ?>
                             
                     <?php endforeach; ?>
-                    <?php if($authorCount > 3 ) : ?>
+                    <?php if($authorCount > 5 ) : ?>
                     ...
                     <?php endif; ?>
                 </span>
