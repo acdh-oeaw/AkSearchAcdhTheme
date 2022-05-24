@@ -57,6 +57,7 @@
             <div class="authors-content-div">
                 <?php foreach ($data as $entries): ?>
                   <?php foreach ($entries as $authId => $name): ?>
+                <?php (empty($role) ? $role = "" : $role = $role );?>
                     <span class="author-data" property="<?=$this->escapeHtml($this->transEsc('CreatorRoles::'.$role))?>">
                       <a href="<?=$this->record($this->driver)->getLink('author', $name)?>">
                         <?=$this->escapeHtml($name)?>

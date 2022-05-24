@@ -22,7 +22,7 @@ return [
             'AkSearch\View\Helper\Root\SearchBox' => 'AkSearch\View\Helper\Root\SearchBoxFactory',
             #'AcdhchTheme\View\Helper\Root\SearchBox' => 'AcdhchTheme\View\Helper\Root\SearchBoxFactory',
             
-            'VuFind\View\Helper\Root\RecordDataFormatter' => 'AcdhchTheme\View\Helper\Root\RecordDataFormatterFactory',
+            'VuFind\View\Helper\Root\RecordDataFormatter' => 'aksearchExt\View\Helper\Root\RecordDataFormatterFactory',
             
             
         ],
