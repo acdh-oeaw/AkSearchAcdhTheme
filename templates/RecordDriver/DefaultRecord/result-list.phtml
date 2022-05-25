@@ -31,8 +31,8 @@
       <div>
         <a href="<?=$this->recordLink()->getUrl($this->driver)?>" class="title getFull" data-view="<?=isset($this->params) ? $this->params->getOptions()->getListViewOption() : 'list' ?>">
             <!-- $this->record($this->driver)->getTitleHtml() -->
-            <?=$this->escapeHtml($this->driver->getWholeTitle())?><br>
-            <?=$this->escapeHtml($this->driver->getSubTitle())?>
+            <?=$this->driver->getWholeTitle()?><br>
+            <?=$this->driver->getSubTitle()?>
         </a>
       </div>
 
