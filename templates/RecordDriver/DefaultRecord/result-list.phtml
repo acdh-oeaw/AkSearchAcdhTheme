@@ -128,14 +128,17 @@
         <?php endif; ?>
       </div>
         
-        <?php
-        if($this->driver->getOpenAccessData()) { ?>
-            <div class="oa-div">
-                <br/><img src="<?=$this->imageLink('open_access_logo_white.svg')?>" height="25px" alt="Open Access">Free to read (incl. Open Access)
-            </div>
-        <?php
-        }
-        ?>  
+        <?php if($this->driver->isPeerReviewed() || $this->driver->getOpenAccessData()): ?>
+            <div class="search-additional-infos-div">
+                <?php if($this->driver->isPeerReviewed()) : ?>
+                <img src="<?=$this->imageLink('peer_review.svg')?>" height="25px" alt="Peer Reviewed" ><span style="padding-right: 10px;">Peer Reviewed</span>
+                <?php endif; ?>  
+                <?php
+                if($this->driver->getOpenAccessData()) : ?>
+                    <img src="<?=$this->imageLink('open_access_logo_white.svg')?>" height="25px" alt="Open Access"><span>Free to read (incl. Open Access)</span>
+                <?php endif; ?>  
+            </div>     
+        <?php endif; ?>
       <?php if(!$this->driver->isCollection()): ?>
         <?php if ($snippet = $this->driver->getHighlightedSnippet()): ?>
           <?php if (!empty($snippet['caption'])): ?>

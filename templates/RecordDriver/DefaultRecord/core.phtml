@@ -31,14 +31,18 @@
           <?=$preview?>
         </div>
       <?php endif; ?>
-       <?php
-       if($this->driver->getOpenAccessData()) { ?>
+        <?php
+        if($this->driver->isPeerReviewed()) : ?>
+        <div class="pr-div">
+            <br/><img src="<?=$this->imageLink('peer_review.svg')?>" height="50px" alt="Peer Reviewed">
+        </div>
+        <?php endif; ?>  
+        <?php
+        if($this->driver->getOpenAccessData()) : ?>
         <div class="oa-div">
             <br/><img src="<?=$this->imageLink('open_access_logo_white.svg')?>" height="50px" alt="Open Access">
-    </div>
-       <?php
-       }
-    ?>  
+        </div>
+        <?php endif; ?>  
     </div>
   <?php endif; ?>
   <?php // AK: Add class for better styling possiblities ?>
