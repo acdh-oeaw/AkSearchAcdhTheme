@@ -60,7 +60,7 @@
                 <?php (empty($role) ? $role = "" : $role = $role );?>
                     <span class="author-data" property="<?=$this->escapeHtml($this->transEsc('CreatorRoles::'.$role))?>">
                       <a href="<?=$this->record($this->driver)->getLink('author', $name)?>">
-                        <?=$this->escapeHtml($name)?>
+                        <?=$this->escapeHtml(str_replace(">>", '', str_replace("<<", '', $name)))?>
                       </a>
                     </span>
 
