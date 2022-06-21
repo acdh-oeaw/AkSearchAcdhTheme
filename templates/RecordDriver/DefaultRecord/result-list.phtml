@@ -112,8 +112,15 @@
           <?php if (!empty($summPublishers)): ?>
             <b><?=$this->transEsc('Publisher')?>:</b> <?=join('; ', $summPublishers)?>
             <br />
+          <?php endif; ?>   
+            
+          <!--- https://redmine.acdh.oeaw.ac.at/issues/19487  --->  
+          <?php $superiorDoc = $this->driver->getSuperiorDocument(); ?>
+          <?php if (!empty($superiorDoc)): ?>
+            <b><?=$this->transEsc('Superior document')?>:</b> <?=$superiorDoc?>
+            <br />
           <?php endif; ?>
-
+            
           <?php $summInCollection = $this->driver->getContainingCollections(); if (!empty($summInCollection)): ?>
             <?php foreach ($summInCollection as $collId => $collText): ?>
               <div>
