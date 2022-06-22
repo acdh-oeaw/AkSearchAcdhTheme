@@ -17,24 +17,28 @@
     </tr>
     <tr>
          <?php
+       
         if($item->portfolio) {
-            
-            echo "<table class='table table-striped'>";
-            echo "<tr><td colspan='4'>";
-            echo "<h4>".$this->transEsc('Portfolio Information')."</h4>";
-            echo "</td></tr><tr>";
+            $header = "<table class='table table-striped'>";
+            $header .= "<tr><td colspan='4'>";
+            $header .= "<h4>".$this->transEsc('Portfolio Information')."</h4>";
+            $header .= "</td></tr><tr>";
             $i = 0;
+            $str = "";
             foreach($item->portfolio as $k => $v) {                
                 if(!empty($v)) {
                    
-                    echo "<td>".$this->translate(str_replace('ave', 'AVE',$k))."</td><td>".$v."</td>";
+                    $str.= "<td>".$this->translate(str_replace('ave', 'AVE',$k))."</td><td>".$v."</td>";
                     if($i%2) {
-                    echo "</tr><tr>";
+                    $str .= "</tr><tr>";
                     }
                     $i++;
                 }
             }
-            echo "</tr></table>";
+            $footer = "</tr></table>";
+            if(!empty($str)) {
+                echo $header.$str.$footer;
+            }
         }
         ?>
     </tr>
