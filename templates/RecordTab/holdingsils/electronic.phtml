@@ -12,8 +12,31 @@
           <div class="item-notes">
             <b><?=$this->transEsc("Item Notes")?>:</b> <?=$this->escapeHtml($item->notes) ?>
           </div>
-        <?php endif; ?>
+        <?php endif; ?>       
       </td>
+    </tr>
+    <tr>
+         <?php
+        if($item->portfolio) {
+            
+            echo "<table class='table table-striped'>";
+            echo "<tr><td colspan='4'>";
+            echo "<h4>".$this->transEsc('Portfolio Information')."</h4>";
+            echo "</td></tr><tr>";
+            $i = 0;
+            foreach($item->portfolio as $k => $v) {                
+                if(!empty($v)) {
+                   
+                    echo "<td>".$this->translate(str_replace('ave', 'AVE',$k))."</td><td>".$v."</td>";
+                    if($i%2) {
+                    echo "</tr><tr>";
+                    }
+                    $i++;
+                }
+            }
+            echo "</tr></table>";
+        }
+        ?>
     </tr>
     <?php endforeach; ?>
   <?php endforeach; ?>
