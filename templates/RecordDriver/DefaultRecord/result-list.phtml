@@ -115,9 +115,24 @@
           <?php endif; ?>   
             
           <!--- https://redmine.acdh.oeaw.ac.at/issues/19487  --->  
-          <?php $superiorDoc = $this->driver->getSuperiorDocument(); ?>
-          <?php if (!empty($superiorDoc)): ?>
-            <b><?=$this->transEsc('Superior document')?>:</b> <?=$superiorDoc?>
+          <?php $superiorDoc = $this->driver->getSuperiorDocument($this->serverUrl($this->url('record'))); ?>
+          <?php if (count($superiorDoc) > 0): ?>
+            <b><?=$this->transEsc('Superior document')?>:</b> 
+            <?php 
+                $str = "";
+                if(isset($superiorDoc['container_reference']) && isset($superiorDoc['container_title'])) {
+                    if(!empty($str)) {
+                        $str .= "; ";
+                    }
+                    $str .= "<a href='".$this->serverUrl($this->url('record')).$superiorDoc['container_reference']."'>".$superiorDoc['container_title']."</a>";
+                    } else if (isset($superiorDoc['container_title'])) {
+                        if(!empty($str)) {
+                            $str .= "; ";
+                        }
+                        $str .= $superiorDoc['container_title'];
+                    }        
+                    echo $str;
+             ?>
             <br />
           <?php endif; ?>
             
