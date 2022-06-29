@@ -113,7 +113,7 @@
   <?php if ($libraryCode !== $prevLibraryCode): ?>
 <h4>
   <a href="https://www.oeaw.ac.at/fileadmin/subsites/BASIS/html/info-<?=str_replace(' ', '-', strtolower($libraryCode))?>.html" target="_blank">
-    <?=$this->transEsc($libraryCode)?>
+    <?=$this->transEsc($libraryCode)?>&nbsp;<i class="fa fa-info-circle" aria-hidden="true"></i>
   </a>
 </h4>
   <?php endif; ?>
