@@ -48,12 +48,14 @@ $str991 = array(
 
 
 function createRow(string $label, string $text) {    
+    if(!empty($label) && !empty($text)) {
     ?>
     <tr>
     <td><?=$label?></td>
     <td><?=$text?></td>
     </tr>
     <?php
+    }
 }
 
 function createTable(array $data, array $labels) {
@@ -75,11 +77,11 @@ function createTable(array $data, array $labels) {
 <?php if(count($holdings) > 0) :  ?>
 <?php foreach($holdings as $name => $d) : ?>
 <?php 
-    if($d['exemplarbeschreibung']) {
+    if(isset($d['exemplarbeschreibung'])) {
         createTable($d['exemplarbeschreibung'], $str992);
     }
 
-    if($d['exLibris']) {
+    if(isset($d['exLibris'])) {
          createTable($d['exLibris'], $str991);
     }
 ?>
