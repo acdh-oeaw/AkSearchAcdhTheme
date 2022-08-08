@@ -1,0 +1,37 @@
+
+<?php $max = $this->tab->getMaxResults(); $showMore = false; ?>
+<table class="table table-striped">
+    <tr>
+        <th style="width: 70%"><?=$this->transEsc('Title')?></th>
+        <th><?=$this->transEsc('Year')?></th>
+        <th><?=$this->transEsc('Edition')?></th>
+        <th><?=$this->transEsc('Band')?></th>
+    </tr>
+   
+<?php foreach ($this->tab->getResults() as $i => $current): ?>
+  <?php
+    if ($max == $i) {
+      $showMore = true;
+      break;
+    }
+  ?>
+    <?php $tabData = $this->record($current)->getContentsPiecesTabData(); ?>
+  <tr>
+      <td>
+    <?=($i + 1)?>.<a href="<?=$this->recordLink()->getUrl($current)?>">
+      <?=$this->record($current)->getTitleHtml()?>
+    </a></td>
+      <td><?=$tabData['publishDate']?></td>
+      <td><?=$tabData['edition']?></td>
+      <td><?=$tabData['band']?></td>     
+  </tr>
+<?php endforeach; ?>
+</table>
+<?php if ($showMore): ?>
+  <a href="<?=$this->recordLink()->getChildRecordSearchUrl($this->driver)?>">
+    <?=$this->transEsc('see all')?>
+  </a>
+<?php endif; ?>
+
+
+

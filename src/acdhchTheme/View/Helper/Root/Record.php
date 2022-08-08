@@ -41,6 +41,15 @@ class Record extends \VuFind\View\Helper\Root\Record
 {
 
     /**
+     * https://redmine.acdh.oeaw.ac.at/issues/20567
+     * @return type
+     */
+    public function getContentsPiecesTabData() {
+        return $this->driver->getContentsPiecesData();
+    }
+    
+    
+    /**
      * Get HTML to render a title.
      * 
      * AK: Added subtitle and title section to the main title, separated by colon
