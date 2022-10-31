@@ -16,30 +16,36 @@
       </td>
     </tr>
     <tr>
-         <?php
+        <?php
        
-        if($item->portfolio) {
-            $header = "<table class='table table-striped'>";
-            $header .= "<tr><td colspan='4'>";
-            $header .= "<h4>".$this->transEsc('Portfolio Information')."</h4>";
-            $header .= "</td></tr><tr>";
-            $i = 0;
-            $str = "";
-            foreach($item->portfolio as $k => $v) {                
-                if(!empty($v)) {
-                   
-                    $str.= "<td>".$this->translate(str_replace('ave', 'AVE',$k))."</td><td>".$v."</td>";
-                    if($i%2) {
-                    $str .= "</tr><tr>";
+            if($item->portfolios) {
+                $header = "<table class='table table-striped'>";
+                $header .= "<tr><td colspan='4'>";
+                $header .= "<h4>".$this->transEsc('Portfolio Information')."</h4>";
+                $header .= "</td></tr><tr>";
+                $i = 0;
+                $str = "";
+                $pi = 1;
+                foreach($item->portfolios as $obj) {
+                    $str .= "<table class='table table-striped' style='border-bottom: 1px solid #333;'><tr><td ><b>".$this->transEsc('Portfolio')." ".$pi."</b></td><tr>";
+                    foreach($obj as $k => $v) {                
+                        if(!empty($v)) {
+                            $str.= "<td>".$this->translate(str_replace('ave', 'AVE',$k))."</td><td>".$v."</td>";
+                            if($i%2) {
+                                $str .= "</tr><tr>";
+                            }
+                            $i++;
+                        }
                     }
-                    $i++;
+                    $pi++;
+                    $str .= "</tr></table>";
+                }
+                
+                $footer = "</tr></table>";
+                if(!empty($str)) {
+                    echo $header.$str.$footer;
                 }
             }
-            $footer = "</tr></table>";
-            if(!empty($str)) {
-                echo $header.$str.$footer;
-            }
-        }
         ?>
     </tr>
     <?php endforeach; ?>
