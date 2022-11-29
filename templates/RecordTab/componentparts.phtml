@@ -9,7 +9,8 @@
         foreach ($tabRes as $i => $current) {
             $contentsData[$i] = $current->getContentsPiecesData(); 
             $contentsData[$i]['url'] = $this->recordLink()->getUrl($current); 
-            $contentsData[$i]['title_url'] = $this->record($current)->getTitleHtml(); 
+            //$contentsData[$i]['title_url'] = $this->record($current)->getTitleHtml(); 
+            $contentsData[$i]['title_url'] = $current->getWholeTitle();           
         }
     
         usort($contentsData, function($a, $b) {

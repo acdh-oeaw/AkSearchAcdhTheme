@@ -8,7 +8,7 @@
         <i class="fa fa-x<?php if (count($formats) > 0): ?> fa-<?=preg_replace('/[^a-z0-9]/', '', strtolower($formats[0]))?>" title="<?=$formats[0] ?><?php endif; ?>"></i>
         <a href="<?=$this->recordLink()->getUrl($data)?>">
           <?php // AK: Getting whole title (including part no. and part title) ?>
-          <?=$this->escapeHtml($data->getWholeTitle())?>
+          <?=$data->getWholeTitle()?>
         </a>
         <?php $authors = $data->getPrimaryAuthors(); if (!empty($authors)): ?>
           <br/><?=$this->transEsc('by')?>: <?=$this->escapeHtml($authors[0]);?><?php if (count($authors) > 1): ?>, <?=$this->transEsc('more_authors_abbrev')?><?php endif; ?>
