@@ -59,7 +59,10 @@
                   <?php foreach ($entries as $authId => $name): ?>
                 <?php (empty($role) ? $role = "" : $role = $role );?>
                     <span class="author-data" property="<?=$this->escapeHtml($this->transEsc('CreatorRoles::'.$role))?>">
-                      <a href="<?=$this->record($this->driver)->getLink('author', $name)?>">
+                      <!-- <a href="<?=$this->record($this->driver)->getLink('author', $name)?>"> -->
+                        <!-- https://redmine.acdh.oeaw.ac.at/issues/21138 -->
+                        <?php $searchRoute = $this->searchOptions($this->driver->getSourceIdentifier())->getSearchAction(); ?>
+                      <a href="<?=$this->url($searchRoute)?>?lookfor=<?=urlencode($name)?>">
                         <?=$this->escapeHtml(str_replace(">>", '', str_replace("<<", '', $name)))?>
                       </a>
                     </span>
