@@ -105,7 +105,7 @@
           <?php $summDate = $this->driver->getPublicationDates(); ?>
           <?php if (!empty($summDate)): ?>
             <!-- https://redmine.acdh.oeaw.ac.at/issues/21069 -->   
-            <b><?=$this->transEsc('Published')?>:</b> <?=$this->escapeHtml(str_replace(" ", ", ", implode('; ', $summDate)))?>
+            <b><?=$this->transEsc('Published')?>:</b> <?=$this->escapeHtml(implode(', ', $summDate))?>
             <br />
           <?php endif; ?>
 
