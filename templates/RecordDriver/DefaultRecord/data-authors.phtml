@@ -72,7 +72,8 @@ echo $this->inlineScript()->appendFile('popoverEntityFacts.js');
                         </span>
 
                         <?php // AK: Add info button for entity facts  ?>
-                        <?php if ($authId != 'NoGndId'): ?>
+                        <?php if ($authId != 'NoGndId' && $authId>1): ?>
+
                             <a
                                 class="entity-fact-info-link"
                                 tabindex="0"
