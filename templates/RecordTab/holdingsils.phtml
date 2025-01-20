@@ -1,143 +1,178 @@
 <!-- Holding TAB template -->
 <?php
-    // AK: Use custom "checkRequestIsValid" function as we use another button layout
-    // without the fontawesome "flag" icon.
-    $this->headScript()->appendFile("checkRequestIsValid.js");
+// AK: Use custom "checkRequestIsValid" function as we use another button layout
+// without the fontawesome "flag" icon.
+$this->headScript()->appendFile("checkRequestIsValid.js");
 
-    // Set up convenience variables:
-    $account = $this->auth()->getManager();
-    $user = $account->isLoggedIn();
-    // Account for replace_other_urls setting
-    $offlineMode = $this->ils()->getOfflineMode();
-    
-    try {
-        $holdings = $this->driver->getRealTimeHoldings();
-    } catch (\VuFind\Exception\ILS $e) {
-        $holdings = [
-          'holdings' => [],
-          'electronic_holdings' => [],
-          'total' => 0,
-          'page' => 0,
-          'itemLimit' => 0
-        ];
-        $offlineMode = 'ils-offline';
-    }
+// Set up convenience variables:
+$account = $this->auth()->getManager();
+$user = $account->isLoggedIn();
+// Account for replace_other_urls setting
+$offlineMode = $this->ils()->getOfflineMode();
 
-    // AK: Check for account blocks
-    $blocks = false;
-    if (!empty($holdings->blocks)) {
-      $blocks = true;
-    }    
-    // Set page title.
-    $this->headTitle($this->translate('Holdings') . ': ' . $this->driver->getBreadcrumb());
+try {
+    $holdings = $this->driver->getRealTimeHoldings();
+} catch (\VuFind\Exception\ILS $e) {
+    $holdings = [
+        'holdings' => [],
+        'electronic_holdings' => [],
+        'total' => 0,
+        'page' => 0,
+        'itemLimit' => 0
+    ];
+    $offlineMode = 'ils-offline';
+}
+
+// AK: Check for account blocks
+$blocks = false;
+if (!empty($holdings->blocks)) {
+    $blocks = true;
+}
+// Set page title.
+$this->headTitle($this->translate('Holdings') . ': ' . $this->driver->getBreadcrumb());
 ?>
 
-<?=$this->context($this)->renderInContext('librarycards/selectcard.phtml', ['user' => $this->auth()->isLoggedIn()]); ?>
+<?= $this->context($this)->renderInContext('librarycards/selectcard.phtml', ['user' => $this->auth()->isLoggedIn()]); ?>
 
-<?php if ($blocks):?>
-  <div id="account-block-msg" class="alert alert-danger">
-    <?=$this->transEsc('account_block_options_missing', ['%%details%%' => implode('; ', $holdings->blocks)]) ?>
-  </div>
+<?php if ($blocks): ?>
+    <div id="account-block-msg" class="alert alert-danger">
+        <?= $this->transEsc('account_block_options_missing', ['%%details%%' => implode('; ', $holdings->blocks)]) ?>
+    </div>
 <?php endif; ?>
 
 <?php // Show info text if ILS is offline ?>
-<?=($offlineMode == "ils-offline") ? $this->render('Helpers/ils-offline.phtml', ['offlineModeMsg' => 'ils_offline_holdings_message']) : ''?>
+<?= ($offlineMode == "ils-offline") ? $this->render('Helpers/ils-offline.phtml', ['offlineModeMsg' => 'ils_offline_holdings_message']) : '' ?>
 
 <?php if (($this->ils()->getHoldsMode() == 'driver' && !empty($holdings->holdings)) || $this->ils()->getTitleHoldsMode() == 'driver'): ?>
-  <?php if ($account->loginEnabled() && $offlineMode != 'ils-offline'): ?>
-    <?php if (!$user): ?>
-      <div class="alert alert-info">
-        <a href="<?=$this->recordLink()->getTabUrl($this->driver, 'Holdings', ['login' => 'true', 'catalogLogin' => 'true'])?>" data-lightbox><?=$this->transEsc("hold_login")?></a>
-      </div>
-    <?php elseif (!$user->cat_username): ?>
-      <div class="alert alert-info">
-        <?=$this->translate("hold_profile_html", ['%%url%%' => $this->recordLink()->getTabUrl($this->driver, 'Holdings', ['catalogLogin' => 'true'])])?>
-      </div>
+    <?php if ($account->loginEnabled() && $offlineMode != 'ils-offline'): ?>
+        <?php if (!$user): ?>
+            <div class="alert alert-info">
+                <a href="<?= $this->recordLink()->getTabUrl($this->driver, 'Holdings', ['login' => 'true', 'catalogLogin' => 'true']) ?>" data-lightbox><?= $this->transEsc("hold_login") ?></a>
+            </div>
+        <?php elseif (!$user->cat_username): ?>
+            <div class="alert alert-info">
+                <?= $this->translate("hold_profile_html", ['%%url%%' => $this->recordLink()->getTabUrl($this->driver, 'Holdings', ['catalogLogin' => 'true'])]) ?>
+            </div>
+        <?php endif; ?>
     <?php endif; ?>
-  <?php endif; ?>
 <?php endif; ?>
-<?php $holdingTitleHold = $this->driver->tryMethod('getRealTimeTitleHold'); if (!empty($holdingTitleHold)): ?>
-  <a class="placehold" data-lightbox title="<?=$this->transEscAttr('request_place_text')?>" href="<?=$this->recordLink()->getRequestUrl($holdingTitleHold)?>"><i class="fa fa-flag" aria-hidden="true"></i>&nbsp;<?=$this->transEsc('title_hold_place')?></a>
+<?php $holdingTitleHold = $this->driver->tryMethod('getRealTimeTitleHold');
+if (!empty($holdingTitleHold)): ?>
+    <a class="placehold" data-lightbox title="<?= $this->transEscAttr('request_place_text') ?>" href="<?= $this->recordLink()->getRequestUrl($holdingTitleHold) ?>"><i class="fa fa-flag" aria-hidden="true"></i>&nbsp;<?= $this->transEsc('title_hold_place') ?></a>
 <?php endif; ?>
 
 <?php // Show electronic holdings ?>
 <?php if (!empty($holdings['electronic_holdings']) && (int) $holdings['page'] === 1): ?>
-  <?=$this->context($this)->renderInContext(
-      'RecordTab/holdingsils/electronic.phtml',
-      ['holdings' => $holdings['electronic_holdings']]
-  );?>
+    <?=
+    $this->context($this)->renderInContext(
+            'RecordTab/holdingsils/electronic.phtml',
+            ['holdings' => $holdings['electronic_holdings']]
+    );
+    ?>
 <?php endif; ?>
 
 <?php
-  // AK: Some translations
-  $checkHold = $this->transEsc("Check Hold");
-  $placeAHold = $this->transEsc("Place a Hold");
-  $recallThis = $this->transEsc("Recall This");
+// AK: Some translations
+$checkHold = $this->transEsc("Check Hold");
+$placeAHold = $this->transEsc("Place a Hold");
+$recallThis = $this->transEsc("Recall This");
 
-  // AK: Create login button. There is no need to render it for each single item. We just use this "copy".
-  $loginBtn = '<a href="'.$this->recordLink()->getTabUrl($this->driver, 'Holdings', ['login' => 'true', 'catalogLogin' => 'true']).'" data-lightbox class="btn holIlsBtn" title="'.$this->transEsc('Login').'">'.$this->transEsc("Login").'</a>';
-  
-  // AK: If we use title level holds, call some functions that are necessary for rendering the button.
-  // There is no need to call them for each single item. We just use these "copies".
-  $useTitleLevelHol = false;
-  if (!empty($holdingTitleHold = $this->driver->tryMethod('getRealTimeTitleHold'))) {
+// AK: Create login button. There is no need to render it for each single item. We just use this "copy".
+$loginBtn = '<a href="' . $this->recordLink()->getTabUrl($this->driver, 'Holdings', ['login' => 'true', 'catalogLogin' => 'true']) . '" data-lightbox class="btn holIlsBtn" title="' . $this->transEsc('Login') . '">' . $this->transEsc("Login") . '</a>';
+
+// AK: If we use title level holds, call some functions that are necessary for rendering the button.
+// There is no need to call them for each single item. We just use these "copies".
+$useTitleLevelHol = false;
+if (!empty($holdingTitleHold = $this->driver->tryMethod('getRealTimeTitleHold'))) {
     $useTitleLevelHol = true;
     $titleLevelReqUrl = $this->recordLink()->getRequestUrl($holdingTitleHold);
     $requestPlaceText = $this->transEsc('request_place_text');
     $useTitleLevelHol = true;
-  }
-  $itemsContext = [
-      'user' => $user, 
-      'account' => $account, 
-      'loginBtn' => $loginBtn, 
-      'blocks' => $blocks, 
-      'useTitleLevelHol' => $useTitleLevelHol, 
-      'recallThis' => $recallThis, 
-      'placeAHold' => $placeAHold
-  ];
-  $noHoldings = count($holdings['holdings']) === 0;
-  $noEHoldings = count($holdings['electronic_holdings']) === 0;
+}
+$itemsContext = [
+    'user' => $user,
+    'account' => $account,
+    'loginBtn' => $loginBtn,
+    'blocks' => $blocks,
+    'useTitleLevelHol' => $useTitleLevelHol,
+    'recallThis' => $recallThis,
+    'placeAHold' => $placeAHold
+];
+$noHoldings = count($holdings['holdings']) === 0;
+$noEHoldings = count($holdings['electronic_holdings']) === 0;
 ?>
 <?php if (!$noHoldings || $noHoldings && $noEHoldings): ?>
-  <h3><?=$this->transEsc('Copies')?></h3>
+    <h3><?= $this->transEsc('Copies') ?></h3>
 <?php endif; ?>
 <?php if ($noHoldings && $noEHoldings): ?>
-  <?=$this->transEsc('NoHoldingsExist')?>
+    <?= $this->transEsc('NoHoldingsExist') ?>
 <?php endif; ?>
-<?php foreach ($holdings['holdings'] as $holding): ?>
-  <?php
-    $prevLibraryCode = $libraryCode ?? '';
-    $summaries = [];
-    $libraryCode = $holding->libraryCode;
-  ?>
-  <?php if ($libraryCode !== $prevLibraryCode): ?>
-<h4>
-  <a href="https://www.oeaw.ac.at/fileadmin/subsites/BASIS/html/info-<?=str_replace(' ', '-', strtolower($libraryCode))?>.html" target="_blank">
-    <?=$this->transEsc($libraryCode)?>&nbsp;<i class="fa fa-info-circle" aria-hidden="true"></i>
-  </a>
-</h4>
-  <?php endif; ?>
-<table class="table">
-  <?php foreach ($holding->getSummary() as $k => $v): ?>
-    <?php if (!empty($v)): ?>
-  <tr><td><?=$this->transEsc($k)?>:</td><td><?=$this->transEsc($v)?></td></tr>
-    <?php endif; ?>
-  <?php endforeach; ?>
-</table>
-  <?php if (count($holding->items) > 0): ?>
-    <?=$this->context($this)->renderInContext(
-      'RecordTab/holdingsils/itemstab.phtml',
-      array_merge($itemsContext, ['items' => $holding->items])
-    );?>
-  <?php endif; ?>
-  <?php if (count($holding->lkrItems ?? []) > 0): ?>
-    <?=$this->transEsc('LKR copies')?>
-    <?=$this->context($this)->renderInContext(
-      'RecordTab/holdingsils/itemstab.phtml',
-      array_merge($itemsContext, ['items' => $holding->lkrItems])
-    );?>
-  <?php endif; ?>
+
+
+<!-- exact holdings -->  
+<div class="panel-group" id="holdingsAccordion">
+    <?php $accordionElement = 0;
+    $showElement = "in";
+    ?>
+    <?php foreach ($holdings['holdings'] as $holding): ?>
+        <?php
+        $prevLibraryCode = $libraryCode ?? '';
+        $summaries = [];
+        $libraryCode = $holding->libraryCode;
+        
+        if ($accordionElement != 0) {
+            $showElement = "";
+        }
+        ?>
+    <?php if ($libraryCode !== $prevLibraryCode): ?>
+            <!-- holding title -->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#holdingsAccordion" href="#accHold_<?php echo $accordionElement; ?>">
+                            <?= $this->transEsc($libraryCode) ?>
+                        </a> - 
+                        <a href="https://www.oeaw.ac.at/fileadmin/subsites/BASIS/html/info-<?= str_replace(' ', '-', strtolower($libraryCode)) ?>.html" target="_blank">
+                <i class="fa fa-info-circle" aria-hidden="true"></i>
+                        </a>
+                    </h4>
+                </div>
+                <!-- holding content -->
+                        <?php endif; ?>
+            <div id="accHold_<?php echo $accordionElement; ?>" class="panel-collapse collapse <?php echo $showElement; ?>">
+                <div class="panel-body">
+                    <table class="table">
+                        <?php foreach ($holding->getSummary() as $k => $v): ?>
+                        <?php if (!empty($v)): ?>
+                                <tr><td><?= $this->transEsc($k) ?>:</td><td><?= $this->transEsc($v) ?></td></tr>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                    </table>
+                    <?php if (count($holding->items) > 0): ?>
+                        <?=
+                        $this->context($this)->renderInContext(
+                                'RecordTab/holdingsils/itemstab.phtml',
+                                array_merge($itemsContext, ['items' => $holding->items])
+                        );
+                        ?>
+                    <?php endif; ?>
+                    <?php if (count($holding->lkrItems ?? []) > 0): ?>
+        <?= $this->transEsc('LKR copies') ?>
+        <?=
+        $this->context($this)->renderInContext(
+                'RecordTab/holdingsils/itemstab.phtml',
+                array_merge($itemsContext, ['items' => $holding->lkrItems])
+        );
+        ?>
+        <?php endif; ?>
+                </div>
+            </div>
+                <?php $accordionElement++; ?>
+            <!-- holding content end -->
 <?php endforeach; ?>
+    </div>
+
+
 <?php if (!empty($holdings['total']) && $paginator = $this->tab->getPaginator($holdings['total'], $holdings['page'], $holdings['itemLimit'])): ?>
-  <?=$this->paginationControl($paginator, 'Sliding', 'Helpers/pagination.phtml', ['page' => $holdings['page']])?>
+    <?= $this->paginationControl($paginator, 'Sliding', 'Helpers/pagination.phtml', ['page' => $holdings['page']]) ?>
 <?php endif; ?>
