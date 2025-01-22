@@ -47,7 +47,6 @@ return [
         ]
     ],
     'js' => [
-        'lightbox.js',
         'vendor/klaro/klaro-config.js',
         'vendor/klaro/klaro.js',
         'acdhchtheme-common.js'
