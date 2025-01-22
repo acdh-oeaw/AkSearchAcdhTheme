@@ -2,7 +2,7 @@
   $containerSource = $this->driver->getSourceIdentifier();
 ?>
   <?php if ($id = $value['id']): ?>
-    <a href="<?=$this->recordLink()->getUrl("$containerSource|$id")?>">
+    <a href="<?=$this->recordLinker()->getUrl("$containerSource|$id")?>">
       <?=$this->escapeHtml($value['title'])?>
     </a>
   <?php else: ?>

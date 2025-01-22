@@ -48,11 +48,11 @@ $this->headTitle($this->translate('Holdings') . ': ' . $this->driver->getBreadcr
     <?php if ($account->loginEnabled() && $offlineMode != 'ils-offline'): ?>
         <?php if (!$user): ?>
             <div class="alert alert-info">
-                <a href="<?= $this->recordLink()->getTabUrl($this->driver, 'Holdings', ['login' => 'true', 'catalogLogin' => 'true']) ?>" data-lightbox><?= $this->transEsc("hold_login") ?></a>
+                <a href="<?= $this->recordLinker()->getTabUrl($this->driver, 'Holdings', ['login' => 'true', 'catalogLogin' => 'true']) ?>" data-lightbox><?= $this->transEsc("hold_login") ?></a>
             </div>
         <?php elseif (!$user->cat_username): ?>
             <div class="alert alert-info">
-                <?= $this->translate("hold_profile_html", ['%%url%%' => $this->recordLink()->getTabUrl($this->driver, 'Holdings', ['catalogLogin' => 'true'])]) ?>
+                <?= $this->translate("hold_profile_html", ['%%url%%' => $this->recordLinker()->getTabUrl($this->driver, 'Holdings', ['catalogLogin' => 'true'])]) ?>
             </div>
         <?php endif; ?>
     <?php endif; ?>
@@ -61,7 +61,7 @@ $this->headTitle($this->translate('Holdings') . ': ' . $this->driver->getBreadcr
 $holdingTitleHold = $this->driver->tryMethod('getRealTimeTitleHold');
 if (!empty($holdingTitleHold)):
     ?>
-    <a class="placehold" data-lightbox title="<?= $this->transEscAttr('request_place_text') ?>" href="<?= $this->recordLink()->getRequestUrl($holdingTitleHold) ?>"><i class="fa fa-flag" aria-hidden="true"></i>&nbsp;<?= $this->transEsc('title_hold_place') ?></a>
+    <a class="placehold" data-lightbox title="<?= $this->transEscAttr('request_place_text') ?>" href="<?= $this->recordLinker()->getRequestUrl($holdingTitleHold) ?>"><i class="fa fa-flag" aria-hidden="true"></i>&nbsp;<?= $this->transEsc('title_hold_place') ?></a>
 <?php endif; ?>
 
 <?php // Show electronic holdings ?>
@@ -81,14 +81,14 @@ $placeAHold = $this->transEsc("Place a Hold");
 $recallThis = $this->transEsc("Recall This");
 
 // AK: Create login button. There is no need to render it for each single item. We just use this "copy".
-$loginBtn = '<a href="' . $this->recordLink()->getTabUrl($this->driver, 'Holdings', ['login' => 'true', 'catalogLogin' => 'true']) . '" data-lightbox class="btn holIlsBtn" title="' . $this->transEsc('Login') . '">' . $this->transEsc("Login") . '</a>';
+$loginBtn = '<a href="' . $this->recordLinker()->getTabUrl($this->driver, 'Holdings', ['login' => 'true', 'catalogLogin' => 'true']) . '" data-lightbox class="btn holIlsBtn" title="' . $this->transEsc('Login') . '">' . $this->transEsc("Login") . '</a>';
 
 // AK: If we use title level holds, call some functions that are necessary for rendering the button.
 // There is no need to call them for each single item. We just use these "copies".
 $useTitleLevelHol = false;
 if (!empty($holdingTitleHold = $this->driver->tryMethod('getRealTimeTitleHold'))) {
     $useTitleLevelHol = true;
-    $titleLevelReqUrl = $this->recordLink()->getRequestUrl($holdingTitleHold);
+    $titleLevelReqUrl = $this->recordLinker()->getRequestUrl($holdingTitleHold);
     $requestPlaceText = $this->transEsc('request_place_text');
     $useTitleLevelHol = true;
 }

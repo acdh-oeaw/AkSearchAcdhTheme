@@ -180,7 +180,7 @@ if (is_array($subjects)) {
 foreach ($this->record($this->driver)->getUrlList() as $url) {
     echo "%U $url\n";
 }
-$urlToAKsearchRecord = $this->serverUrl($this->recordLink()->getUrl($this->driver));
+$urlToAKsearchRecord = $this->serverUrl($this->recordLinker()->getUrl($this->driver));
 echo "%U $urlToAKsearchRecord\n";
 
 $callNumber = $this->driver->tryMethod('getCallNumber');
