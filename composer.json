@@ -1,0 +1,23 @@
+{
+    "name": "acdh-oeaw/ak-search-acdh-theme",
+    "description": "ACDHCH Bootstrap 5 THEME for VuFind/AkSearch",
+    "keywords": [],
+    "homepage": "https://github.com/acdh-oeaw/AkSearchAcdhThemeB5",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Norbert Czirjak",
+            "email": "norbert.czirjak@oeaw.ac.at"
+        }
+    ],
+    "require": {
+        "php": ">=8",
+        "scssphp/scssphp": "1.10.4",
+        "twbs/bootstrap": "5.2.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "AcdhchTheme\\": "src/acdhchTheme"
+        }
+    }
+}

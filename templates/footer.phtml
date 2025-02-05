@@ -1,0 +1,44 @@
+<footer class="main-footer" role="contentinfo">
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="col-lg-12">
+                <div class="footer-sep">
+                    <i class="fa fa-comment-o" aria-hidden="true"></i><?= $this->transEsc('Contact') ?> 
+                </div>
+            </div>
+        </div>
+
+        <div class="row d-flex">
+            <div class="col-lg-4 col-md-4 first">
+               <!-- <a href="https://www.oeaw.ac.at/acdh/" style="border-bottom: none !important;"><img src="<?= $this->imageLink('acdh_logo.svg') ?>" class="image" alt="ACDH Logo" style="max-width: 100%; height: auto;" title="ACDH Logo"></a> -->
+                <div class="">
+                    <p class="bodytext">
+                        <?= $this->transEsc('austrian_academy_of_sciences') ?>                    
+                        <br>
+                        <?= $this->transEsc('BAS:IS (Bibliothek, Archiv, Sammlungen : Information & Service)') ?>   
+                    </p>
+                    <p class="bodytext">Bäckerstraße 13<br>1010 <?= $this->transEsc('Vienna') ?>   
+                    </p>
+                    <p class="bodytext">
+                        T: +43 1 51581-1600<br/>
+                        E: <a style="font-weight:600;" href="mailto:bibliothek@oeaw.ac.at">bibliothek(at)oeaw.ac.at</a><br/>
+                        <a href="https://www.oeaw.ac.at/basis" target="_blank"><?= $this->transEsc('opening_hours') ?>   </a>
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-8 col-md-8">
+                <iframe width="100%" height="250px"  frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.openstreetmap.org/export/embed.html?bbox=16.376039385795597%2C48.2078138745756%2C16.379579901695255%2C48.20944047983456&amp;layer=mapnik&amp;marker=48.20862718366306%2C16.377809643745422" style="border: 1px solid black"></iframe>
+            </div>          
+        </div>    
+    </div>    
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="col-lg-12">
+                <div class="footer-imprint-bar">
+                    © Copyright OEAW | <a href="<?= $this->url('content-page', ['page' => 'imprint']) ?>"><?= $this->transEsc('Impressum/Imprint') ?></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</footer>
