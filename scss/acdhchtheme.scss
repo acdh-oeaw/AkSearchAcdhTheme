@@ -1371,6 +1371,9 @@ footer .el-block.first {
     opacity: 1;
 }
 
+.record .media-body, .result .media-body {
+    overflow: auto;
+}
 
 
 

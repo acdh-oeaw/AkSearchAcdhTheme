@@ -1007,6 +1007,9 @@ footer .el-block.first {
   background-color: #fff;
   opacity: 1;
 }
+.record .media-body, .result .media-body {
+  overflow: auto;
+}
 @media (min-width: 768px) {
   .container {
     width: 85%;
