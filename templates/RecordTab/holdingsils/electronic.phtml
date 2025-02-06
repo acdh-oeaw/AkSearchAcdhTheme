@@ -1,0 +1,54 @@
+<h3><?=$this->transEsc('Electronic')?></h3>
+<table class="table table-striped">
+  <?php foreach ($this->holdings as $holding): ?>
+    <?php foreach ($holding->items as $item): ?>
+    <tr>
+      <td class="fullLocation">
+        <?=$item->description?>
+      </td>
+      <td class="fullAvailability">
+        <span class="text-success"><a href="<?=$item->url?>"><?=!empty($item->status) ? $this->transEsc($item->status) : $this->transEsc('Available')?></a></span> 
+        <?php if (!empty($item->notes)): ?>
+          <div class="item-notes">
+            <b><?=$this->transEsc("Item Notes")?>:</b> <?=$this->escapeHtml($item->notes) ?>
+          </div>
+        <?php endif; ?>       
+      </td>
+    </tr>
+    <tr>
+        <?php
+       
+            if($item->portfolios) {
+                $header = "<table class='table table-striped'>";
+                $header .= "<tr><td colspan='4'>";
+                $header .= "<h4>".$this->transEsc('Portfolio Information')."</h4>";
+                $header .= "</td></tr><tr>";
+                $i = 0;
+                $str = "";
+                $pi = 1;
+                foreach($item->portfolios as $obj) {
+                    $str .= "<table class='table table-striped' style='border-bottom: 1px solid #333;'><tr><td ><b>".$this->transEsc('Portfolio')." ".$pi."</b></td><tr>";
+                    foreach($obj as $k => $v) {                
+                        if(!empty($v)) {
+                            $str.= "<td>".$this->translate(str_replace('ave', 'AVE',$k))."</td><td>".$v."</td>";
+                            if($i%2) {
+                                $str .= "</tr><tr>";
+                            }
+                            $i++;
+                        }
+                    }
+                    $pi++;
+                    $str .= "</tr></table>";
+                }
+                
+                $footer = "</tr></table>";
+                if(!empty($str)) {
+                    echo $header.$str.$footer;
+                }
+            }
+        ?>
+    </tr>
+    <?php endforeach; ?>
+  <?php endforeach; ?>
+</table>
+

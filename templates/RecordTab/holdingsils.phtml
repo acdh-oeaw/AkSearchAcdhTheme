@@ -1,0 +1,201 @@
+<!-- Holding TAB template -->
+<?php
+// AK: Use custom "checkRequestIsValid" function as we use another button layout
+// without the fontawesome "flag" icon.
+$this->headScript()->appendFile("checkRequestIsValid.js");
+
+// Set up convenience variables:
+$account = $this->auth()->getManager();
+$user = $account->isLoggedIn();
+// Account for replace_other_urls setting
+$offlineMode = $this->ils()->getOfflineMode();
+
+try {
+    $holdings = $this->driver->getRealTimeHoldings();
+} catch (\VuFind\Exception\ILS $e) {
+    $holdings = [
+        'holdings' => [],
+        'electronic_holdings' => [],
+        'total' => 0,
+        'page' => 0,
+        'itemLimit' => 0
+    ];
+    $offlineMode = 'ils-offline';
+}
+
+
+// AK: Check for account blocks
+$blocks = false;
+if (!empty($holdings->blocks)) {
+    $blocks = true;
+}
+// Set page title.
+$this->headTitle($this->translate('Holdings') . ': ' . $this->driver->getBreadcrumb());
+?>
+
+<?= $this->context($this)->renderInContext('librarycards/selectcard.phtml', ['user' => $this->auth()->isLoggedIn()]); ?>
+
+<?php if ($blocks): ?>
+    <div id="account-block-msg" class="alert alert-danger">
+        <?= $this->transEsc('account_block_options_missing', ['%%details%%' => implode('; ', $holdings->blocks)]) ?>
+    </div>
+<?php endif; ?>
+
+<?php // Show info text if ILS is offline ?>
+<?= ($offlineMode == "ils-offline") ? $this->render('Helpers/ils-offline.phtml', ['offlineModeMsg' => 'ils_offline_holdings_message']) : '' ?>
+
+<?php if (($this->ils()->getHoldsMode() == 'driver' && !empty($holdings->holdings)) || $this->ils()->getTitleHoldsMode() == 'driver'): ?>
+    <?php if ($account->loginEnabled() && $offlineMode != 'ils-offline'): ?>
+        <?php if (!$user): ?>
+            <div class="alert alert-info">
+                <a href="<?= $this->recordLinker()->getTabUrl($this->driver, 'Holdings', ['login' => 'true', 'catalogLogin' => 'true']) ?>" data-lightbox><?= $this->transEsc("hold_login") ?></a>
+            </div>
+        <?php elseif (!$user->cat_username): ?>
+            <div class="alert alert-info">
+                <?= $this->translate("hold_profile_html", ['%%url%%' => $this->recordLinker()->getTabUrl($this->driver, 'Holdings', ['catalogLogin' => 'true'])]) ?>
+            </div>
+        <?php endif; ?>
+    <?php endif; ?>
+<?php endif; ?>
+<?php
+$holdingTitleHold = $this->driver->tryMethod('getRealTimeTitleHold');
+if (!empty($holdingTitleHold)):
+    ?>
+    <a class="placehold" data-lightbox title="<?= $this->transEscAttr('request_place_text') ?>" href="<?= $this->recordLinker()->getRequestUrl($holdingTitleHold) ?>"><i class="fa fa-flag" aria-hidden="true"></i>&nbsp;<?= $this->transEsc('title_hold_place') ?></a>
+<?php endif; ?>
+
+<?php // Show electronic holdings ?>
+<?php if (!empty($holdings['electronic_holdings']) && (int) $holdings['page'] === 1): ?>
+    <?=
+    $this->context($this)->renderInContext(
+            'RecordTab/holdingsils/electronic.phtml',
+            ['holdings' => $holdings['electronic_holdings']]
+    );
+    ?>
+<?php endif; ?>
+
+<?php
+// AK: Some translations
+$checkHold = $this->transEsc("Check Hold");
+$placeAHold = $this->transEsc("Place a Hold");
+$recallThis = $this->transEsc("Recall This");
+
+// AK: Create login button. There is no need to render it for each single item. We just use this "copy".
+$loginBtn = '<a href="' . $this->recordLinker()->getTabUrl($this->driver, 'Holdings', ['login' => 'true', 'catalogLogin' => 'true']) . '" data-lightbox class="btn holIlsBtn" title="' . $this->transEsc('Login') . '">' . $this->transEsc("Login") . '</a>';
+
+// AK: If we use title level holds, call some functions that are necessary for rendering the button.
+// There is no need to call them for each single item. We just use these "copies".
+$useTitleLevelHol = false;
+if (!empty($holdingTitleHold = $this->driver->tryMethod('getRealTimeTitleHold'))) {
+    $useTitleLevelHol = true;
+    $titleLevelReqUrl = $this->recordLinker()->getRequestUrl($holdingTitleHold);
+    $requestPlaceText = $this->transEsc('request_place_text');
+    $useTitleLevelHol = true;
+}
+$itemsContext = [
+    'user' => $user,
+    'account' => $account,
+    'loginBtn' => $loginBtn,
+    'blocks' => $blocks,
+    'useTitleLevelHol' => $useTitleLevelHol,
+    'recallThis' => $recallThis,
+    'placeAHold' => $placeAHold
+];
+$noHoldings = count($holdings['holdings']) === 0;
+$noEHoldings = count($holdings['electronic_holdings']) === 0;
+?>
+<?php if (!$noHoldings || $noHoldings && $noEHoldings): ?>
+    <h3><?= $this->transEsc('Copies') ?></h3>
+<?php endif; ?>
+<?php if ($noHoldings && $noEHoldings): ?>
+    <?= $this->transEsc('NoHoldingsExist') ?>
+<?php endif; ?>
+
+<div class="container-fluid">
+    <!-- exact holdings -->  
+
+    <?php
+    $accordionElement = 0;
+    ?>
+    <div class='panel-group' id='holdingsAccordion'>
+
+        <?php
+        $prevLibraryCode = null; // Initialize to null
+        $currentContent = ''; // Initialize the current content accumulator
+        ?>
+
+        <?php foreach ($holdings['holdings'] as $holding): ?>
+            <?php
+            
+            $summaries = [];
+            $libraryCode = $holding->libraryCode;
+
+            // Check if we need to start a new group
+            if ($libraryCode !== $prevLibraryCode) {
+                // Output the accumulated content for the previous group, if any
+                if (!is_null($prevLibraryCode)) {
+                    echo "<div class='panel panel-default'>{$currentContent}</div></div>";
+                    $accordionElement++;
+                }
+
+                $libCodeUrl = str_replace(' ', '-', strtolower($libraryCode));
+                // Start a new group
+                $currentContent = "<div class='panel-heading'>
+                <h4 class=''>";
+
+                $currentContent .= "<a data-toggle='collapse' data-parent='#holdingsAccordion' href='#accHold_" . $accordionElement . "'>
+                                " . $this->transEsc($libraryCode) . "
+                            </a> - 
+                            <a href='https://www.oeaw.ac.at/fileadmin/subsites/BASIS/html/info-" . $libCodeUrl . ".html' target='_blank'>
+                                <i class='fa fa-info-circle' aria-hidden='true'></i>
+                            </a></h4>";
+
+                $currentContent .= "</div><div id='accHold_" . $accordionElement . "' class='panel-collapse collapse'>";
+            }
+
+            // Append the table content to the current group
+            $tableContent = '<table class="table">';
+            foreach ($holding->getSummary() as $k => $v) {
+                if (!empty($v)) {
+                    $tableContent .= "<tr><td>" . $this->transEsc($k) . ":</td><td>" . $this->transEsc($v) . "</td></tr>";
+                }
+            }
+            $tableContent .= '</table>';
+            $currentContent .= $tableContent;
+
+            // Append items, if any
+            if (count($holding->items) > 0) {
+                $currentContent .= $this->context($this)->renderInContext(
+                        'RecordTab/holdingsils/itemstab.phtml',
+                        array_merge($itemsContext, ['items' => $holding->items])
+                );
+            }
+
+            // Append LKR items, if any
+            if (count($holding->lkrItems ?? []) > 0) {
+                $currentContent .= $this->transEsc('LKR copies');
+                $currentContent .= $this->context($this)->renderInContext(
+                        'RecordTab/holdingsils/itemstab.phtml',
+                        array_merge($itemsContext, ['items' => $holding->lkrItems])
+                );
+            }
+
+            // Update the previous library code
+            $prevLibraryCode = $libraryCode;
+        endforeach;
+
+// Output the last accumulated content, if any
+        if (!is_null($prevLibraryCode)) {
+            echo "<div class='panel panel-default'>{$currentContent}</div>";
+        }
+        ?>
+
+
+    </div>
+</div>
+
+<?php # if (!empty($holdings['total']) && $paginator = $this->tab->getPaginator($holdings['total'], $holdings['page'], $holdings['itemLimit'])) { ?>
+    <? # echo $this->paginationControl($paginator, 'Sliding', 'Helpers/pagination.phtml', ['page' => $holdings['page']]); ?>
+<?php # } ?>
+            
+</div>

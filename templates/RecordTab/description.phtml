@@ -1,0 +1,24 @@
+<?php
+    // Set page title.
+    $this->headTitle($this->translate('Description') . ': ' . $this->driver->getBreadcrumb());
+    $formatter = $this->recordDataFormatter();
+    $mainFields = $formatter->getData($driver, $formatter->getDefaults('description'));
+    $extraData = $this->driver->getExtraDescriptionData();
+?>
+<table class="table table-striped">
+  <caption class="sr-only"><?=$this->transEsc('Description')?></caption>
+  <?php if (!empty($mainFields)): ?>
+    <?php foreach ($mainFields as $current): ?>
+      <tr><th><?=$this->transEsc($current['label'])?>:</th><td><?=$current['value']?></td></tr>
+    <?php endforeach; ?>
+    <?php if (!empty($extraData)): ?>
+        <tr><th><?=$this->transEsc("responsibilityNote")?>:</th><td>
+            <?php foreach ($extraData as $current): ?>
+                <?=$current?>
+            <?php endforeach; ?>
+        </td></tr>
+    <?php endif; ?>    
+  <?php else: ?>
+    <tr><td><?=$this->transEsc('no_description')?></td></tr>
+  <?php endif; ?>
+</table>

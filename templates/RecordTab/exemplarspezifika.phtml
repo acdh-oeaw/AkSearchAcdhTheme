@@ -1,0 +1,98 @@
+<?php
+try {
+    $holdings = $this->driver->getHolding991992();    
+    
+} catch (\VuFind\Exception\ILS $e) {
+    $holdings = [
+        'holdings' => [],
+        'total' => 0,
+        'page' => 0,
+        'itemLimit' => 0
+    ];
+}
+//table translated text
+$str992 = array(
+    "f" => $this->translate("992f"),
+    "b" => $this->translate("992b"),
+    "c" => $this->translate("992c"),
+    "d" => $this->translate("992d"),
+    "e" => $this->translate("992e"),
+    "h" => $this->translate("992h"),
+    "k" => $this->translate("992k"), 
+    "l" => $this->translate("992l"),
+    "m" => $this->translate("992m"),
+    "p" => $this->translate("992p"),
+    "s" => $this->translate("992s"),
+    //"a" => $this->translate("992a"),
+    //"g" => $this->translate("992g"),
+    //"q" => $this->translate("992q"),
+    //"r" => $this->translate("992r"),
+    "title" => $this->translate("exemplarbeschreibung")
+);
+$str991 = array(
+    "f" => $this->translate("991f"),
+    "a" => $this->translate("991a"),
+    "b" => $this->translate("991b"),
+    "d" => $this->translate("991d"),
+    "c" => $this->translate("991c"),
+    "i" => $this->translate("991i"),
+    "l" => $this->translate("991l"),
+    "j" => $this->translate("991j"),
+    "k" => $this->translate("991k"), 
+    "m" => $this->translate("991m"), 
+    "t" => $this->translate("991t"), 
+    //"e" => $this->translate("991e"), 
+    //"g" => $this->translate("991g"),
+    "title" => $this->translate("exlibrisangaben")
+);
+
+
+function createRow(string $label, string $text) {    
+    if(!empty($label) && !empty($text)) {
+    ?>
+    <tr>
+    <td><?=$label?></td>
+    <td><?=$text?></td>
+    </tr>
+    <?php
+    }
+}
+
+function createTable(array $data, array $labels) {
+
+    echo '<h3>';
+    echo $labels['title'];
+    echo '</h3>';
+    echo '<table class="table table-striped">';
+        foreach($labels as $k => $v) {
+            if(isset($data[$k][0])) {
+                createRow($v, $data[$k][0]);
+            }
+        }
+    echo '</table>';
+}
+
+?>
+
+<?php if(count($holdings) > 0) :  ?>
+<?php foreach($holdings as $name => $d) : ?>
+<?php 
+    if(isset($d['exemplarbeschreibung'])) {
+        createTable($d['exemplarbeschreibung'], $str992);
+    }
+
+    if(isset($d['exLibris'])) {
+         createTable($d['exLibris'], $str991);
+    }
+?>
+
+<?php endforeach;?> 
+
+<?php else: ?>
+    <div class="alert alert-info">
+        <p><?php echo $this->transEsc("No Data"); ?></p>
+    </div>
+<?php endif; ?>
+
+       
+   
