@@ -66,9 +66,10 @@ $showFilters = $filterDetails && (isset($results) || $options->getRetainFilterSe
     </div>
 <?php else: ?>
 
-   
 
-    <div class="mt-2 text-end">
+
+    <div class="container-fluid">
+
 
 
         <form id="searchForm" class="searchForm navbar-form navbar-left flip" method="get" action="<?= $this->url($basicSearch) ?>" name="searchForm" autocomplete="off">
@@ -119,7 +120,8 @@ $showFilters = $filterDetails && (isset($results) || $options->getRetainFilterSe
                     <a href="<?= $geoUrl ?>" class="btn btn-link"><?= $this->transEsc('Geographic Search') ?></a>
                 <?php endif; ?>
 
-                <?php $shards = $options->getShards();
+                <?php
+                $shards = $options->getShards();
                 if ($options->showShardCheckboxes() && !empty($shards)):
                     ?>
                     <?php
@@ -159,6 +161,8 @@ $showFilters = $filterDetails && (isset($results) || $options->getRetainFilterSe
                     echo '<input type="hidden" name="sort" value="' . $this->escapeHtmlAttr($lastSort) . '" />';
                 }
                 ?>
+            </div>
+            <div class="input-group">
                 <div class="search-filters-div">
                     <?=
                     $this->context($this)->renderInContext(
@@ -174,8 +178,10 @@ $showFilters = $filterDetails && (isset($results) || $options->getRetainFilterSe
                     );
                     ?>
                 </div>   
-            </div>   
+            </div>
+
         </form>
     </div>
+
 <?php endif; ?>
 

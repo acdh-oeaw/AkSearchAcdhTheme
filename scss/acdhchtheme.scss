@@ -249,7 +249,7 @@ header {
     outline: none;
 }
 .search-filters-div {
-    padding-left: 10px;
+    /*padding-left: 10px;*/
 }
 .searchForm .btn-link,
 .active-filters .filters .filters-term,
@@ -784,6 +784,9 @@ header .search.container.navbar {
     outline: none;
 }
 
+.active-filters {
+ align-items: center;   
+}
 // "Active filter" indicators in search bar. We use the dark-gray background color
 // of our buttons for them.
 .active-filters .filters .filter-value {
@@ -801,7 +804,7 @@ header .search.container.navbar {
     outline: none;
 }
 .search-filters-div {
-    padding-left: 10px;
+   // padding-left: 10px;
 }
 
 // White texts in search bar

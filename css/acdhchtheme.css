@@ -215,7 +215,7 @@ header {
   outline: none;
 }
 .search-filters-div {
-  padding-left: 10px;
+  /*padding-left: 10px;*/
 }
 .searchForm .btn-link, .active-filters .filters .filters-term, .active-filters .filters .filters-title, .adv_search_links, .adv_search_links a {
   color: #fff;
@@ -592,6 +592,9 @@ header .search.container.navbar {
   text-decoration: none;
   outline: none;
 }
+.active-filters {
+  align-items: center;
+}
 .active-filters .filters .filter-value {
   background: #333;
   font-size: 14px;
@@ -600,9 +603,6 @@ header .search.container.navbar {
   color: #fff;
   text-decoration: none;
   outline: none;
-}
-.search-filters-div {
-  padding-left: 10px;
 }
 .searchForm .btn-link, .active-filters .filters .filters-term, .active-filters .filters .filters-title, .adv_search_links, .adv_search_links a {
   color: #fff;
