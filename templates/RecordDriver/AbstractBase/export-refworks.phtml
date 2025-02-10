@@ -1,6 +1,5 @@
 <?php
 // Check for conference proceeding notes and disseration notes
-$procNotes = $this->driver->tryMethod('getMeetingNames');
 $dissNotes = $this->driver->tryMethod('getDissertationNotes');
 
 // A driver-specific template may pass in format overrides; check for these before going to the driver itself:
@@ -26,8 +25,6 @@ if (is_array($formats) && !empty($formats)) {
         in_array('MultiVolumeUnmediated', $formats)
         ) {
         $format = 'Book, Whole';
-    } else if (!empty($procNotes)) {
-        $format = 'Conference Proceedings';
     } else if ($dissNotes != null && !empty($dissNotes)) {
         $format = 'Dissertation/Thesis';
     } else if (

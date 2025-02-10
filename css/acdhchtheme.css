@@ -75,14 +75,18 @@ select.searchForm_type {
   padding-bottom: 50px;
   margin: 15px !important;
 }
+.header-search-section .container-fluid {
+  padding-left: 0px;
+  padding-right: 0px;
+}
 .akSearchboxBackground {
   background: none repeat scroll 0 0 #2856a3;
   padding: 8px 0 8px 0;
-  width: 100vw;
-  min-height: 140px;
-  margin-left: -50vw;
-  left: 50%;
+  /*width: 100vw;
+    margin-left: -50vw;
+    left: 50%;*/
   position: relative;
+  min-height: 140px;
 }
 .akSearchboxBackground .btn-primary {
   font-size: 22px;
@@ -118,7 +122,14 @@ select.searchForm_type {
 .navbar-brand, .navbar-brand:focus, .navbar-brand:active {
   outline: none;
 }
+.navbar-nav .nav-link.active, .navbar-nav .nav-link.show {
+  color: #000;
+  font-weight: bold;
+}
 .breadcrumbs {
+  background-color: #f5f5f5;
+}
+.breadcrumbs .container {
   background-color: #f5f5f5;
 }
 .breadcrumb {
@@ -130,6 +141,9 @@ header .search.container.navbar {
 }
 header {
   padding: 0px !important;
+}
+#header-collapse .nav-link {
+  font-size: 12px;
 }
 .akBreadcrumbSpacer {
   margin-bottom: 15px;

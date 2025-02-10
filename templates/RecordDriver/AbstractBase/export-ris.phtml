@@ -1,6 +1,5 @@
 <?php
 // Check for conference proceeding notes and disseration notes
-$procNotes = $this->driver->tryMethod('getMeetingNames');
 $dissNotes = $this->driver->tryMethod('getDissertationNotes');
 
 // Get formats
@@ -22,8 +21,6 @@ if (in_array('VideoDisc', $formats)) {
     in_array('MultiVolumeOnline', $formats)
     ) {
     $format = 'EBOOK';
-} else if (!empty($procNotes)) {
-    $format = 'CONF';
 } else if ($dissNotes != null && !empty($dissNotes)) {
     $format = 'THES';
 } else if (in_array('BookUnmediated', $formats)) {

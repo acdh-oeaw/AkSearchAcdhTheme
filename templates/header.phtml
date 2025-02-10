@@ -108,7 +108,7 @@
 <?php $warnConf = $this->warnings()->getConfig(); ?>
 <?= (($warnConf['header'] ?? false) == true) ? $this->render('Helpers/warning.phtml', ['heading' => 'header_warning_heading', 'text' => 'header_warning_text']) : '' ?>
 <?php if ($this->layout()->searchbox !== false): ?>
-    <section class="">
+    <section class="header-search-section">
         <div class="container-fluid">
             <div class="row-fluid akSearchboxBackground">
                 <div class="col-md-8 mx-auto">
