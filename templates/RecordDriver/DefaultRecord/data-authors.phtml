@@ -39,8 +39,8 @@ $this->jsTranslations()->addStrings(
 );
 
 // AK: Include bootstrap-popover JS and CSS
-//$this->headScript()->appendFile('vendor/bootstrap-popover/bootstrap.popover.min.js');
-//$this->headLink()->appendStylesheet('vendor/bootstrap-popover/bootstrap.popover.min.css');
+$this->headScript()->appendFile('vendor/bootstrap-popover/bootstrap.popover.min.js');
+$this->headLink()->appendStylesheet('vendor/bootstrap-popover/bootstrap.popover.min.css');
 $this->headLink()->appendStylesheet('popoverEntityFacts.css');
 echo $this->inlineScript()->appendFile('popoverEntityFacts.js');
 ?>
@@ -54,16 +54,9 @@ echo $this->inlineScript()->appendFile('popoverEntityFacts.js');
                 <?php endif; ?>
             </div>
             <div class="authors-content-div">
-                
-             
-              
                 <?php foreach ($data as $entries): ?>
-                 
-                
-                    <?php foreach ($entries as $name => $role): ?>
-               
-                
-                        <?php (isset($role['role'][0])  ? $role = "" : $role = $role['role'][0] ); ?>
+                    <?php foreach ($entries as $authId => $name): ?>
+                        <?php (empty($role) ? $role = "" : $role = $role ); ?>
                 
                             <?php
                                 // #21138 
@@ -79,7 +72,7 @@ echo $this->inlineScript()->appendFile('popoverEntityFacts.js');
                         </span>
 
                         <?php // AK: Add info button for entity facts  ?>
-                        <?php $authId = ""; if ( $authId != 'NoGndId' && $authId>1): ?>
+                        <?php if ($authId != 'NoGndId' && $authId>1): ?>
 
                             <a
                                 class="entity-fact-info-link"
