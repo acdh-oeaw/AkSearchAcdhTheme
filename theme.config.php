@@ -37,10 +37,15 @@ return [
     ],
     'css' => [
         'compiled.css',
-        'acdhchtheme.css'
+        'acdhchtheme.css',
+        'popoverEntityFacts.css',
+        'popoverKeywordChain.css'
     ],
     'js' => [
-        'theme-common.js'
+        'theme-common.js',
+        //'popoverEntityFacts.js',
+        //'popoverKeywordChain.js',
+        
     ],
     'header-nav' => parse_ini_file('header-nav.ini', true),
 ];
