@@ -21,6 +21,7 @@
               // along with the foreach below to display facet options in the
               // correct order.
               $conf = $this->options->limitOrderOverride($field);
+             // $conf = array_flip($conf);
               $sorted = [];
               $filtered = [];
               foreach ($list['list'] as $i => $value) {

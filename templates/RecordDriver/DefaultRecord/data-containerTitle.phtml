@@ -1,15 +1,18 @@
-<?php foreach ($data as $key => $value):
-  $containerSource = $this->driver->getSourceIdentifier();
-?>
-  <?php if ($id = $value['id']): ?>
-    <a href="<?=$this->recordLinker()->getUrl("$containerSource|$id")?>">
-      <?=$this->escapeHtml($value['title'])?>
-    </a>
-  <?php else: ?>
-    <?=$this->escapeHtml($value['title'])?>
-  <?php endif; ?>
-  <?php if ($volNo = $value['volNo']): ?>
-    <?=' ('.$this->escapeHtml($volNo).')'?> 
-  <?php endif; ?>
-  <br />
+<?php
+foreach ((array) $data as $key => $value):
+    $containerSource = $this->driver->getSourceIdentifier();
+    ?>
+        <?php if (isset($value['id']) && ($id = $value['id'])): ?>
+        <a href="<?= $this->recordLinker()->getUrl("$containerSource|$id") ?>">
+        <?= $this->escapeHtml($value['title']) ?>
+        </a>
+    <?php elseif (isset($value['title'])) : ?>
+        <?= $this->escapeHtml($value['title']) ?>
+    <?php else: ?>
+        <?= $this->escapeHtml($value) ?>
+    <?php endif; ?>
+    <?php if (isset($value['volNo']) &&($volNo = $value['volNo'])): ?>
+        <?= ' (' . $this->escapeHtml($volNo) . ')' ?> 
+    <?php endif; ?>
+    <br />
 <?php endforeach; ?>
