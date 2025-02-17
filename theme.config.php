@@ -43,8 +43,6 @@ return [
     ],
     'js' => [
         'theme-common.js',
-        //'popoverEntityFacts.js',
-        //'popoverKeywordChain.js',
         
     ],
     'header-nav' => parse_ini_file('header-nav.ini', true),

@@ -9,16 +9,11 @@ $this->jsTranslations()->addStrings(
         ]
 );
 
-// AK: Include bootstrap-popover JS and CSS
-//$this->headScript()->appendFile('vendor/bootstrap-popover/bootstrap.popover.min.js');
-//$this->headLink()->appendStylesheet('popoverKeywordChain.css');
-//$this->inlineScript()->appendFile('popoverKeywordChain.js');
-// AK: Convenience variable for the keyword separator
+
 $keywordSeparator = ' <i class="fa fa-minus akKeywordChainSeparator" aria-hidden="true"></i> ';
 ?>
 
 <!-- Include Bootstrap 5 CSS and JS (the bundle includes Popper) -->
-
 
 <script>
     // Wait until the DOM is fully loaded
@@ -29,64 +24,11 @@ $keywordSeparator = ' <i class="fa fa-minus akKeywordChainSeparator" aria-hidden
         // Initialize each popover
         var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
             console.log(popoverTriggerEl);
-return new bootstrap.Popover(popoverTriggerEl);
-/*
             return new bootstrap.Popover(popoverTriggerEl, {
-                // Use a function to retrieve dynamic content from a data attribute
-                content: function () {
-
-                    //console.log(this);
-                    //console.log(this.getAttribute('data-bs-content') );
-                    return "ssss";
-                },
-                // Set html to true if your content includes HTML
-                html: true
+                html: true,
+                //content: 'eeeee'
             });
-        */
         });
-
-
-        /*
-         $('[data-bs-toggle="popover"]').each(function () {
-         var content = "";
-         // Log all data attributes parsed by jQuery
-         // console.log('jQuery data:', $(this).data());
-         
-         
-         // Log the native dataset (all data-* attributes)
-         //console.log('Native dataset:', this.dataset);
-         
-         var $this = $(this);
-         
-         // Prevent default behavior for anchor tags
-         if ($this.is('a')) {
-         $this.on('click', function (e) {
-         e.preventDefault();
-         console.log($(this).attr('data-bs-content'));
-         content = $(this).attr('data-bs-content');
-         // Optionally hide other popovers before showing this one.
-         $('[data-bs-toggle="popover"]').not(this).each(function () {
-         var popoverInstance = bootstrap.Popover.getInstance(this);
-         if (popoverInstance) {
-         popoverInstance.hide();
-         }
-         });
-         // Initialize Bootstrap popover on this element
-         new bootstrap.Popover(this, {
-         html: true,
-         trigger: 'focus',
-         content: function () {
-         // Retrieve the content directly from the attribute
-         
-         return content || "Default content";
-         }
-         });
-         });
-         }
-         
-         
-         });*/
-
     });
 </script>
 
@@ -117,18 +59,29 @@ return new bootstrap.Popover(popoverTriggerEl);
                 <a title="<?= $this->escapeHtmlAttr($keywordChain) ?>" href="<?= $this->record($this->driver)->getLink('subject', $keywordChain) ?>" rel="nofollow"><?= trim($this->escapeHtml($keyword)) ?></a>
             <?php else: ?>
                 <?php /* AK: A click on a keyword (except the first one - see above) in the keyword chain opens a popup where the user can choose if he wants to search only for the current term or for the current term AND all previous terms. */ ?>
+
+                <?php
+                $pkeyword = trim($this->escapeHtmlAttr($this->escapeHtml($keyword)));
+                $pKeywordLink = $this->escapeHtmlAttr($this->record($this->driver)->getLink('subject', '"' . $keyword . '"'));
+                $pKeywordchainSeparated = $this->escapeHtmlAttr($keywordChainSeparated);
+                $pKeywordchainLink = $this->escapeHtmlAttr($this->record($this->driver)->getLink('subject', $keywordChain));
+                $currentTerm = $this->transEsc('currentTerm');
+                $content = "<div class='popoverEntry'>" . $currentTerm . ":<br />"
+                        . "<a href='" . $pKeywordLink . "'>" . $pkeyword . "</a>"
+                        . "</div><div class='popoverEntry'>"
+                        . $this->transEsc('currentAndPreviousTerms') . ":<br />"
+                        . "<a href='" . $pKeywordchainLink . "'>" . $pKeywordchainSeparated . "</a></div>";
+                
+                ?>
                 <a type="button"
                    class="popover-link"
                    tabindex="0"
                    role="button"
+                   data-bs-title="<?= $this->transEsc('searchFor') ?>..."
                    data-bs-trigger="focus"
                    data-bs-placement="bottom" 
-                   data-bs-content="<?= $keyword ?>"
+                   data-bs-content="<?= $content ?>"
                    data-bs-toggle="popover" 
-                   data-keyword=<?= trim($this->escapeHtmlAttr($this->escapeHtml($keyword))) ?>
-                   data-keyword-link=<?= $this->escapeHtmlAttr($this->record($this->driver)->getLink('subject', '"' . $keyword . '"')) ?>
-                   data-keywordchain-separated = <?= $this->escapeHtmlAttr($keywordChainSeparated) ?>
-                   data-keywordchain-link=<?= $this->escapeHtmlAttr($this->record($this->driver)->getLink('subject', $keywordChain)) ?>
                    rel="nofollow"
                    ><?= trim($this->escapeHtml($keyword)) ?></a>
                <?php endif; ?>
