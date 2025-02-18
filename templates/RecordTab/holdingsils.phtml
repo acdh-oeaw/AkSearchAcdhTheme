@@ -195,7 +195,7 @@ $noEHoldings = count($holdings['electronic_holdings']) === 0;
 </div>
 
 <?php # if (!empty($holdings['total']) && $paginator = $this->tab->getPaginator($holdings['total'], $holdings['page'], $holdings['itemLimit'])) { ?>
-    <?  echo $this->paginationControl($paginator, 'Sliding', 'Helpers/pagination.phtml', ['page' => $holdings['page']]); ?>
+    <?php  echo $this->paginationControl($paginator, 'Sliding', 'Helpers/pagination.phtml', ['page' => $holdings['page']]); ?>
 <?php # } ?>
             
 </div>
