@@ -43,12 +43,6 @@ return [
     ],
     'js' => [
         'theme-common.js',
-        
     ],
-    'header-nav' => parse_ini_file('header-nav.ini', true),
-    #'icons' => [
-    #    'aliases' => [
-    #        'spinner' => 'images/spinner.svg',
-    #    ]
-    #]
+    #'header-nav' => parse_ini_file('header-nav.ini', true),
 ];
