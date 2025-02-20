@@ -1,32 +1,58 @@
-<?=$this->doctype('HTML5')?>
+<?=$this->doctype()?>
+<?php
+  // Set up the search box -- there are three possible cases:
+  // 1. No search box was set; we should default to the normal box
+  // 2. It was set to false; we should display nothing
+  // 3. It is set to a custom string; we should display the provided version
+  // Set up default search box if no data was provided from the template;
+  // this covers case 1.  Cases 2 and 3 are then covered by logic below.
+  // Note: The searchbox needs to be rendered before the HTML header is build.
+  // Otherwise, the Javascript will not be loaded correctly.
+  if (!isset($this->layout()->searchbox)) {
+    $this->layout()->searchbox = $this->context($this)->renderInContext('search/searchbox.phtml', []);
+  }
+?>
 <html lang="<?=$this->layout()->userLang?>"<?php if ($this->layout()->rtl): ?> dir="rtl"<?php endif; ?>>
   <head>
-    <?php $this->headThemeResources(); ?>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+    <?php $this->setupThemeResources(); ?>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <?=$this->headMeta()?>
-    <?=$this->headTitle()?>
-    <?php $this->headScript()->appendFile('https://ltfl.librarything.com/forlibraries/widget.js?id=6916-3596170325'); ?>
+    <?=$this->googleTagManager()->getHeadCode()?>
+
     <?php
+      // Format the page title using the translation system:
+      $siteConfig = $this->config()->get('config')->Site;
+      // Disabled escaping of title temporarily so that we get it unescaped first:
+      $this->headTitle()->setAutoEscape(false);
+      $fullTitle = $this->translate(
+          'title_wrapper',
+          [
+            '%%pageTitle%%' => $this->headTitle()->renderTitle(),
+            '%%siteTitle%%' => $siteConfig->title,
+            '%%titleSeparator%%' => $siteConfig->titleSeparator ?? '::',
+          ]
+      );
+      // Enable escaping again for proper output:
+      $this->headTitle()->setAutoEscape(true);
+      echo $this->headTitle($fullTitle, \Laminas\View\Helper\Placeholder\Container\AbstractContainer::SET);
+
       // Set up OpenSearch link:
       $this->headLink(
-        [
-          'href' => $this->url('search-opensearch') . '?method=describe',
-          'type' => 'application/opensearchdescription+xml',
-          'title' => $this->transEsc('Library Catalog Search'),
-          'rel' => 'search'
-        ]
+          [
+            'href' => $this->url('search-opensearch') . '?method=describe',
+            'type' => 'application/opensearchdescription+xml',
+            'title' => $this->transEsc('Library Catalog Search'),
+            'rel' => 'search',
+          ]
       );
-      
       // We need to generate the icons early, because they may add some stylesheets;
       // if we render them after the headLink / headStyle calls, some dependencies
       // may not load correctly. Thus, we render early, but use this later.
       $icons = !isset($this->renderingError) ? $this->render('js-icons.phtml') : '{}';
     ?>
-    
-    <!-- RTL styling -->
     <?php if ($this->layout()->rtl) {
+      // RTL styling
       $this->headLink()->appendStylesheet('vendor/bootstrap-rtl.min.css');
     } ?>
     <?=$this->headLink()?>
@@ -35,217 +61,120 @@
       // Collect small scripts together and append as one block:
       $appendScripts = [];
 
+      if (!empty($this->themeConfig()['stickyElements'])) {
+        $this->headScript()->appendFile('sticky_elements.js');
+      }
+
       if (!isset($this->renderingError)) {
-        // Add translation strings
-        $this->jsTranslations()->addStrings(
-          [
-            'add_tag_success' => 'add_tag_success',
-            'bulk_email_success' => 'bulk_email_success',
-            'bulk_noitems_advice' => 'bulk_noitems_advice',
-            'bulk_save_success' => 'bulk_save_success',
-            'close' => 'close',
-            'collection_empty' => 'collection_empty',
-            'eol_ellipsis' => 'eol_ellipsis',
-            'error_occurred' => 'An error has occurred',
-            'go_to_list' => 'go_to_list',
-            'hold_available' => 'hold_available',
-            'libphonenumber_invalid' => 'libphonenumber_invalid',
-            'libphonenumber_invalidcountry' => 'libphonenumber_invalidcountry',
-            'libphonenumber_invalidregion' => 'libphonenumber_invalidregion',
-            'libphonenumber_notanumber' => 'libphonenumber_notanumber',
-            'libphonenumber_toolong' => 'libphonenumber_toolong',
-            'libphonenumber_tooshort' => 'libphonenumber_tooshort',
-            'libphonenumber_tooshortidd' => 'libphonenumber_tooshortidd',
-            'loading' => 'Loading',
-            'more' => 'more',
-            'number_thousands_separator' => [
-                'number_thousands_separator', null, ','
-            ],
-            'sms_success' => 'sms_success'
-          ]
-        );
-        // Add libphonenumber.js strings
-        $this->jsTranslations()->addStrings(
-          [
-            "Phone number invalid" => 'libphonenumber_invalid',
-            "Invalid country calling code" => 'libphonenumber_invalidcountry',
-            "Invalid region code" => 'libphonenumber_invalidregion',
-            "The string supplied did not seem to be a phone number" => 'libphonenumber_notanumber',
-            "The string supplied is too long to be a phone number" => 'libphonenumber_toolong',
-            "The string supplied is too short to be a phone number" => 'libphonenumber_tooshort',
-            "Phone number too short after IDD" => 'libphonenumber_tooshortidd'
-          ]
-        );
         // Deal with cart stuff:
         $cart = $this->cart();
         if ($cart->isActive()) {
-          $this->headScript()->appendFile("vendor/js.cookie.js");
-          $this->headScript()->appendFile("cart.js");
-          $domain = $cart->getCookieDomain();
-          if (!empty($domain)) {
+          $this->headScript()->appendFile('vendor/js.cookie.js');
+          $this->headScript()->appendFile('cart.js');
+          if ($domain = $cart->getCookieDomain()) {
             $appendScripts[] = 'VuFind.cart.setDomain("' . $domain . '");';
           }
-          $cookiePath = $cart->getCookiePath();
-          if (!empty($cookiePath)) {
+          if ($cookiePath = $cart->getCookiePath()) {
             $appendScripts[] = 'VuFind.cart.setCookiePath("' . $cookiePath . '");';
           }
-          $cookieSameSite = $cart->getCookieSameSite();
-          if (null !== $cookieSameSite) {
+          if ($cookieSameSite = $cart->getCookieSameSite()) {
             $appendScripts[] = 'VuFind.cart.setCookieSameSite("' . $cookieSameSite . '");';
           }
-          $this->jsTranslations()->addStrings(
-            [
-              'addBookBag' => 'Add to Book Bag',
-              'bookbagFull' => 'bookbag_full_msg',
-              'bookbagMax' => $cart->getMaxSize(),
-              'bookbagStatusFull' => 'bookbag_full',
-              'confirmDelete' => 'confirm_delete',
-              'confirmEmpty' => 'bookbag_confirm_empty',
-              'itemsAddBag' => 'items_added_to_bookbag',
-              'itemsInBag' => 'items_already_in_bookbag',
-              'removeBookBag' => 'Remove from Book Bag',
-              'viewBookBag' => 'View Book Bag'
-            ]
-          );
         }
         $this->headScript()->prependScript(
-          'var userIsLoggedIn = ' . ($this->auth()->isLoggedIn() ? 'true' : 'false') . ';'
+            'var userIsLoggedIn = ' . ($this->auth()->getIdentity() ? 'true' : 'false') . ';'
         );
       }
 
       // Session keep-alive
       if ($this->keepAlive()) {
-        $appendScripts[] = 'var keepAliveInterval = ' . $this->keepAlive() . ';';
-          $this->headScript()->appendFile("keep_alive.js");
+          $appendScripts[] = 'var keepAliveInterval = ' . $this->keepAlive() . ';';
+          $this->headScript()->appendFile('keep_alive.js');
       }
 
       // If account ajax is active, load script and add language strings
       $account = $this->auth()->getManager();
       if ($account->ajaxEnabled()) {
-        $this->headScript()->appendFile("account_ajax.js");
-        $this->jsTranslations()->addStrings(
-          [
-            'account_checkouts_due' => 'account_checkouts_due',
-            'account_checkouts_overdue' => 'account_checkouts_overdue',
-            'account_has_alerts' => 'account_has_alerts',
-            'account_normal_checkouts' => 'account_normal_checkouts',
-            'account_requests_available' => 'account_requests_available',
-            'account_requests_in_transit' => 'account_requests_in_transit',
-          ]
-        );
+        $this->headScript()->appendFile('account_ajax.js');
+        if ($this->session()->put('reset_account_status', null)) {
+          $this->headScript()->setAllowArbitraryAttributes(true);
+          $this->headScript()->appendScript('VuFind.account.clearAllCaches();', 'text/javascript', ['data-lightbox-run' => 'always']);
+        }
       }
 
       $root = rtrim($this->url('home'), '/');
-      $translations = $this->jsTranslations()->getJSON();
+      $jsConfig = !isset($this->renderingError) ? $this->render('js-configs.phtml') : '{}';
+      $translations = !isset($this->renderingError) ? $this->render('js-translations.phtml') : '{}';
       $dsb = DEFAULT_SEARCH_BACKEND;
+      $cspNonce = $this->csp()->getNonce();
+      $searchId = json_encode($this->layout()->searchId);
       $appendScripts[] = <<<JS
-VuFind.path = '{$root}';
-VuFind.defaultSearchBackend = '{$dsb}';
-VuFind.addTranslations({$translations});
- VuFind.addIcons({$icons});
-JS;
+          VuFind.path = '{$root}';
+          VuFind.defaultSearchBackend = '{$dsb}';
+          VuFind.config.add({$jsConfig});
+          VuFind.addTranslations({$translations});
+          VuFind.addIcons({$icons});
+          VuFind.setCspNonce('{$cspNonce}');
+          VuFind.setCurrentSearchId($searchId);
+          JS;
+
+      if (!empty($lightboxParent)) {
+        $lightboxParent = json_encode((string)$lightboxParent);
+        $appendScripts[] = 'VuFind.lightbox.parent = ' . $lightboxParent . ';';
+      }
+
+      if (!empty($lightboxChild)) {
+        $lightboxChild = json_encode((string)$lightboxChild);
+        $appendScripts[] = 'VuFind.lightbox.child = ' . $lightboxChild . ';';
+      }
+
       $this->headScript()->appendScript(implode("\n", $appendScripts));
 
       if ($this->config()->ajaxCoversEnabled()) {
-        $this->headScript()->appendFile("covers.js");
-      }
-?>
-    <?=$this->headScript()?>
-    
-     
-    
-    
-  </head>
-  <body class="template-dir-<?=$this->templateDir?> template-name-<?=$this->templateName?> <?=$this->layoutClass('offcanvas-row')?><?php if ($this->layout()->rtl): ?> rtl<?php endif; ?>">
-    <?php // Set up the search box -- there are three possible cases:
-      // 1. No search box was set; we should default to the normal box
-      // 2. It was set to false; we should display nothing
-      // 3. It is set to a custom string; we should display the provided version
-      // Set up default search box if no data was provided from the template;
-      // this covers case 1.  Cases 2 and 3 are then covered by logic below.
-      if (!isset($this->layout()->searchbox)) {
-        $this->layout()->searchbox = $this->render('search/searchbox.phtml');
+          $this->headScript()->appendFile('covers.js');
       }
     ?>
+    <?=$this->cookieConsent()->render()?>
+    <?=$this->headScript() ?>
+  </head>
+  <body class="template-dir-<?=$this->templateDir?> template-name-<?=$this->templateName?> <?=$this->layoutClass('offcanvas-row')?><?php if ($this->layout()->rtl): ?> rtl<?php endif; ?>">
     <header class="hidden-print">
       <?php if (isset($this->layout()->srmessage)): // message for benefit of screen-reader users ?>
-        <span class="visually-hidden" role="heading" aria-level="1"><?=$this->layout()->srmessage ?></span>
+        <span class="sr-only" role="heading" aria-level="1"><?=$this->layout()->srmessage ?></span>
       <?php endif; ?>
-      <a class="visually-hidden" href="#content"><?=$this->transEsc('Skip to content') ?></a>
+      <a class="sr-only sr-only-focusable" href="#content"><?=$this->transEsc('Skip to content') ?></a>
       <?=$this->render('header.phtml')?>
     </header>
-    <nav class="breadcrumbs" aria-label="<?=$this->transEscAttr('Breadcrumbs') ?>">
-      <div class="container">
-        <?php if((!isset($this->layout()->showBreadcrumbs) || $this->layout()->showBreadcrumbs == true)
-          && !empty($this->layout()->breadcrumbs)
-          && $this->layout()->breadcrumbs !== false
-        ): ?>
-          <ul class="breadcrumb hidden-print">
-            <?php if(is_array($this->layout()->breadcrumbs)): ?>
-              <?php if(count($this->layout()->breadcrumbs) > 1): ?>
-                <?=$this->render('breadcrumbs/multi.phtml', [
-                    'parents' => $this->layout()->breadcrumbs,
-                    'title' => $this->layout()->title,
-                    'from' => $this->layout()->from
-                  ]) ?>
-              <?php else: ?>
-                <?=$this->render('breadcrumbs/default.phtml', [
-                    'parents' => $this->layout()->breadcrumbs,
-                    'title' => $this->layout()->title
-                  ]) ?>
-              <?php endif; ?>
-            <?php else: ?>
-              <?=$this->layout()->breadcrumbs ?>
-            <?php endif; ?>
-          </ul>
-        <?php endif; ?>
-      </div>
-
-      <?php // AK: Adding a div for adding a space between the breadcrumb bar and the main content for better layout. ?>
-      <?php if((!isset($this->layout()->showBreadcrumbs) || $this->layout()->showBreadcrumbs == true)
-          && !empty($this->layout()->breadcrumbs)
-          && $this->layout()->breadcrumbs !== false
-        ): ?>
-        <div class="akBreadcrumbSpacer"></div>
-      <?php endif; ?>
-
-    </nav>
+    <?php if (($this->layout()->showBreadcrumbs ?? true) && $this->layout()->breadcrumbs !== false): ?>
+      <nav class="breadcrumbs" aria-label="<?=$this->transEscAttr('Breadcrumbs') ?>">
+        <div class="container">
+          <ul class="breadcrumb hidden-print"><?=$this->layout()->breadcrumbs ?></ul>
+        </div>
+      </nav>
+    <?php endif; ?>
     <div role="main" class="main">
       <div id="content" class="container">
         <?=$this->layout()->content ?>
-        <?php if(isset($this->templateName) && strtolower($this->templateName) == "home"): ?>
-            <br>
-            <div class="row">
-                <div class="mainpage-info-text">
-                    <?=$this->translate("home_intro_text_1")?><a href="https://www.oeaw.ac.at/basis/basis-digital"><?=$this->transEsc("home_intro_text_2")?></a><?=$this->translate("home_intro_text_3")?>
-                </div>
-            </div>
-            <br>
-            <div class="row">
-                <div class="ltfl_bookdisplay_widget" id="ltfl_widget_u_85274b4c" style="max-height: 250px;"></div>
-                <p class="book-slider-text"><?=$this->transEsc("book_slider_text_1")?> <a href="https://ebookcentral.proquest.com/lib/oeawat/home.action"><?=$this->transEsc("book_slider_text_2")?></a>, <?=$this->transEsc("book_slider_text_3")?></p>
-            </div>
-            <br>
-        <?php endif; ?>             
       </div>
     </div>
     <?=$this->render('footer.phtml')?>
     <!-- MODAL IN CASE WE NEED ONE -->
-    <div id="modal" class="modal fade hidden-print" tabindex="-1" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
+    <div id="modal" class="modal fade hidden-print" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
-          <button type="button" class="close" data-dismiss="modal">
-            <svg aria-label="<?=$this->transEscAttr('Close') ?>" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"></path></svg>
+          <button type="button" class="close" data-bs-dismiss="modal">
+            <?=$this->icon('lightbox-close', ['aria-label' => $this->transEscAttr('Close')]) ?>
           </button>
-          <div class="modal-body"><?=$this->transEsc('Loading') ?>...</div>
+          <div class="modal-body"></div>
         </div>
       </div>
     </div>
-    <div class="offcanvas-overlay" data-toggle="offcanvas"></div>
-    <?=$this->googleanalytics()?>
-    <?=$this->piwik()?>
+    <div class="vufind-offcanvas-overlay" data-toggle="vufind-offcanvas"></div>
+    <?=$this->render('Helpers/analytics.phtml')?>
     <?php foreach ($this->captcha()->js() as $jsInclude):?>
       <?=$this->inlineScript(\Laminas\View\Helper\HeadScript::FILE, $jsInclude, 'SET')?>
     <?php endforeach; ?>
+
+    <?=$this->footScript() ?>
   </body>
 </html>
