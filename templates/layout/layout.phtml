@@ -18,7 +18,13 @@
           'rel' => 'search'
         ]
       );
+      
+      // We need to generate the icons early, because they may add some stylesheets;
+      // if we render them after the headLink / headStyle calls, some dependencies
+      // may not load correctly. Thus, we render early, but use this later.
+      $icons = !isset($this->renderingError) ? $this->render('js-icons.phtml') : '{}';
     ?>
+    
     <!-- RTL styling -->
     <?php if ($this->layout()->rtl) {
       $this->headLink()->appendStylesheet('vendor/bootstrap-rtl.min.css');
@@ -136,6 +142,7 @@
 VuFind.path = '{$root}';
 VuFind.defaultSearchBackend = '{$dsb}';
 VuFind.addTranslations({$translations});
+ VuFind.addIcons({$icons});
 JS;
       $this->headScript()->appendScript(implode("\n", $appendScripts));
 

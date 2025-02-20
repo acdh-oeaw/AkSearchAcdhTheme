@@ -46,4 +46,9 @@ return [
         
     ],
     'header-nav' => parse_ini_file('header-nav.ini', true),
+    #'icons' => [
+    #    'aliases' => [
+    #        'spinner' => 'images/spinner.svg',
+    #    ]
+    #]
 ];
