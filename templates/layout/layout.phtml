@@ -19,6 +19,7 @@ if (!isset($this->layout()->searchbox)) {
         <meta name="viewport" content="width=device-width,initial-scale=1.0">
         <?= $this->headMeta() ?>
         <?= $this->googleTagManager()->getHeadCode() ?>
+        <?php $this->headScript()->appendFile('https://ltfl.librarything.com/forlibraries/widget.js?id=6916-3596170325'); ?>
 
         <?php
         // Format the page title using the translation system:
@@ -136,8 +137,8 @@ if (!isset($this->layout()->searchbox)) {
             $this->headScript()->appendFile('covers.js');
         }
         ?>
-<?= $this->cookieConsent()->render() ?>
-<?= $this->headScript() ?>
+        <?= $this->cookieConsent()->render() ?>
+        <?= $this->headScript() ?>
     </head>
     <body class="template-dir-<?= $this->templateDir ?> template-name-<?= $this->templateName ?> <?= $this->layoutClass('offcanvas-row') ?><?php if ($this->layout()->rtl): ?> rtl<?php endif; ?>">
         <header class="hidden-print">
@@ -145,27 +146,37 @@ if (!isset($this->layout()->searchbox)) {
                 <span class="sr-only" role="heading" aria-level="1"><?= $this->layout()->srmessage ?></span>
             <?php endif; ?>
             <a class="sr-only sr-only-focusable" href="#content"><?= $this->transEsc('Skip to content') ?></a>
-        <?= $this->render('header.phtml') ?>
+            <?= $this->render('header.phtml') ?>
         </header>
-<?php if (($this->layout()->showBreadcrumbs ?? true) && $this->layout()->breadcrumbs !== false): ?>
-            <nav class="breadcrumbs" aria-label="<?= $this->transEscAttr('Breadcrumbs') ?>">
-                <div class="container">
-                    <ul class="breadcrumb hidden-print"><?= $this->layout()->breadcrumbs ?></ul>
-                </div>
-            </nav>
-                <?php endif; ?>
+        <?php if (($this->layout()->showBreadcrumbs ?? true) && $this->layout()->breadcrumbs !== false): ?>
+            <div class="akBreadcrumbSpacer"></div>
+        <?php endif; ?>
         <div role="main" class="main">
             <div id="content" class="container">
-        <?= $this->layout()->content ?>
+                <?= $this->layout()->content ?>
+                <?php if (isset($this->templateName) && strtolower($this->templateName) == "home"): ?>
+                    <br>
+                    <div class="row">
+                        <div class="mainpage-info-text">
+                            <?= $this->translate("home_intro_text_1") ?><a href="https://www.oeaw.ac.at/basis/basis-digital"><?= $this->transEsc("home_intro_text_2") ?></a><?= $this->translate("home_intro_text_3") ?>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="ltfl_bookdisplay_widget" id="ltfl_widget_u_85274b4c" style="max-height: 250px;"></div>
+                        <p class="book-slider-text"><?= $this->transEsc("book_slider_text_1") ?> <a href="https://ebookcentral.proquest.com/lib/oeawat/home.action"><?= $this->transEsc("book_slider_text_2") ?></a>, <?= $this->transEsc("book_slider_text_3") ?></p>
+                    </div>
+                    <br>
+                <?php endif; ?>             
             </div>
         </div>
-<?= $this->render('footer.phtml') ?>
+        <?= $this->render('footer.phtml') ?>
         <!-- MODAL IN CASE WE NEED ONE -->
         <div id="modal" class="modal fade hidden-print" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <button type="button" class="close" data-bs-dismiss="modal">
-<?= $this->icon('lightbox-close', ['aria-label' => $this->transEscAttr('Close')]) ?>
+                        <?= $this->icon('lightbox-close', ['aria-label' => $this->transEscAttr('Close')]) ?>
                     </button>
                     <div class="modal-body"></div>
                 </div>
@@ -177,6 +188,6 @@ if (!isset($this->layout()->searchbox)) {
             <?= $this->inlineScript(\Laminas\View\Helper\HeadScript::FILE, $jsInclude, 'SET') ?>
         <?php endforeach; ?>
 
-<?= $this->footScript() ?>
+        <?= $this->footScript() ?>
     </body>
 </html>
