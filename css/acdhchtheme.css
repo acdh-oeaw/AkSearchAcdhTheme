@@ -27,6 +27,7 @@ body {
   font-family: "LatoRegular", "Verdana" !important;
   background-color: #fff;
   color: #333;
+  font-size: 14px;
 }
 h1, h2, h3, h4 {
   font-family: "BrandonBold", "Verdana" !important;
@@ -64,6 +65,10 @@ select.searchForm_type {
   margin-top: 33px !important;
   font-size: 32px !important;
   font-weight: normal;
+}
+.banner.container.navbar {
+  padding-left: 0px;
+  padding-right: 0px;
 }
 .container, .main-footer, footer .container, footer footer {
   border: none;
@@ -121,6 +126,9 @@ select.searchForm_type {
 }
 .navbar-brand, .navbar-brand:focus, .navbar-brand:active {
   outline: none;
+}
+.nav-link {
+  font-size: 14px;
 }
 .navbar-nav .nav-link.active, .navbar-nav .nav-link.show {
   color: #000;
