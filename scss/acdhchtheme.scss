@@ -29,6 +29,7 @@ body {
     font-family: "LatoRegular", "Verdana" !important;
     background-color: #fff;
     color: #333;
+    font-size: 14px;
 }
 h1,
 h2,
@@ -73,6 +74,11 @@ select {
     margin-top: 33px !important;
     font-size: 32px !important;
     font-weight: normal;
+}
+
+.banner.container.navbar {
+    padding-left: 0px;
+    padding-right: 0px;
 }
 .container,
 .main-footer,
@@ -138,6 +144,9 @@ footer .container, footer footer{
     outline: none;
 }
 
+.nav-link {
+    font-size: 14px;
+}
 .navbar-nav .nav-link.active, .navbar-nav .nav-link.show 
 {
     color: #000;

@@ -7,23 +7,24 @@ return [
             'AkSearch\View\Helper\AkSearch\Warnings' => 'AkSearch\View\Helper\AkSearch\WarningsFactory',
             'aksearchExt\View\Helper\Root\Record' => 'VuFind\View\Helper\Root\RecordFactory',
             'aksearchExt\View\Helper\aksearchExt\Datepicker' => 'aksearchExt\View\Helper\aksearchExt\DatepickerFactory',
-            'aksearchExt\View\Helper\Root\AccountMenu' => 'AkSearch\View\Helper\Root\AccountMenuFactory',
+            //'aksearchExt\View\Helper\Root\AccountMenu' => 'AkSearch\View\Helper\Root\AccountMenuFactory',
+            'AkSearch\View\Helper\Root\AccountMenu' => 'AkSearch\View\Helper\Root\AccountMenuFactory',
             'AkSearch\View\Helper\Root\Auth' => 'VuFind\View\Helper\Root\AuthFactory',
             'AkSearch\View\Helper\Root\Citation' => 'VuFind\View\Helper\Root\CitationFactory',
             'AkSearch\View\Helper\Root\SearchBox' => 'AkSearch\View\Helper\Root\SearchBoxFactory',
             'VuFind\View\Helper\Root\RecordDataFormatter' => 'aksearchExt\View\Helper\Root\RecordDataFormatterFactory',
-            
             ],
         'aliases' => [
             'warnings' => 'AkSearch\View\Helper\AkSearch\Warnings',
             'record' => 'aksearchExt\View\Helper\Root\Record',
             'datepicker' => 'aksearchExt\View\Helper\aksearchExt\Datepicker',
+            //'accountMenu' => 'AkSearch\View\Helper\Root\AccountMenu',
             'accountMenu' => 'AkSearch\View\Helper\Root\AccountMenu',
             'auth' => 'AkSearch\View\Helper\Root\Auth',
             'citation' => 'AkSearch\View\Helper\Root\Citation',
             'searchbox' => 'AkSearch\View\Helper\Root\SearchBox',
-            
         ],
+        'VuFind\View\Helper\Root\Record' => 'AkSearch\View\Helper\Root\Record'
     ],
     /**
      * The following is all custom attributes for this theme
@@ -43,7 +44,6 @@ return [
     ],
     'js' => [
         'theme-common.js',
-        
     ],
-    'header-nav' => parse_ini_file('header-nav.ini', true),
+    #'header-nav' => parse_ini_file('header-nav.ini', true),
 ];

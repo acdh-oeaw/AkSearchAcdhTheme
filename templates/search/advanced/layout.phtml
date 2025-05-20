@@ -20,10 +20,16 @@
         $groups = $searchDetails->getQueries();
     }
     $hasDefaultsApplied = $this->saved->getParams()->hasDefaultsApplied();
-    $searchFilters = $this->saved->getParams()->getFilterList();
+    $checkboxFilters = array_filter(
+        $this->saved->getParams()->getCheckboxFacets(),
+        function ($current) {
+            return $current['selected'];
+        }
+    );
+    $searchFilters = $this->saved->getParams()->getFilterList(true);
     $hiddenFilters = $this->saved->getParams()->getHiddenFilters();
   } else {
-    $hasDefaultsApplied = $searchDetails = $searchFilters = $groups = false;
+    $hasDefaultsApplied = $searchDetails = $checkboxFilters = $searchFilters = $groups = false;
     $hiddenFilters = $this->searchTabs()->getHiddenFilters($this->searchClassId, true);
   }
 
@@ -82,6 +88,12 @@
       }
     }
   }
+
+  // Set up help topics
+  $helpTopics = $this->helpTopics ?? [
+    'advsearch' => 'Help with Advanced Search',
+    'search' => 'Help with Search Operators',
+  ];
 ?>
 
 <?=$this->flashmessages()?>
@@ -107,10 +119,10 @@
           </select>
         </div>
       </div>
-      <span id="groupPlaceHolder" class="hidden">
-        <i class="fa fa-plus-circle" aria-hidden="true"></i>
-        <a href="#" role="button"><?= $this->transEsc('add_search_group') ?></a>
-      </span>
+      <a role="button" class="icon-link hidden" id="groupPlaceHolder" href="#">
+        <?=$this->icon('ui-add', 'icon-link__icon') ?>
+        <span class="icon-link__label"><?= $this->transEsc('add_search_group') ?></span>
+      </a>
       <?php /* fallback to a fixed set of search groups/fields if JavaScript is turned off */ ?>
       <div class="no-js">
         <?php if(!empty($this->formOverride)): ?>
@@ -128,24 +140,26 @@
                     <div id="new_search_template">
                   <?php endif; ?>
                   <div id="search<?=$group . '_' . $search ?>" class="adv-search">
-                    <input name="lookfor<?=$group ?>[]" id="search_lookfor<?=$group . '_' . $search ?>" class="adv-term-input form-control" type="text"<?php if (isset($setQueries[$group][$search])): ?> value="<?=$this->escapeHtml($setQueries[$group][$search]->getString())?>"<?php endif; ?> aria-label="<?=$this->transEscAttr("search_terms")?>">
-                    <select class="adv-term-type form-control" name="type<?=$group ?>[]" aria-label="<?=$this->transEscAttr("Search type")?>">
-                      <?php // AK: Use custom search tab handlers if we have some ?>
-                      <?php foreach ($searchHandlers as $searchVal => $searchDesc): ?>
-                        <option value="<?=$this->escapeHtml($searchVal)?>"<?php if (isset($setQueries[$group][$search]) && $searchVal == $setQueries[$group][$search]->getHandler()): ?> selected<?php endif; ?>><?=$this->transEsc($searchDesc)?></option>
+                    <input name="lookfor<?=$group ?>[]" id="search_lookfor<?=$group . '_' . $search ?>" class="adv-term-input form-control" type="text"<?php if (isset($setQueries[$group][$search])): ?> value="<?=$this->escapeHtmlAttr($setQueries[$group][$search]->getString())?>"<?php endif; ?> aria-label="<?=$this->transEscAttr('search_terms')?>">
+                    <select class="adv-term-type form-control" name="type<?=$group ?>[]" aria-label="<?=$this->transEscAttr('Search type')?>">
+                      <?php foreach ($this->options->getAdvancedHandlers() as $searchVal => $searchDesc): ?>
+                        <option value="<?=$this->escapeHtmlAttr($searchVal)?>"<?php if (isset($setQueries[$group][$search]) && $searchVal == $setQueries[$group][$search]->getHandler()): ?> selected<?php endif; ?>><?=$this->transEsc($searchDesc)?></option>
                       <?php endforeach; ?>
                     </select>
                     <a href="#" class="adv-term-remove hidden">
-                      <i class="fa fa-times" aria-hidden="true"></i>
+                      <?=$this->icon('ui-remove') ?>
                       <span class="visually-hidden"><?=$this->transEsc('remove') ?></span>
                     </a>
                   </div>
                   <?php if($group == 0 && $search == 0): ?>
                       </div>
-                    <span class="float-left">
-                      <i class="fa fa-plus-circle search_place_holder hidden" aria-hidden="true"></i>
-                      <a href="#" class="add_search_link hidden" role="button"><?=$this->transEsc("add_search")?></a>
-                    </span>
+                    <div class="float-left">
+                      <span class="search_place_holder hidden"></span>
+                      <a href="#" class="add_search_link icon-link hidden" role="button">
+                        <?=$this->icon('ui-add', 'icon-link__icon') ?>
+                        <span class="icon-link__label"><?=$this->transEsc('add_search')?></span>
+                      </a>
+                    </div>
                   <?php endif; ?>
                 <?php endfor; ?>
               </div>
@@ -157,7 +171,10 @@
                   <option value="NOT"<?php if(isset($setSearchGroups[$group]) && 'NOT' == $setSearchGroups[$group]):?> selected<?php endif; ?>><?=$this->transEsc("search_NOT")?></option>
                 </select>
               </div>
-              <a href="#" class="adv-group-close hidden" role="button"><i class="fa fa-close"></i> <?=$this->transEsc("del_search")?></a>
+              <a href="#" class="adv-group-close icon-link hidden" role="button">
+                <?=$this->icon('ui-remove', 'icon-link__icon') ?>
+                <span class="icon-link__label"><?=$this->transEsc('del_search') ?></span>
+              </a>
             </div>
             <?php if($group == 0): ?>
               </div>
@@ -166,16 +183,16 @@
         <?php endif; ?>
       </div>
       <div class="adv-submit">
-        <input class="clear-btn btn btn-default" type="button" value="<?= $this->transEsc('Clear')?>">
-        <input class="btn btn-primary" type="submit" value="<?= $this->transEsc('Find')?>">
+        <input class="clear-btn btn btn-default" type="button" value="<?= $this->transEscAttr('Clear')?>">
+        <input class="btn btn-primary" type="submit" value="<?= $this->transEscAttr('Find')?>">
       </div>
       <?php if (isset($this->extraAdvancedControls)): ?>
         <div class="clearfix">
           <?=$this->extraAdvancedControls ?>
         </div>
         <div class="adv-submit">
-          <input class="clear-btn btn btn-default" type="button" value="<?= $this->transEsc('Clear')?>">
-          <input class="btn btn-primary" type="submit" value="<?= $this->transEsc('Find')?>">
+          <input class="clear-btn btn btn-default" type="button" value="<?= $this->transEscAttr('Clear')?>">
+          <input class="btn btn-primary" type="submit" value="<?= $this->transEscAttr('Find')?>">
         </div>
       <?php endif; ?>
     </div>
@@ -184,35 +201,62 @@
       <?php if ($hasDefaultsApplied): ?>
         <input type="hidden" name="dfApplied" value="1" />
       <?php endif ?>
-      <?php if (!empty($searchFilters)): ?>
-        <h2><?=$this->transEsc("adv_search_filters")?></h2>
+      <?php if ($checkboxFilters || $searchFilters): ?>
+        <h2><?=$this->transEsc('adv_search_filters')?></h2>
         <div class="facet-group">
           <label class="checkbox">
             <input type="checkbox" checked="checked" class="checkbox-select-all"/>
             <?=$this->transEsc("adv_search_select_all")?>
           </label>
         </div>
+
+        <?php if ($checkboxFilters): ?>
+          <?php // checkboxFilter class remains only for back-compatibility: ?>
+          <div class="checkbox-filters checkboxFilter">
+            <?php foreach ($checkboxFilters as $data): ?>
+              <div class="checkbox-filter">
+                <label class="facet checkbox"><input class="checkbox-select-item" type="checkbox" checked="checked" name="filter[]" value="<?=$this->escapeHtmlAttr($data['filter'])?>"> <?=$this->transEsc($data['desc'])?></label>
+              </div>
+            <?php endforeach; ?>
+          </div>
+        <?php endif; ?>
+
         <?php foreach ($searchFilters as $field => $data): ?>
           <div class="facet-group">
             <div class="title"><?=$this->transEsc($field)?></div>
-            <?php foreach ($data as $value): ?>
-              <label class="facet checkbox"><input class="checkbox-select-item" type="checkbox" checked="checked" name="filter[]" value='<?=$this->escapeHtmlAttr($value['field'])?>:"<?=$this->escapeHtmlAttr($value['value'])?>"' /> <?=$this->escapeHtml($value['displayText'])?></label>
+            <?php foreach ($data as $i => $value): ?>
+              <?php $operator = $value['operator'] ?? 'AND'; ?>
+              <label class="facet checkbox">
+                <input class="checkbox-select-item" type="checkbox" checked="checked" name="filter[]" value="<?=$this->escapeHtmlAttr($this->operatorToFieldPrefix($operator) . $value['field'] . ':"' . $value['value'] . '"')?>">
+                <?php if ($operator === 'NOT'): ?>
+                  <?=$this->transEsc('NOT')?>
+                <?php elseif ($operator === 'OR' && $i > 0): ?>
+                  <?=$this->transEsc('OR')?>
+                <?php endif; ?>
+                <?=$this->escapeHtml($value['displayText'])?>
+              </label>
             <?php endforeach; ?>
           </div>
         <?php endforeach; ?>
       <?php endif; ?>
-      <h2><?=$this->transEsc("Search Tips")?></h2>
-      <div class="facet-group">
-        <a class="facet help-link" data-lightbox href="<?=$this->url('help-home')?>?topic=advsearch&amp;_=<?=time() ?>"><?=$this->transEsc("Help with Advanced Search")?></a>
-        <a class="facet help-link" data-lightbox href="<?=$this->url('help-home')?>?topic=search&amp;_=<?=time() ?>"><?=$this->transEsc("Help with Search Operators")?></a>
+      <?php if ($helpTopics): ?>
+        <h2><?=$this->transEsc('Search Tips')?></h2>
+        <?php // Data-title attribute is for analytics use.  Do not remove. ?>
+        <ul class="facet-group" data-title="<?=$this->escapeHtmlAttr('Search Tips') ?>">
+          <?php foreach ($helpTopics as $topic => $title): ?>
+            <li class="facet">
+              <a class="help-link" data-lightbox href="<?=$this->url('help', ['topic' => $topic])?>"><?=$this->transEsc($title)?></a>
+            </li>
+          <?php endforeach; ?>
+        </ul>
+      <?php endif; ?>
       </div>
-    </div>
   </form>
 </div>
 <?php
 $script = <<<JS
-$('#groupPlaceHolder a').click(function(e) {
-  addGroup();
+    $('#groupPlaceHolder').click(function(e) {
+      addGroup(null, null, null, true);
   return false;
 })
 JS;
