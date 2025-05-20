@@ -1431,6 +1431,13 @@ footer .el-block.first {
     }
 }
 
+@media (min-width:1400px) {
+    .container {
+        width: 85%;
+        // Overall width
+    }
+}
+
 
 /* For very small screens */
 @media (max-width:430px) {
