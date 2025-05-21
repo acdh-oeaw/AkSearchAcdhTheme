@@ -29,7 +29,6 @@ body {
     font-family: "LatoRegular", "Verdana" !important;
     background-color: #fff;
     color: #333;
-    font-size: 14px;
 }
 h1,
 h2,
@@ -75,11 +74,6 @@ select {
     font-size: 32px !important;
     font-weight: normal;
 }
-
-.banner.container.navbar {
-    padding-left: 0px;
-    padding-right: 0px;
-}
 .container,
 .main-footer,
 footer .container, footer footer{
@@ -92,20 +86,14 @@ footer .container, footer footer{
     padding-bottom: 50px;
     margin: 15px !important;
 }
-
-.header-search-section .container-fluid {
-    padding-left: 0px;
-    padding-right: 0px;
-}
 .akSearchboxBackground {
     background: none repeat scroll 0 0 #2856a3;
     padding: 8px 0 8px 0;
-    /*width: 100vw;
-    margin-left: -50vw;
-    left: 50%;*/
-    position: relative;
+    width: 100vw;
     min-height: 140px;
-    
+    margin-left: -50vw;
+    left: 50%;
+    position: relative;
     .btn-primary {
         font-size: 22px;
         height: 60px;
@@ -143,19 +131,7 @@ footer .container, footer footer{
 .navbar-brand:active {
     outline: none;
 }
-
-.nav-link {
-    font-size: 14px;
-}
-.navbar-nav .nav-link.active, .navbar-nav .nav-link.show 
-{
-    color: #000;
-    font-weight: bold;
-}
 .breadcrumbs {
-    background-color: #f5f5f5;
-}
-.breadcrumbs .container {
     background-color: #f5f5f5;
 }
 .breadcrumb {
@@ -173,9 +149,6 @@ header {
 }
 header {
     padding: 0px !important;
-}
-#header-collapse .nav-link {
-    font-size: 12px;
 }
 .akBreadcrumbSpacer {
     margin-bottom: 15px;
@@ -258,7 +231,7 @@ header {
     outline: none;
 }
 .search-filters-div {
-    /*padding-left: 10px;*/
+    padding-left: 10px;
 }
 .searchForm .btn-link,
 .active-filters .filters .filters-term,
@@ -793,9 +766,6 @@ header .search.container.navbar {
     outline: none;
 }
 
-.active-filters {
- align-items: center;   
-}
 // "Active filter" indicators in search bar. We use the dark-gray background color
 // of our buttons for them.
 .active-filters .filters .filter-value {
@@ -813,7 +783,7 @@ header .search.container.navbar {
     outline: none;
 }
 .search-filters-div {
-   // padding-left: 10px;
+    padding-left: 10px;
 }
 
 // White texts in search bar
@@ -1409,9 +1379,8 @@ footer .el-block.first {
 
 // Style for other screen sizes
 @media (min-width:768px) {
-    .container, .footer {
+    .container {
         width: 85%;
-        max-width: 85%!important;
         // Overall width
 
     }
@@ -1428,25 +1397,15 @@ footer .el-block.first {
 }
 
 @media (min-width:992px) {
-    .container, .footer {
+    .container {
         width: 85%;
-        max-width: 85%!important;
         // Overall width
     }
 }
 
 @media (min-width:1200px) {
-    .container, .footer {
+    .container {
         width: 85%;
-        max-width: 85%!important;
-        // Overall width
-    }
-}
-
-@media (min-width:1400px) {
-    .container, .footer {
-        width: 85%;
-        max-width: 85%!important;
         // Overall width
     }
 }
