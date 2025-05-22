@@ -1,29 +1,29 @@
 
 @font-face {
     font-family: "BrandonRegular";
-    src: url("fonts/Brandon_reg.ttf") format("truetype");
+    src: url("../assets/fonts/Brandon_reg.ttf") format("truetype");
 }
 
 
 @font-face {
     font-family: "BrandonBold";
-    src: url("fonts/Brandon_bld.ttf") format("truetype");
+    src: url("../assets/fonts/Brandon_bld.ttf") format("truetype");
     font-family: "BrandonThin";
-    src: url("fonts/Brandon_thin.ttf") format("truetype");
+    src: url("../assets/fonts/Brandon_thin.ttf") format("truetype");
     font-family: "BrandonLight";
-    src: url("fonts/Brandon_light.ttf") format("truetype");
+    src: url("../assets/fonts/Brandon_light.ttf") format("truetype");
     font-family: "LatoRegular";
-    src: url("fonts/Lato-Regular.ttf") format("truetype");
+    src: url("../assets/fonts/Lato-Regular.ttf") format("truetype");
     font-family: "LatoBold";
-    src: url("fonts/Lato-Bold.ttf") format("truetype");
+    src: url("../assets/fonts/Lato-Bold.ttf") format("truetype");
     font-family: "LatoBoldItalic";
-    src: url("fonts/Lato-BoldItalic.ttf") format("truetype");
+    src: url("../assets/fonts/Lato-BoldItalic.ttf") format("truetype");
     font-family: "LatoThin";
-    src: url("fonts/Lato-Thin.ttf") format("truetype");
+    src: url("../assets/fonts/Lato-Thin.ttf") format("truetype");
     font-family: "LatoLight";
-    src: url("fonts/Lato-Light.ttf") format("truetype");
+    src: url("../assets/fonts/Lato-Light.ttf") format("truetype");
     font-family: "LatoLightItalic";
-    src: url("fonts/Lato-LightItalic.ttf") format("truetype");
+    src: url("../assets/fonts/Lato-LightItalic.ttf") format("truetype");
 }
 body {
     font-family: "LatoRegular", "Verdana" !important;
