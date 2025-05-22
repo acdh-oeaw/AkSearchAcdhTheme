@@ -1,28 +1,27 @@
 @charset "UTF-8";
 @font-face {
-    font-family: "BrandonRegular";
-    src: url("../assets/fonts/Brandon_reg.ttf") format("truetype");
+  font-family: "BrandonRegular";
+  src: url("fonts/Brandon_reg.ttf") format("truetype");
 }
-
 @font-face {
-    font-family: "BrandonBold";
-    src: url("../assets/fonts/Brandon_bld.ttf") format("truetype");
-    font-family: "BrandonThin";
-    src: url("../assets/fonts/Brandon_thin.ttf") format("truetype");
-    font-family: "BrandonLight";
-    src: url("../assets/fonts/Brandon_light.ttf") format("truetype");
-    font-family: "LatoRegular";
-    src: url("../assets/fonts/Lato-Regular.ttf") format("truetype");
-    font-family: "LatoBold";
-    src: url("../assets/fonts/Lato-Bold.ttf") format("truetype");
-    font-family: "LatoBoldItalic";
-    src: url("../assets/fonts/Lato-BoldItalic.ttf") format("truetype");
-    font-family: "LatoThin";
-    src: url("../assets/fonts/Lato-Thin.ttf") format("truetype");
-    font-family: "LatoLight";
-    src: url("../assets/fonts/Lato-Light.ttf") format("truetype");
-    font-family: "LatoLightItalic";
-    src: url("../assets/fonts/Lato-LightItalic.ttf") format("truetype");
+  font-family: "BrandonBold";
+  src: url("fonts/Brandon_bld.ttf") format("truetype");
+  font-family: "BrandonThin";
+  src: url("fonts/Brandon_thin.ttf") format("truetype");
+  font-family: "BrandonLight";
+  src: url("fonts/Brandon_light.ttf") format("truetype");
+  font-family: "LatoRegular";
+  src: url("fonts/Lato-Regular.ttf") format("truetype");
+  font-family: "LatoBold";
+  src: url("fonts/Lato-Bold.ttf") format("truetype");
+  font-family: "LatoBoldItalic";
+  src: url("fonts/Lato-BoldItalic.ttf") format("truetype");
+  font-family: "LatoThin";
+  src: url("fonts/Lato-Thin.ttf") format("truetype");
+  font-family: "LatoLight";
+  src: url("fonts/Lato-Light.ttf") format("truetype");
+  font-family: "LatoLightItalic";
+  src: url("fonts/Lato-LightItalic.ttf") format("truetype");
 }
 body {
   font-family: "LatoRegular", "Verdana" !important;
@@ -61,7 +60,7 @@ select.searchForm_type {
   position: absolute;
 }
 .navbar-logo-text h2 {
-  font-family: "Brandon", "Verdana" !important;
+  font-family: "BrandonRegular", "Verdana" !important;
   margin-top: 33px !important;
   font-size: 32px !important;
   font-weight: normal;
@@ -123,7 +122,17 @@ select.searchForm_type {
   background-color: #f5f5f5;
 }
 .breadcrumb {
-  padding: 0px 15px 0px 0px;
+  padding: 5px 15px 5px 0px;
+  --bs-breadcrumb-padding-x: 0px;
+  --bs-breadcrumb-padding-y: 0px;
+  --bs-breadcrumb-margin-bottom: 0px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+.breadcrumbs .container {
+  width: 100%;
+  padding-left: 0px;
+  padding-right: 0px;
 }
 header .search.container.navbar {
   min-height: 0;
@@ -404,49 +413,6 @@ header {
   flex: 2;
   text-align: justify;
 }
-
-body {
-  font-family: "LatoRegular", "Verdana" !important;
-}
-h1, h2, h3, h4 {
-  font-family: "BrandonBold", "Verdana" !important;
-}
-.form-control {
-  font-family: "LatoRegular", "Verdana" !important;
-}
-select.searchForm_type {
-  font-family: "LatoRegular", "Verdana" !important;
-}
-.ltfl_bookdisplay_widget {
-  max-width: 80% !important;
-  overflow: hidden;
-  margin: 0 auto !important;
-}
-.navbar-brand {
-  height: auto;
-  padding-left: 0;
-}
-.navbar-logo-text-container {
-  float: left;
-  position: relative;
-  min-height: 100px;
-  min-width: 400px;
-}
-.navbar-logo-text {
-  position: absolute;
-}
-.navbar-logo-text h2 {
-  font-family: "Brandon", "Verdana" !important;
-  margin-top: 33px !important;
-  font-size: 32px !important;
-  font-weight: normal;
-}
-.mainpage-info-text {
-  font-size: 16px;
-  text-align: center;
-  padding-top: 50px;
-  padding-bottom: 50px;
-}
 .akSearchboxBackground {
   background: none repeat scroll 0 0 #2856a3;
   padding: 8px 0 8px 0;
@@ -462,12 +428,6 @@ select.searchForm_type {
 }
 .navbar-brand, .navbar-brand:focus, .navbar-brand:active {
   outline: none;
-}
-.breadcrumbs {
-  background-color: #f5f5f5;
-}
-.breadcrumb {
-  padding: 0px 15px 0px 0px;
 }
 header .search.container.navbar {
   min-height: 0;
@@ -991,6 +951,10 @@ footer .el-block.first {
 @media (min-width: 1200px) {
   .container {
     width: 85%;
+  }
+  footer {
+    width: 100%;
+    max-width: 100%;
   }
 }
 /* For very small screens */
