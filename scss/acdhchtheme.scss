@@ -1105,7 +1105,7 @@ header .search.container.navbar {
 .main-footer {
     background-color: #FFFFFF;
     display: block;
-    width: 100%;
+    width: 85%;
     z-index: 3;
     position: relative;
     border-top: 2px solid #F1F1F1;
@@ -1118,7 +1118,6 @@ header .search.container.navbar {
     padding-bottom: 50px;
     //padding: 25px 20px 50px 20px;
     display: block;
-    width: 100%;
 }
 .main-footer .footer-wrapper .footer-social {
     text-align: right;
@@ -1302,6 +1301,7 @@ footer .el-block.first {
 @media (min-width:768px) {
     .container {
         width: 85%;
+        max-width: none!important;
         // Overall width
 
     }
@@ -1320,6 +1320,7 @@ footer .el-block.first {
 @media (min-width:992px) {
     .container {
         width: 85%;
+        max-width: none!important;
         // Overall width
     }
 }
@@ -1327,11 +1328,12 @@ footer .el-block.first {
 @media (min-width:1200px) {
     .container {
         width: 85%;
+        max-width: none!important;
         // Overall width
     }
     footer {
-        width: 100%;
-        max-width: 100%;
+        width: 85%;
+        max-width: none!important;
     }
 }
 
