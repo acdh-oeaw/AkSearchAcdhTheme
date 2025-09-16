@@ -125,7 +125,8 @@
                     if(!empty($str)) {
                         $str .= "; ";
                     }
-                    $str .= "<a href='".$this->serverUrl($this->url('record')).$superiorDoc['container_reference']."'>".$superiorDoc['container_title']."</a>";
+                    $containerSource = $superiorDoc['container_reference'];
+                    $str .= "<a href='".$this->recordLink()->getUrl("$containerSource")."'>".$superiorDoc['container_title']."</a>";
                     } else if (isset($superiorDoc['container_title'])) {
                         if(!empty($str)) {
                             $str .= "; ";

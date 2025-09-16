@@ -1,11 +1,12 @@
-<?php if(count($data) > 0) { 
-    
+<?php if(count($data) > 0) {
+
     $str = "";
     if(isset($data['container_reference']) && isset($data['container_title'])) {
         if(!empty($str)) {
             $str .= "; ";
         }
-        $str .= "<a href='".$this->serverUrl($this->url('record')).$data['container_reference']."'>".$data['container_title']."</a>";
+        $containerSource = $data['container_reference'];
+        $str .= "<a href='".$this->recordLink()->getUrl("$containerSource")."'>".$data['container_title']."</a>";
         } else if (isset($data['container_title'])) {
             if(!empty($str)) {
                 $str .= "; ";
