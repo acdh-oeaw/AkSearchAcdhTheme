@@ -1,18 +1,18 @@
-<?php if(count($data) > 0) {
+<?php if (count($data) > 0) {
 
     $str = "";
-    if(isset($data['container_reference']) && isset($data['container_title'])) {
-        if(!empty($str)) {
+    if (isset($data['container_reference']) && isset($data['container_title'])) {
+        if (!empty($str)) {
             $str .= "; ";
         }
         $containerSource = $data['container_reference'];
-        $str .= "<a href='".$this->recordLink()->getUrl("$containerSource")."'>".$data['container_title']."</a>";
-        } else if (isset($data['container_title'])) {
-            if(!empty($str)) {
-                $str .= "; ";
-            }
-            $str .= $data['container_title'];
-        }        
-        echo $str;
-    
+        $str .= "<a href='" . $this->recordLink()->getUrl("$containerSource") . "'>" . $data['container_title'] . "</a>";
+    } else if (isset($data['container_title'])) {
+        if (!empty($str)) {
+            $str .= "; ";
+        }
+        $str .= $data['container_title'];
+    }
+    echo $str;
+
 } ?>
