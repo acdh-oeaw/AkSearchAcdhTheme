@@ -1,0 +1,12 @@
+<?php if (count($data) > 0) : ?>
+    <div class="wrapper">
+        <div>
+            <?php foreach ($data as $current):
+                $relatedAC = preg_replace("/^\(AT-OBV\)/", "", $current->w)
+            ?>
+                <a href="<?=  $this->recordLink()->getUrl("$relatedAC") ?>"
+                   target="_blank"><?= $current->t ?></a><br/>
+            <?php endforeach; ?>
+        </div>
+    </div>
+<?php endif; ?>
