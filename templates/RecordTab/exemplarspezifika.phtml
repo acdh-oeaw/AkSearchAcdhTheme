@@ -58,6 +58,10 @@ function createRow(string $label, string $text) {
     }
 }
 
+function formatRowText($text): string {
+    return is_array($text) ? implode('<br>', $text) : (string) $text;
+}
+
 function createTable(array $data, array $labels) {
 
     echo '<h3>';
@@ -66,7 +70,7 @@ function createTable(array $data, array $labels) {
     echo '<table class="table table-striped">';
         foreach($labels as $k => $v) {
             if(isset($data[$k][0])) {
-                createRow($v, $data[$k][0]);
+                createRow($v, formatRowText($data[$k][0]));
             }
         }
     echo '</table>';
