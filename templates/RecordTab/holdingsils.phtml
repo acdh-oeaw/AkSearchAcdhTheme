@@ -233,7 +233,8 @@ $noEHoldings = count($holdings['electronic_holdings']) === 0;
 
 // Output the last accumulated content, if any
         if (!is_null($prevLibraryCode)) {
-            echo "<div class='panel panel-default'>{$currentContent}</div>";
+            // Close both the collapsible region and its panel wrapper.
+            echo "<div class='panel panel-default'>{$currentContent}</div></div>";
         }
         ?>
 

@@ -898,6 +898,30 @@ footer .el-block.first {
     width: 97%;
 }
 
+// Keep the record sidebar (including Similar Items) alongside the record
+// content at every viewport width instead of stacking it below on small screens.
+.record {
+    display: grid !important;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 1fr);
+    align-items: start;
+}
+
+.record > .mainbody {
+    float: none;
+    grid-column: 1;
+    grid-row: 1;
+    width: auto;
+    min-width: 0;
+}
+
+.record > .sidebar {
+    float: none;
+    grid-column: 2;
+    grid-row: 1;
+    width: auto;
+    min-width: 0;
+}
+
 .navbar-header{
    padding-top: 10px;
    padding-bottom: 10px;
