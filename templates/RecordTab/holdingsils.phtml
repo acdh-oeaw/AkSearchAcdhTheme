@@ -161,6 +161,53 @@ $noEHoldings = count($holdings['electronic_holdings']) === 0;
                 }
             }
             $tableContent .= '</table>';
+
+            // Show related people and organizations recorded on the holding in MARC 695.
+            if (!empty($holding->relatedAgents)) {
+                $field695Labels = [
+                    '1' => [
+                        'a' => 'holding695PersonPreferredName',
+                        'b' => 'holding695PersonNumeration',
+                        'c' => 'holding695PersonNameTitles',
+                        'd' => 'holding695PersonDates',
+                        '4' => 'holding695RelationshipDesignator',
+                        '0' => 'holding695GndNumber',
+                        'e' => 'holding695MissingRelationshipDesignator',
+                    ],
+                    '2' => [
+                        'a' => 'holding695CorporatePreferredName',
+                        'b' => 'holding695CorporateSubordinateUnit',
+                        'g' => 'holding695CorporateAddition',
+                        '4' => 'holding695RelationshipDesignator',
+                        '0' => 'holding695GndNumber',
+                        'e' => 'holding695MissingRelationshipDesignator',
+                    ],
+                ];
+                $tableContent .= '<table class="table table-condensed"><tbody>';
+                foreach ($holding->relatedAgents as $agent) {
+                    $indicator = $agent['indicator'];
+                    $agentTypeKey = $indicator === '1'
+                        ? 'holding695Person'
+                        : ($indicator === '2' ? 'holding695CorporateBody' : '');
+                    if ($agentTypeKey !== '') {
+                        $tableContent .= '<tr><th colspan="2">' . $this->transEsc($agentTypeKey) . '</th></tr>';
+                    }
+                    foreach ($agent['subfields'] as $subfield) {
+                        $code = $subfield['code'];
+                        $labelKey = $field695Labels[$indicator][$code] ?? null;
+                        $label = $labelKey
+                            ? $this->transEsc($labelKey)
+                            : $this->transEsc('holding695OtherSubfield', ['%%code%%' => $code]);
+                        $tableContent .= '<tr><td>'
+                            . $label
+                            . ':</td><td>'
+                            . htmlspecialchars($subfield['value'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')
+                            . '</td></tr>';
+                    }
+                }
+                $tableContent .= '</tbody></table>';
+            }
+
             $currentContent .= $tableContent;
 
             // Append items, if any
