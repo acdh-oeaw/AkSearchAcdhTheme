@@ -11,7 +11,7 @@
         if (!empty($str)) {
             $str .= "; ";
         }
-        $str .= $data['container_title'];
+        $str .= $this->escapeHtml($data['container_title']);
     }
     echo $str;
 } ?>
