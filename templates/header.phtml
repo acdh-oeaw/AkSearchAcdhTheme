@@ -1,4 +1,10 @@
-<?php $account = $this->auth()->getManager(); ?>
+<?php
+$account = $this->auth()->getManager();
+$logoLanguage = in_array($this->layout()->userLang, ['de', 'en'], true)
+    ? $this->layout()->userLang
+    : 'en';
+$logoName = 'OEAW-Logo-RGB-blue-' . $logoLanguage . '.svg';
+?>
 <div class="banner container navbar">
     <div class="row w-100">
         <div class="col-lg-8" >
@@ -9,7 +15,7 @@
                     </button>
                     <?php // AK: Remove text and add a logo image. TODO: Use logo image based on an entry in config.ini. ?>
                     <a class="navbar-brand lang-<?= $this->layout()->userLang ?>" href="<?= $this->url('home') ?>">
-                        <img src="<?= $this->imageLink('logo-lang-de.png') ?>" alt="OEAW Logo" style="max-height: 80px;" /> 
+                        <img src="<?= $this->imageLink($logoName) ?>" alt="OEAW Logo" style="max-height: 80px;" />
                     </a>
                     <div class="navbar-logo-text-container">
                         <div class="navbar-logo-text">

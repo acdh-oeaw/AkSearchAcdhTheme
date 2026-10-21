@@ -5,6 +5,15 @@
   $doiActive = $doi->isActive();
   // Account for replace_other_urls setting
   $urls = $this->record($this->driver)->getLinkDetails($openUrlActive);
+  // Include the MARC 856 $z note with the corresponding link.
+  $urlNotes = [];
+  foreach ($this->driver->getMarcRecord()->getFields('856') as $urlField) {
+    if (!is_object($urlField->getSubfield('u'))) {
+      continue;
+    }
+    $note = $urlField->getSubfield('z');
+    $urlNotes[] = is_object($note) ? $note->getData() : '';
+  }
 ?>
 
 <?php  if(count($urls) > 0) : ?>
@@ -17,9 +26,9 @@
             <?php endif; ?>
         </div>
         <div>
-            <?php foreach ($urls as $current): ?>
+            <?php foreach ($urls as $index => $current): ?>
             <?php // AK: Translate the description ?>
-                <a href="<?=$this->escapeHtmlAttr($this->proxyUrl($current['url']))?>" target="_blank"><?=$this->transEsc($current['desc'])?></a><br/>
+                <a href="<?=$this->escapeHtmlAttr($this->proxyUrl($current['url']))?>" target="_blank" rel="noopener noreferrer"><?=$this->transEsc($current['desc'])?><?php if (!empty($urlNotes[$index])): ?> (<?=$this->escapeHtml($urlNotes[$index])?>)<?php endif; ?></a><br/>
             <?php endforeach; ?>
         </div>
     </div>

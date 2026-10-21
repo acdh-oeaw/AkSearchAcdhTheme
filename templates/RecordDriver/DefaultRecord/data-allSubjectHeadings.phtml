@@ -92,4 +92,9 @@ $keywordSeparator = ' <i class="fa fa-minus akKeywordChainSeparator" aria-hidden
             ?>
         <?php endforeach; ?>
     </div>
+    <?php if ($this->driver->getOwningInstitution() === 'AT-OeAW-ISA'): ?>
+        <a target="_blank" rel="noopener noreferrer" href="<?= $this->escapeHtmlAttr($this->imageLink('Finke-Estate-ISA-Archive-Information.pdf')) ?>">
+            <h5>Thesaurus Information: OCM adapted by ISA <i class="fa fa-info-circle" aria-hidden="true"></i></h5>
+        </a>
+    <?php endif; ?>
 <?php endforeach; ?>

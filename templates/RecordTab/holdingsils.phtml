@@ -161,6 +161,51 @@ $noEHoldings = count($holdings['electronic_holdings']) === 0;
                 }
             }
             $tableContent .= '</table>';
+
+            // Display related people and organizations from MARC 695 when
+            // the VuFind record driver supplies them on this holding.
+            if (!empty($holding->relatedAgents)) {
+                $field695Labels = [
+                    '1' => [
+                        'a' => 'Preferred name',
+                        'b' => 'Numeration',
+                        'c' => 'Titles',
+                        'd' => 'Dates',
+                        '4' => 'Relationship designator',
+                        '0' => 'GND number',
+                        'e' => 'Relationship designator (uncontrolled)',
+                    ],
+                    '2' => [
+                        'a' => 'Preferred name',
+                        'b' => 'Subordinate unit',
+                        'g' => 'Additional information',
+                        '4' => 'Relationship designator',
+                        '0' => 'GND number',
+                        'e' => 'Relationship designator (uncontrolled)',
+                    ],
+                ];
+                $tableContent .= '<table class="table table-condensed"><tbody>';
+                foreach ($holding->relatedAgents as $agent) {
+                    $indicator = (string) ($agent['indicator'] ?? '');
+                    $agentType = match ($indicator) {
+                        '1' => 'Person',
+                        '2' => 'Corporate body',
+                        default => '',
+                    };
+                    if ($agentType !== '') {
+                        $tableContent .= '<tr><th colspan="2">' . $this->transEsc($agentType) . '</th></tr>';
+                    }
+                    foreach ($agent['subfields'] ?? [] as $subfield) {
+                        $code = (string) ($subfield['code'] ?? '');
+                        $label = $field695Labels[$indicator][$code] ?? ('Other subfield ' . $code);
+                        $value = htmlspecialchars((string) ($subfield['value'] ?? ''), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+                        $tableContent .= '<tr><td>' . $this->transEsc($label)
+                            . ':</td><td>' . $value . '</td></tr>';
+                    }
+                }
+                $tableContent .= '</tbody></table>';
+            }
+
             $currentContent .= $tableContent;
 
             // Append items, if any

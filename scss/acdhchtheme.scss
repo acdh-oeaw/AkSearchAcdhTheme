@@ -1244,6 +1244,26 @@ footer .el-block.first {
     -webkit-box-orient: vertical;
 }
 
+// Keep the record sidebar next to the record content, including on narrow
+// screens, as required by the current catalog record layout.
+.record {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 1fr);
+    align-items: start;
+}
+
+.record > .mainbody {
+    grid-column: 1;
+    grid-row: 1;
+    min-width: 0;
+}
+
+.record > .sidebar {
+    grid-column: 2;
+    grid-row: 1;
+    min-width: 0;
+}
+
 .authors-list.closed {
     overflow: hidden;
     text-overflow: ellipsis;
