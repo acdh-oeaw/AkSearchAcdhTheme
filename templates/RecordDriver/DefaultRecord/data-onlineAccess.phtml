@@ -7,12 +7,12 @@
   $urls = $this->record($this->driver)->getLinkDetails($openUrlActive);
   // Include the MARC 856 $z note with the corresponding link.
   $urlNotes = [];
-  foreach ($this->driver->getMarcRecord()->getFields('856') as $urlField) {
-    if (!is_object($urlField->getSubfield('u'))) {
+  $marcReader = $this->driver->getMarcReader();
+  foreach ($marcReader->getFields('856') as $urlField) {
+    if ($marcReader->getSubfield($urlField, 'u') === '') {
       continue;
     }
-    $note = $urlField->getSubfield('z');
-    $urlNotes[] = is_object($note) ? $note->getData() : '';
+    $urlNotes[] = $marcReader->getSubfield($urlField, 'z');
   }
 ?>
 
