@@ -8,7 +8,12 @@
   <table <?php if (!empty($this->tableId)): ?>id="<?=$this->tableId ?>" <?php endif; ?>class="table table-striped">
     <caption class="visually-hidden"><?=$this->transEsc($this->caption ?? 'Bibliographic Details')?></caption>
     <?php foreach ($coreFields as $current): ?>
-      <tr><th scope="row"><?= $this->transEsc($current['label'] !== '' ? $current['label'] : 'NoRole') ?>:</th><td><?= $current['value'] ?></td></tr>
+      <?php if ($current['context']['stackCells'] ?? false): ?>
+        <tr><th colspan="2"><?= $this->transEsc($current['label'] !== '' ? $current['label'] : 'NoRole') ?>:</th></tr>
+        <tr><td colspan="2"><?= $current['value'] ?></td></tr>
+      <?php else: ?>
+        <tr><th scope="row"><?= $this->transEsc($current['label'] !== '' ? $current['label'] : 'NoRole') ?>:</th><td><?= $current['value'] ?></td></tr>
+      <?php endif; ?>
     <?php endforeach; ?>
   </table>
 <?php endif; ?>

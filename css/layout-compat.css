@@ -1,0 +1,160 @@
+/* Keep the VuFind 10 page layout aligned with the production theme. */
+.banner .navbar-header {
+  min-height: 152px;
+}
+
+.banner .navbar-brand img {
+  max-height: none;
+  max-width: none;
+  width: auto;
+}
+
+.banner .navbar-brand {
+  padding-right: 0;
+  margin-right: 0;
+}
+
+.banner .navbar-logo-text-container {
+  min-height: 130px;
+  border-left: 1px solid rgba(0, 0, 0, .2);
+  padding-left: 20px;
+}
+
+.breadcrumbs .container {
+  width: 85%;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.main #content.container {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.akSearchboxBackground #searchForm > .input-group:first-of-type {
+  width: 60vw;
+  max-width: 100%;
+  margin-inline: auto;
+}
+
+.record-nav {
+  margin-top: .5rem;
+  margin-bottom: .5rem;
+}
+
+.record {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 1fr);
+  align-items: start;
+}
+
+.record > .mainbody {
+  grid-column: 1;
+  grid-row: 1;
+  min-width: 0;
+}
+
+.record > .sidebar {
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 0;
+}
+
+.record > .mainbody,
+.record > .sidebar {
+  float: none;
+  width: auto;
+}
+
+.record > .sidebar {
+  padding-left: 10px;
+}
+
+.record-tabs .tab-content table.table {
+  table-layout: fixed;
+  overflow-wrap: break-word;
+}
+
+.record-tabs .details-tab > h2:first-child {
+  display: none;
+}
+
+.record-tabs .staff-view--marc .pace-car {
+  height: 0;
+}
+
+.record-tabs .staff-view--marc .pace-car > * {
+  padding: 0;
+  border: 0;
+  line-height: 0;
+  font-size: 0;
+}
+
+.record-tabs .staff-view--marc .marc__tag {
+  width: 15%;
+  text-align: right;
+}
+
+.record-tabs .staff-view--marc .marc__ind {
+  width: 5%;
+}
+
+.template-name-home .mainpage-info-text {
+  padding-top: 32px;
+}
+
+.main-footer .footer-sep {
+  margin-left: -20px;
+  margin-right: -20px;
+}
+
+.main-footer .first > div {
+  position: relative;
+  left: -20px;
+}
+
+@media (max-width: 767px) {
+  .banner .navbar-header {
+    display: block !important;
+    min-height: 283px;
+  }
+
+  .banner .navbar-toggle {
+    position: absolute;
+    top: 20px;
+    right: 15px;
+  }
+
+  .banner .navbar-logo-text-container {
+    clear: both;
+    width: calc(100% - 15px);
+    margin-left: 15px;
+    min-height: 130px;
+  }
+
+  .akSearchboxBackground #searchForm > .input-group:first-of-type {
+    width: 100%;
+  }
+
+  .record {
+    display: block;
+  }
+
+  .record > .mainbody,
+  .record > .sidebar {
+    width: 100%;
+  }
+
+  .record > .sidebar {
+    padding-left: 0;
+  }
+
+  .main-footer .footer-sep {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .main-footer .first > div {
+    left: 0;
+  }
+}

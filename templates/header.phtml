@@ -15,7 +15,7 @@ $logoName = 'OEAW-Logo-RGB-blue-' . $logoLanguage . '.svg';
                     </button>
                     <?php // AK: Remove text and add a logo image. TODO: Use logo image based on an entry in config.ini. ?>
                     <a class="navbar-brand lang-<?= $this->layout()->userLang ?>" href="<?= $this->url('home') ?>">
-                        <img src="<?= $this->imageLink($logoName) ?>" alt="OEAW Logo" style="max-height: 80px;" />
+                        <img src="<?= $this->imageLink($logoName) ?>" alt="OEAW Logo" height="100" />
                     </a>
                     <div class="navbar-logo-text-container">
                         <div class="navbar-logo-text">

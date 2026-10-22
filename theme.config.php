@@ -39,6 +39,7 @@ return [
     'css' => [
         'compiled.css',
         'acdhchtheme.css',
+        'layout-compat.css',
         'popoverEntityFacts.css',
         'popoverKeywordChain.css'
     ],
