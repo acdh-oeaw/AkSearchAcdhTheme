@@ -37,6 +37,16 @@
   margin-inline: auto;
 }
 
+.akSearchboxBackground #searchForm > .input-group:first-of-type > .btn-link {
+  align-self: center;
+}
+
+@media (min-width: 768px) {
+  .akSearchboxBackground .active-filters .reset-filters-btn {
+    margin-top: 5px;
+  }
+}
+
 .record-nav {
   margin-top: .5rem;
   margin-bottom: .5rem;
