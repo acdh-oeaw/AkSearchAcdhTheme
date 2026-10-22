@@ -36,6 +36,19 @@ $keywordSeparator = ' <i class="fa fa-minus akKeywordChainSeparator" aria-hidden
 
     <div class="subject-line" property="keywords">
         <?php
+        // Subject data can contain nested arrays (for example, from linked MARC
+        // fields). Flatten it before treating each value as a keyword string.
+        $flatKeywords = [];
+        if (!is_array($keywords)) {
+            $keywords = [$keywords];
+        }
+        array_walk_recursive($keywords, static function ($keyword) use (&$flatKeywords): void {
+            if (is_scalar($keyword)) {
+                $flatKeywords[] = (string)$keyword;
+            }
+        });
+        $keywords = $flatKeywords;
+
         // AK: Create some variables
         $keywordChain = '';
         $keywordChainSeparated = '';
