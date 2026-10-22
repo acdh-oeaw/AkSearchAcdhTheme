@@ -95,7 +95,7 @@ $keywordSeparator = ' <i class="fa fa-minus akKeywordChainSeparator" aria-hidden
                <?php endif; ?>
 
             <?php if ($authority): ?>
-                <a class="btn-type-export" href="<?= $this->escapeHtmlAttr($authority) ?>" target="_blank" rel="noopener noreferrer" aria-label="GND: <?= $this->escapeHtmlAttr($label) ?>"></a>
+                <a class="small ms-1" href="<?= $this->escapeHtmlAttr($authority) ?>" target="_blank" rel="noopener noreferrer" aria-label="Authority record: <?= $this->escapeHtmlAttr($label) ?>" title="Authority record: <?= $this->escapeHtmlAttr($label) ?>"><i class="fa fa-external-link" aria-hidden="true"></i></a>
             <?php endif; ?>
 
             <?php
