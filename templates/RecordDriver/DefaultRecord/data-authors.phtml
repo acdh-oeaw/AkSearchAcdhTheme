@@ -38,7 +38,6 @@ $this->jsTranslations()->addStrings(
         ]
 );
 
-// AK: Include bootstrap-popover JS and CSS
 ?>
 
 <?php if (!empty($data)): ?>
@@ -75,8 +74,7 @@ $this->jsTranslations()->addStrings(
                                 tabindex="0"
                                 role="button"
                                 title="<?= trim($this->escapeHtmlAttr($this->transEsc('EntityFacts::moreInfomation'))) ?>"
-                                data-trigger="focus"
-                                data-toggle="popover-entity-facts"
+                                data-bs-toggle="popover-entity-facts"
                                 data-auth-id="<?= trim($this->escapeHtmlAttr($this->escapeHtml($authId))) ?>"
                                 rel="nofollow"
                                 >

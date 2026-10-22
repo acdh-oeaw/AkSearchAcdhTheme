@@ -6,7 +6,9 @@
     if ($useDatepicker) {
       $language = $this->datepicker()->getLanguage();      
       $this->headScript()->appendFile('vendor/bootstrap-datepicker/bootstrap-datepicker.min.js');
-      $this->headScript()->appendFile('vendor/bootstrap-datepicker/locales/bootstrap-datepicker.'.$language.'.min.js');
+      if ($language !== 'en') {
+        $this->headScript()->appendFile('vendor/bootstrap-datepicker/locales/bootstrap-datepicker.'.$language.'.min.js');
+      }
       $this->headLink()->appendStylesheet('vendor/bootstrap-datepicker/bootstrap-datepicker3.min.css');
     }
 

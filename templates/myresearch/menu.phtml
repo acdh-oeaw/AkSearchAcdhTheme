@@ -6,8 +6,13 @@
 <nav class="myresearch-menu" aria-labelledby="<?=$this->idPrefix ?? ''?>acc-menu-acc-header">
   <ul class="account-menu">
     <?php foreach ((array)$this->items as $item): ?>
-      <?=$this->render('myresearch/menu-item.phtml', ['active' => $this->active, ...$item])?>
+      <?php if (!$this->accountMenu()->isHidden(strtolower($item['name'] ?? ''))): ?>
+        <?=$this->render('myresearch/menu-item.phtml', ['active' => $this->active, ...$item])?>
+      <?php endif; ?>
     <?php endforeach; ?>
+    <?php if (!$this->accountMenu()->isHidden('scheduledsearch')): ?>
+      <li><a class="scheduledsearch icon-link" href="<?=$this->url('content-page', ['page' => 'scheduledsearch'])?>"><span class="icon-link__label"><?=$this->transEsc('scheduledsearch')?></span></a></li>
+    <?php endif; ?>
   </ul>
 </nav>
 <?php if ($user && $this->userlist()->getMode() !== 'disabled'): ?>

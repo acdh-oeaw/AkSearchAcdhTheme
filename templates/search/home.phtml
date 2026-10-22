@@ -1,47 +1,24 @@
-
 <?php
-// Set page title.
 $this->headTitle($this->translate('Search Home'));
+$this->layout()->searchbox = false;
+$this->layout()->breadcrumbs = false;
+if (!isset($this->searchClassId)) {
+    $this->searchClassId = 'Solr';
+}
 ?>
-<!-- 
-<nav aria-label="Theme Config view helper demo" class="navbar navbar-dark bg-dark mb-4">
-    <div class="container-fluid">
-
-
-        <ul class="navbar-nav navbar-right flip">
-            <?php foreach ($this->themeConfig(['header-nav']) as $section => $links): ?>
-                <?php
-                $currentItems = [];
-                foreach ($links as $label => $route) {
-                    try {
-                        $url = $this->url($route);
-                        $currentItems[$url] = $label;
-                    } catch (\Exception $e) {
-                        // Skip invalid routes (e.g. caused by DevTools module being disabled)
-                        continue;
-                    }
-                }
-                if (empty($currentItems)) {
-                    // If all the options in the current menu got skipped, skip the menu too!
-                    continue;
-                }
-                ?>
-                <li class="nav-item dropdown">
-                    <a href="#" class="dropdown-toggle icon-link nav-link" data-bs-toggle="dropdown">
-                        <span class="icon-link__label"><?= $this->transEsc($section) ?></span>
-                        <?= $this->icon('caret-down', 'icon-link__icon') ?>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <?php foreach ($currentItems as $url => $label): ?>
-                            <li>
-                                <a class="dropdown-item" href="<?= $this->escapeHtmlAttr($url ?? '#') ?>" rel="nofollow">
-                                    <?= $this->transEsc($label) ?>
-                                </a>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
-                </li>
-            <?php endforeach; ?>
-        </ul>
+<div class="row">
+    <?php $this->slot('search-home-hero')->start() ?>
+    <div class="container">
+        <div class="row akSearchboxBackground">
+            <div class="col-lg-12 text-center">
+                <?= $this->context($this)->renderInContext('search/searchbox.phtml', ['ignoreHiddenFilterMemory' => true]) ?>
+            </div>
+        </div>
     </div>
-</nav>-->
+    <?= $this->slot('search-home-hero')->end() ?>
+</div>
+<?php $warnConf = $this->warnings()->getConfig(); ?>
+<?php if ($warnConf['homepage'] ?? false): ?>
+    <br>
+    <?= $this->render('Helpers/warning.phtml', ['heading' => 'homepage_warning_heading', 'text' => 'homepage_warning_text']) ?>
+<?php endif; ?>

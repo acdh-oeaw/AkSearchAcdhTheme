@@ -139,6 +139,36 @@
             <?php endif ?>
             <div class="media-body">
               <?=$this->record($resource)->renderTemplate('account-entry.phtml')?>
+              <?php foreach (($resource->tryMethod('getConsolidatedParents') ?? []) as $parent): ?>
+                <?php if (!empty($parent['title'])): ?>
+                  <div class="spacer">
+                    <strong><?=$this->transEsc('In')?>:</strong>
+                    <?php if (!empty($parent['id'])): ?>
+                      <a href="<?=$this->escapeHtmlAttr($this->recordLinker()->getUrl($resource->getSourceIdentifier() . '|' . $parent['id']))?>"><?=$this->escapeHtml($parent['title'])?></a>
+                    <?php else: ?>
+                      <?=$this->escapeHtml($parent['title'])?>
+                    <?php endif; ?>
+                  </div>
+                <?php endif; ?>
+              <?php endforeach; ?>
+              <?php $contributors = (array) ($resource->tryMethod('getContributors') ?? []); ?>
+              <?php if ($contributors): ?>
+                <div><strong><?=$this->transEsc('participants')?>:</strong>
+                  <?php foreach ($contributors as $index => $contributor): ?>
+                    <?= $index ? '; ' : '' ?><a href="<?=$this->record($resource)->getLink('author', $contributor)?>"><?=$this->escapeHtml($contributor)?></a>
+                  <?php endforeach; ?>
+                </div>
+              <?php endif; ?>
+              <?php $pubYear = $ilsDetails['publication_year'] ?? null; ?>
+              <?php $pubDates = $pubYear ? [$pubYear] : (array) ($resource->tryMethod('getPublicationDates') ?? []); ?>
+              <?php if ($pubDates): ?><div><strong><?=$this->transEsc('Published')?>:</strong> <?=$this->escapeHtml(implode('; ', $pubDates))?></div><?php endif; ?>
+              <?php $publishers = (array) ($resource->tryMethod('getPublishers') ?? []); ?>
+              <?php if ($publishers): ?><div><strong><?=$this->transEsc('Publisher')?>:</strong> <?=$this->escapeHtml(implode('; ', $publishers))?></div><?php endif; ?>
+              <?php $links = $this->record($resource)->getLinkDetails(false); ?>
+              <?php foreach ((array) $links as $link): ?>
+                <div><a href="<?=$this->escapeHtmlAttr($this->proxyUrl($link['url']))?>" target="_blank" rel="noopener noreferrer"><?=$this->escapeHtml($link['desc'] ?? $link['url'])?></a></div>
+              <?php endforeach; ?>
+              <?php if ($resource->tryMethod('getFormats')): ?><div><?=$this->record($resource)->getFormatList()?></div><?php endif; ?>
               <?php if ($this->displayItemBarcode && !empty($ilsDetails['barcode'])): ?>
                 <strong><?=$this->transEsc('Barcode')?>:</strong> <?=$this->escapeHtml($ilsDetails['barcode'])?>
                 <br>

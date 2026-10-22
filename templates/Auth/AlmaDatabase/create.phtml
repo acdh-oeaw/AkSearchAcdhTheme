@@ -67,7 +67,9 @@ foreach ($files as $fileName => $fileInfoText) {
 // AK: Include bootstrap-datepicker JS and CSS for birthday field
 $language = $this->datepicker()->getLanguage();
 echo $this->headScript()->appendFile('vendor/bootstrap-datepicker/bootstrap-datepicker.min.js');
-echo $this->headScript()->appendFile('vendor/bootstrap-datepicker/locales/bootstrap-datepicker.'.$language.'.min.js');
+if ($language !== 'en') {
+    $this->headScript()->appendFile('vendor/bootstrap-datepicker/locales/bootstrap-datepicker.'.$language.'.min.js');
+}
 echo $this->headLink()->appendStylesheet('vendor/bootstrap-datepicker/bootstrap-datepicker3.min.css');
 ?>
 

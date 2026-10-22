@@ -27,6 +27,8 @@ if (is_array($formats) && !empty($formats)) {
         in_array('MultiVolumeOnline', $formats)
         ) {
         $format = 'Electronic Book';
+    } else if (in_array('ConferenceProceeding', $formats)) {
+        $format = 'Conference Proceedings';
     } else if ($dissNotes != null && !empty($dissNotes)) {
         $format = 'Thesis';
     } else if (in_array('BookUnmediated', $formats)) {

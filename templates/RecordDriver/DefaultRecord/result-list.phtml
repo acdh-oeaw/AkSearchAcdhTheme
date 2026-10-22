@@ -116,7 +116,7 @@
           <?php endif; ?>   
             
           <!--- https://redmine.acdh.oeaw.ac.at/issues/19487  --->  
-          <?php $superiorDoc = $this->driver->getSuperiorDocument($this->serverUrl($this->url('record'))); ?>
+          <?php $superiorDoc = $this->driver->getSuperiorDocument(); ?>
           <?php if (count($superiorDoc) > 0): ?>
             <b><?=$this->transEsc('Superior document')?>:</b> 
             <?php 
@@ -125,12 +125,13 @@
                     if(!empty($str)) {
                         $str .= "; ";
                     }
-                    $str .= "<a href='".$this->serverUrl($this->url('record')).$superiorDoc['container_reference']."'>".$superiorDoc['container_title']."</a>";
+                    $str .= '<a href="' . $this->escapeHtmlAttr($this->recordLinker()->getUrl($superiorDoc['container_reference'])) . '">'
+                        . $this->escapeHtml($superiorDoc['container_title']) . '</a>';
                     } else if (isset($superiorDoc['container_title'])) {
                         if(!empty($str)) {
                             $str .= "; ";
                         }
-                        $str .= $superiorDoc['container_title'];
+                        $str .= $this->escapeHtml($superiorDoc['container_title']);
                     }        
                     echo $str;
              ?>

@@ -3,7 +3,7 @@
     max-width: 430px !important;
 }
 
-.popover-entity-facts .popover-title {
+.popover-entity-facts .popover-header {
     font-weight: bold;
     padding: 8px;
     text-overflow: ellipsis;
@@ -12,11 +12,11 @@
     white-space: nowrap;
 }
 
-.popover-entity-facts .popover-content {
+.popover-entity-facts .popover-body {
     padding: 8px;
 }
 
-.popover-entity-facts .arrow {
+.popover-entity-facts .popover-arrow {
     top: 39px !important;
 }
 
@@ -44,7 +44,7 @@
         width: 290px !important;
         max-width: 290px !important;
     }
-    .popover-entity-facts .popover-content {
+    .popover-entity-facts .popover-body {
         padding: 4px;
         overflow: auto;
     }

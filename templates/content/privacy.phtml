@@ -232,7 +232,9 @@ $this->layout()->breadcrumbs = '<li class="active"><a href="' . $this->url('cont
 		<br />
 		Hier können Sie Ihre bereits getroffenen Cookie-Einstellungen ändern:
 		&nbsp;
-		<a class="btn" onclick="return klaro.show();">Cookie-Einstellungen ändern</a>
+		<?php if ($this->cookieConsent()->isEnabled()): ?>
+			<button class="btn btn-secondary" type="button" onclick="CookieConsent.showPreferences();">Cookie-Einstellungen ändern</button>
+		<?php endif; ?>
 	</p>
 	<br />
 </div>

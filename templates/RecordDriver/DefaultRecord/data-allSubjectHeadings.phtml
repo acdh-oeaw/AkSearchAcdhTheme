@@ -23,10 +23,9 @@ $keywordSeparator = ' <i class="fa fa-minus akKeywordChainSeparator" aria-hidden
 
         // Initialize each popover
         var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-            console.log(popoverTriggerEl);
             return new bootstrap.Popover(popoverTriggerEl, {
                 html: true,
-                //content: 'eeeee'
+                customClass: 'popover-keyword-chain'
             });
         });
     });
@@ -36,48 +35,44 @@ $keywordSeparator = ' <i class="fa fa-minus akKeywordChainSeparator" aria-hidden
 
     <div class="subject-line" property="keywords">
         <?php
-        // Subject data can contain nested arrays (for example, from linked MARC
-        // fields). Flatten it before treating each value as a keyword string.
-        $flatKeywords = [];
-        if (!is_array($keywords)) {
-            $keywords = [$keywords];
-        }
-        array_walk_recursive($keywords, static function ($keyword) use (&$flatKeywords): void {
-            if (is_scalar($keyword)) {
-                $flatKeywords[] = (string)$keyword;
-            }
-        });
-        $keywords = $flatKeywords;
+        $keywords = is_array($keywords) ? $keywords : [[$keywords, null]];
 
         // AK: Create some variables
         $keywordChain = '';
         $keywordChainSeparated = '';
         ?>
-        <?php if (count($keywords) == 1) $keywords = explode('--', $keywords[0]); ?>
+        <?php if (count($keywords) === 1 && is_string($keywords[0])) $keywords = array_map(static fn($term) => [trim($term), null], explode('--', $keywords[0])); ?>
         <?php
         $i = 0;
         foreach ($keywords as $keyword):
+            $label = trim((string) (is_array($keyword) ? ($keyword[0] ?? '') : $keyword));
+            $authority = is_array($keyword) ? ($keyword[1] ?? null) : null;
+            if ($label === '') continue;
+            if (is_string($authority) && preg_match('/^\(DE-588\)([0-9X-]+)$/', $authority, $match)) {
+                $authority = 'https://explore.gnd.network/gnd/' . $match[1] . '/relations';
+            }
+            if (!is_string($authority) || !preg_match('~^https://~', $authority)) $authority = null;
             ?>
             <?php // AK: Add a "minus" character from font-awesome to separate the single keywords in a keyword chain from each other. ?>
             <?= ($i == 0) ? '' : $keywordSeparator ?>
             <?php
             // AK: Create non-separated keyword chain. The individual keywords are surounded by double-quotes: this is important if the keyword contains spaces.
-            $keywordChain = trim($keywordChain) . ' "' . trim($keyword) . '"';
+            $keywordChain = trim($keywordChain) . ' "' . $label . '"';
             // AK: $keywordChainSeparated is passed to popover JavaScript for showing a nice separated keyword chain
-            $keywordChainSeparated = trim($keywordChainSeparated) . (($i == 0) ? '' : $keywordSeparator) . trim($this->escapeHtml($keyword));
+            $keywordChainSeparated = trim($keywordChainSeparated) . (($i == 0) ? '' : $keywordSeparator) . $this->escapeHtml($label);
             ?>
 
             <?php if ($i == 0) : ?>
                 <?php /* AK: The first element of the keyword chain gets a "normal" link as a popover would not make sense (there are no previous keywords if the first one is chosen) */ ?>
-                <a title="<?= $this->escapeHtmlAttr($keywordChain) ?>" href="<?= $this->record($this->driver)->getLink('subject', $keywordChain) ?>" rel="nofollow"><?= trim($this->escapeHtml($keyword)) ?></a>
+                <a title="<?= $this->escapeHtmlAttr($keywordChain) ?>" href="<?= $this->record($this->driver)->getLink('subject', $keywordChain) ?>" rel="nofollow"><?= $this->escapeHtml($label) ?></a>
             <?php else: ?>
                 <?php /* AK: A click on a keyword (except the first one - see above) in the keyword chain opens a popup where the user can choose if he wants to search only for the current term or for the current term AND all previous terms. */ ?>
 
                 <?php
-                $pkeyword = trim($this->escapeHtmlAttr($this->escapeHtml($keyword)));
-                $pKeywordLink = $this->escapeHtmlAttr($this->record($this->driver)->getLink('subject', '"' . $keyword . '"'));
-                $pKeywordchainSeparated = $this->escapeHtmlAttr($keywordChainSeparated);
-                $pKeywordchainLink = $this->escapeHtmlAttr($this->record($this->driver)->getLink('subject', $keywordChain));
+                $pkeyword = $this->escapeHtml($label);
+                $pKeywordLink = $this->record($this->driver)->getLink('subject', '"' . $label . '"');
+                $pKeywordchainSeparated = $keywordChainSeparated;
+                $pKeywordchainLink = $this->record($this->driver)->getLink('subject', $keywordChain);
                 $currentTerm = $this->transEsc('currentTerm');
                 $content = "<div class='popoverEntry'>" . $currentTerm . ":<br />"
                         . "<a href='" . $pKeywordLink . "'>" . $pkeyword . "</a>"
@@ -93,11 +88,15 @@ $keywordSeparator = ' <i class="fa fa-minus akKeywordChainSeparator" aria-hidden
                    data-bs-title="<?= $this->transEsc('searchFor') ?>..."
                    data-bs-trigger="focus"
                    data-bs-placement="bottom" 
-                   data-bs-content="<?= $content ?>"
+                   data-bs-content="<?= $this->escapeHtmlAttr($content) ?>"
                    data-bs-toggle="popover" 
                    rel="nofollow"
-                   ><?= trim($this->escapeHtml($keyword)) ?></a>
+                   ><?= $this->escapeHtml($label) ?></a>
                <?php endif; ?>
+
+            <?php if ($authority): ?>
+                <a class="btn-type-export" href="<?= $this->escapeHtmlAttr($authority) ?>" target="_blank" rel="noopener noreferrer" aria-label="GND: <?= $this->escapeHtmlAttr($label) ?>"></a>
+            <?php endif; ?>
 
             <?php
             // AK: Increase the counter so that we know if we are processing the first keyword of the chain or a later one.
