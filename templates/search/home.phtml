@@ -1,0 +1,24 @@
+<?php
+$this->headTitle($this->translate('Search Home'));
+$this->layout()->searchbox = false;
+$this->layout()->breadcrumbs = false;
+if (!isset($this->searchClassId)) {
+    $this->searchClassId = 'Solr';
+}
+?>
+<div class="row">
+    <?php $this->slot('search-home-hero')->start() ?>
+    <div class="container">
+        <div class="row akSearchboxBackground">
+            <div class="col-lg-12 text-center">
+                <?= $this->context($this)->renderInContext('search/searchbox.phtml', ['ignoreHiddenFilterMemory' => true]) ?>
+            </div>
+        </div>
+    </div>
+    <?= $this->slot('search-home-hero')->end() ?>
+</div>
+<?php $warnConf = $this->warnings()->getConfig(); ?>
+<?php if ($warnConf['homepage'] ?? false): ?>
+    <br>
+    <?= $this->render('Helpers/warning.phtml', ['heading' => 'homepage_warning_heading', 'text' => 'homepage_warning_text']) ?>
+<?php endif; ?>

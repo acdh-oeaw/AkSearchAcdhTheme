@@ -1,0 +1,55 @@
+
+<?php $max = $this->tab->getMaxResults(); $showMore = false; ?>
+<?php $tabRes = $this->tab->getResults(); ?> 
+
+<?php if(count($tabRes) > 0) { ?>
+    
+    <?php 
+        $contentsData = [];
+        foreach ($tabRes as $i => $current) {
+            $contentsData[$i] = $current->getContentsPiecesData(); 
+            $contentsData[$i]['url'] = $this->recordLinker()->getUrl($current); 
+            //$contentsData[$i]['title_url'] = $this->record($current)->getTitleHtml(); 
+            $contentsData[$i]['title_url'] = $current->getWholeTitle();           
+        }
+    
+        usort($contentsData, function($a, $b) {
+            return $a['band'] <=> $b['band'];
+        });
+       
+    ?>
+
+    <table class="table table-striped">
+        <tr>
+            <th style="width: 70%"><?=$this->transEsc('Title')?></th>
+            <th><?=$this->transEsc('Year')?></th>
+            <th><?=$this->transEsc('Edition')?></th>
+            <th><?=$this->transEsc('Band')?></th>
+        </tr>
+        <?php foreach ($contentsData as $i => $value): ?>
+
+            <?php
+                if ($max == $i) {
+                    $showMore = true;
+                    break;
+                }
+            ?>
+           
+            <tr>
+                <td>
+                    <a href="<?=$value['url']?>">
+                        <?=$value['title_url']?>
+                    </a>
+                </td>
+                <td><?=$value['publishDate']?></td>
+                <td><?=$value['edition']?></td>
+                <td><?=$value['band']?></td>     
+            </tr>
+        <?php endforeach; ?>
+    </table>    
+    <?php if ($showMore): ?>
+      <a href="<?=$this->recordLinker()->getChildRecordSearchUrl($this->driver)?>">
+        <?=$this->transEsc('see all')?>
+      </a>
+    <?php endif; ?>
+<?php } ?>

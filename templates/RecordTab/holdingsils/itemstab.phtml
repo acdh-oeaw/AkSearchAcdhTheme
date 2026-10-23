@@ -1,0 +1,54 @@
+<table class="table table-striped">
+  <tr>
+    <th><?=$this->transEsc('Signature')?></th>
+    <th><?=$this->transEsc('2. Signature')?></th>
+    <th><?=$this->transEsc('Description')?></th>
+    <th><?=$this->transEsc('Location')?></th>
+    <th><?=$this->transEsc('Remarks')?></th>
+    <th><?=$this->transEsc('Status')?></th>
+    <th><?=$this->transEsc('Availbility')?></th>
+    <th><?=$this->transEsc('Order')?></th>
+  </tr>
+  <?php foreach ($this->items as $item): ?>
+  <tr>
+    <td><?=$this->escapeHtml($item->callNumber)?></td>
+    <td><?=$this->escapeHtml($item->callNumber2)?></td>
+    <td><?=$this->transEsc($item->description)?></td>
+    <td><?=$this->transEsc($item->location)?></td>
+    <td><?=$this->transEsc($item->notes)?></td>
+    <td><?=$this->transEsc('ItemPolicies::' . $item->policy)?></td>
+    <td>
+      <!-- This cell's code is just copy-pasted from corresponding table cell's code in the AkSearch template -->
+      <?php if ($item->availability ?? false): ?>
+        <span class="text-success"><?=$this->transEsc("Available")?><link property="availability" href="http://schema.org/InStock"/></span>
+      <?php else: ?>
+        <span class="text-danger"><?=$this->transEsc($item->status)?><link property="availability" href="http://schema.org/OutOfStock"/></span>
+        <?php if ($item->duedate ?? false): ?>
+          &ndash; <span><?=$this->transEsc("Due")?>: <?=$this->escapeHtml($item->duedate)?></span>
+        <?php endif; ?>
+      <?php endif; ?>
+    </td>
+    <td>
+      <?php
+        // used by the AkSearch code below
+        if ($item->check ?? false) {
+            $btn = $checkHold;
+        } elseif($item->isRecall ?? false) {
+            $btn = $recallThis;
+        } else {
+            $btn = $placeAHold;
+        }
+      ?>
+      <?php // Show account block message ?>
+      <?php // Show hold or recall buttons ?>
+      <?php if ($item->link ?? false): ?>
+        <?php // TODO: Show message if link is false! ?>
+        <a class="placehold btn holIlsBtn" href="<?=$this->recordLinker()->getRequestUrl($item->link)?>">
+            <i class="fa fa-spinner fa-pulse" aria-hidden="true"></i>&nbsp;<?=$btn?>
+        </a>
+        <?=$this->relais()->renderButtonIfActive($this->driver ?? null)?>
+      <?php endif; ?>
+    </td>
+  </tr>
+<?php endforeach; ?>
+</table>

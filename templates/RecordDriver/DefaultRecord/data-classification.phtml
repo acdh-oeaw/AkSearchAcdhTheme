@@ -1,0 +1,10 @@
+<?php
+$searchUrl= $this->url('home')."Search/Results?lookfor=&type=AllFields&filter[]=basiskl_txtF_mv:";
+?>
+<?php if(count((array)$data) > 0 ) : ?>
+    <?php foreach($data as $d) {  ?>
+        <a title="<?=$this->escapeHtmlAttr($d)?>" href="<?=$searchUrl.$d?>" ><?=trim($this->escapeHtml($d))?></a><br/>
+    <?php } ?>
+<?php endif; ?>
+
+     
