@@ -8,7 +8,7 @@
         $contentsData = [];
         foreach ($tabRes as $i => $current) {
             $contentsData[$i] = $current->getContentsPiecesData(); 
-            $contentsData[$i]['url'] = $this->recordLink()->getUrl($current); 
+            $contentsData[$i]['url'] = $this->recordLinker()->getUrl($current); 
             //$contentsData[$i]['title_url'] = $this->record($current)->getTitleHtml(); 
             $contentsData[$i]['title_url'] = $current->getWholeTitle();           
         }
@@ -48,7 +48,7 @@
         <?php endforeach; ?>
     </table>    
     <?php if ($showMore): ?>
-      <a href="<?=$this->recordLink()->getChildRecordSearchUrl($this->driver)?>">
+      <a href="<?=$this->recordLinker()->getChildRecordSearchUrl($this->driver)?>">
         <?=$this->transEsc('see all')?>
       </a>
     <?php endif; ?>

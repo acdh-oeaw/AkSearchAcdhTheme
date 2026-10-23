@@ -5,16 +5,14 @@
   $doiActive = $doi->isActive();
   // Account for replace_other_urls setting
   $urls = $this->record($this->driver)->getLinkDetails($openUrlActive);
-  // Keep the MARC 856 $z note alongside its URL only while rendering. The
-  // driver supplies the existing $3/$x description in $current['desc'].
+  // Include the MARC 856 $z note with the corresponding link.
   $urlNotes = [];
-  foreach ($this->driver->getMarcRecord()->getFields('856') as $urlField) {
-    $urlSubfield = $urlField->getSubfield('u');
-    if (!is_object($urlSubfield)) {
+  $marcReader = $this->driver->getMarcReader();
+  foreach ($marcReader->getFields('856') as $urlField) {
+    if ($marcReader->getSubfield($urlField, 'u') === '') {
       continue;
     }
-    $noteSubfield = $urlField->getSubfield('z');
-    $urlNotes[] = is_object($noteSubfield) ? $noteSubfield->getData() : '';
+    $urlNotes[] = $marcReader->getSubfield($urlField, 'z');
   }
 ?>
 
@@ -30,7 +28,7 @@
         <div>
             <?php foreach ($urls as $index => $current): ?>
             <?php // AK: Translate the description ?>
-                <a href="<?=$this->escapeHtmlAttr($this->proxyUrl($current['url']))?>" target="_blank"><?=$this->transEsc($current['desc'])?><?php if (!empty($urlNotes[$index])): ?> (<?=$this->escapeHtml($urlNotes[$index])?>)<?php endif; ?></a><br/>
+                <a href="<?=$this->escapeHtmlAttr($this->proxyUrl($current['url']))?>" target="_blank" rel="noopener noreferrer"><?=$this->transEsc($current['desc'])?><?php if (!empty($urlNotes[$index])): ?> (<?=$this->escapeHtml($urlNotes[$index])?>)<?php endif; ?></a><br/>
             <?php endforeach; ?>
         </div>
     </div>

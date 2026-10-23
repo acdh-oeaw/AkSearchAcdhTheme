@@ -23,7 +23,7 @@ $(document).ready(function () {
     maxViewMode: 2,
     // Set endDate to today+1day to avoid unwanted side effects when setting the
     // date with function setDatesOnLoad() below.
-    endDate: "+1d", 
+    endDate: "+1d",
     // Disable the date today+1day that was enabled in "endDate" above so that the
     // use can't choose it.
     datesDisabled: "+1d",
@@ -36,7 +36,7 @@ $(document).ready(function () {
   /**
    * Set the date in the hidden "from" field when a date is selected or changed in
    * the datepicker.
-   */ 
+   */
   $('#datePickerFrom').on('changeDate', function (event) {
     // Max. view in DatePicker is "month"
     if (viewmode == 1) {

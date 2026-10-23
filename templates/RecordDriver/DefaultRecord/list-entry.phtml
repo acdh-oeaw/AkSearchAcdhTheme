@@ -14,7 +14,7 @@
     $user_id = $this->user ? $this->user->id : null;
   }
   // Thumbnail
-  $coverDetails = $this->record($this->driver)->getCoverDetails('list-entry', 'medium', $this->recordLink()->getUrl($this->driver));
+  $coverDetails = $this->record($this->driver)->getCoverDetails('list-entry', 'medium', $this->recordLinker()->getUrl($this->driver));
   $cover = $coverDetails['html'];
   $thumbnail = false;
   $thumbnailAlignment = $this->record($this->driver)->getThumbnailAlignment('list');
@@ -38,7 +38,7 @@
       <div class="result-body">
         <div class="resultItemLine1">
           <?php $missing = $this->driver instanceof \VuFind\RecordDriver\Missing; ?>
-          <?php if (!$missing): ?><a href="<?=$this->recordLink()->getUrl($this->driver)?>" class="getFull" data-view="<?=$this->params->getOptions()->getListViewOption() ?>"><?php endif; ?>
+          <?php if (!$missing): ?><a href="<?=$this->recordLinker()->getUrl($this->driver)?>" class="getFull" data-view="<?=$this->params->getOptions()->getListViewOption() ?>"><?php endif; ?>
             <span class="title"><?=$this->translate($this->driver->getWholeTitle())?></span>
           <?php if (!$missing): ?></a><?php endif; ?>
         </div>
@@ -64,7 +64,7 @@
                 <?php if ($pntTitle): ?>
                   <span title="<?=((!$isDepLit && $pntVolNo) ? $this->transEsc('volume').' '.$this->escapeHtml($pntVolNo).' '.$this->transEsc('from') : $this->transEsc('In')) .': '.$this->escapeHtml($pntTitle)?>">
                     <?=((!$isDepLit && $pntVolNo) ? $this->transEsc('volume').' <i>'.$this->escapeHtml($pntVolNo).'</i> '.$this->transEsc('from') : $this->transEsc('In')).': '?>
-                    <a href="<?=($pntId ? $this->recordLink()->getUrl("$source|$pntId") : $this->record($this->driver)->getLink('title', str_replace(['{{{{START_HILITE}}}}', '{{{{END_HILITE}}}}'], '', $pntTitle)))?>"><?=$this->highlight($pntTitle)?></a>
+                    <a href="<?=($pntId ? $this->recordLinker()->getUrl("$source|$pntId") : $this->record($this->driver)->getLink('title', str_replace(['{{{{START_HILITE}}}}', '{{{{END_HILITE}}}}'], '', $pntTitle)))?>"><?=$this->highlight($pntTitle)?></a>
                   </span>
                   <br />
                 <?php endif; ?>

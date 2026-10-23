@@ -3,10 +3,12 @@
  * AK: Tweaking displayed messages/buttons.
  */
 function checkRequestIsValid(element, requestType) {
-    var recordId = element.href.match(/\/Record\/([^/]+)\//)[1];
+    var match = new URL(element.href, window.location.href).pathname.match(/\/(?:Record|resources)\/([^/]+)\//i);
+    if (!match) return;
+    var recordId = decodeURIComponent(match[1]);
     var vars = deparam(element.href);
     vars.id = recordId;
-  
+
     var url = VuFind.path + '/AJAX/JSON?' + $.param({
       method: 'checkRequestIsValid',
       id: recordId,
@@ -22,11 +24,11 @@ function checkRequestIsValid(element, requestType) {
         if (response.data.status) {
           $(element).removeClass('disabled')
             .attr('title', response.data.msg)
-            .html(response.data.msg); // AK: Removed fontawesome flag
+            .text(response.data.msg);
         } else {
           // AK: Set text to the parent of the link element and then
           // remove it
-          $(element).parent().html(response.data.msg);
+          $(element).parent().text(response.data.msg);
           $(element).remove();
         }
       })

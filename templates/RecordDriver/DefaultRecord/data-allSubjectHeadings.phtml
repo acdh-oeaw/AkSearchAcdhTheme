@@ -1,70 +1,101 @@
 <?php
 // TODO: Check for accessibility (WCAG / ARIA)
-
 // AK: Add JavaScript translations for use in popover
 $this->jsTranslations()->addStrings(
         [
-                'currentTerm' => 'currentTerm',
-                'currentAndPreviousTerms' => 'currentAndPreviousTerms',
-                'searchFor' => 'Search For'
+            'currentTerm' => 'currentTerm',
+            'currentAndPreviousTerms' => 'currentAndPreviousTerms',
+            'searchFor' => 'Search For'
         ]
 );
 
-// AK: Include bootstrap-popover JS and CSS
-$this->headScript()->appendFile('vendor/bootstrap-popover/bootstrap.popover.min.js');
-$this->headLink()->appendStylesheet('vendor/bootstrap-popover/bootstrap.popover.min.css');
-$this->headLink()->appendStylesheet('popoverKeywordChain.css');
-echo $this->inlineScript()->appendFile('popoverKeywordChain.js');
 
-// AK: Convenience variable for the keyword separator
 $keywordSeparator = ' <i class="fa fa-minus akKeywordChainSeparator" aria-hidden="true"></i> ';
 ?>
 
+<!-- Include Bootstrap 5 CSS and JS (the bundle includes Popper) -->
+
+<script>
+    // Wait until the DOM is fully loaded
+    $(document).ready(function () {
+        // Select all elements with data-bs-toggle="popover"
+        var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+
+        // Initialize each popover
+        var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+            return new bootstrap.Popover(popoverTriggerEl, {
+                html: true,
+                customClass: 'popover-keyword-chain'
+            });
+        });
+    });
+</script>
+
 <?php foreach ($data as $keywords): ?>
+
     <div class="subject-line" property="keywords">
         <?php
+        $keywords = is_array($keywords) ? $keywords : [[$keywords, null]];
+
         // AK: Create some variables
         $keywordChain = '';
         $keywordChainSeparated = '';
         ?>
-        <?php $i = 0;
-        foreach ($keywords as $keyword): ?>
+        <?php if (count($keywords) === 1 && is_string($keywords[0])) $keywords = array_map(static fn($term) => [trim($term), null], explode('--', $keywords[0])); ?>
+        <?php
+        $i = 0;
+        foreach ($keywords as $keyword):
+            $label = trim((string) (is_array($keyword) ? ($keyword[0] ?? '') : $keyword));
+            $authority = is_array($keyword) ? ($keyword[1] ?? null) : null;
+            if ($label === '') continue;
+            if (is_string($authority) && preg_match('/^\(DE-588\)([0-9X-]+)$/', $authority, $match)) {
+                $authority = 'https://explore.gnd.network/gnd/' . $match[1] . '/relations';
+            }
+            if (!is_string($authority) || !preg_match('~^https://~', $authority)) $authority = null;
+            ?>
             <?php // AK: Add a "minus" character from font-awesome to separate the single keywords in a keyword chain from each other. ?>
             <?= ($i == 0) ? '' : $keywordSeparator ?>
             <?php
             // AK: Create non-separated keyword chain. The individual keywords are surounded by double-quotes: this is important if the keyword contains spaces.
-            $keywordChain = trim($keywordChain) . ' "' . trim($keyword[0]) . '"';
+            $keywordChain = trim($keywordChain) . ' "' . $label . '"';
             // AK: $keywordChainSeparated is passed to popover JavaScript for showing a nice separated keyword chain
-            $keywordChainSeparated = trim($keywordChainSeparated) . (($i == 0) ? '' : $keywordSeparator) . trim($this->escapeHtml($keyword[0]));
-            // ACDH: if it's a GND ID, make it a link
-            if (array_key_exists(1, $keyword) && preg_match('/^\(DE-588\)/', $keyword[1])) :
-                $keyword[1] = 'https://explore.gnd.network/gnd/' . preg_split("/^\(DE-588\)/", $keyword[1])[1] . '/relations';
-            endif;
+            $keywordChainSeparated = trim($keywordChainSeparated) . (($i == 0) ? '' : $keywordSeparator) . $this->escapeHtml($label);
             ?>
+
             <?php if ($i == 0) : ?>
                 <?php /* AK: The first element of the keyword chain gets a "normal" link as a popover would not make sense (there are no previous keywords if the first one is chosen) */ ?>
-                <a title="<?= $this->escapeHtmlAttr($keywordChain) ?>"
-                   href="<?= $this->record($this->driver)->getLink('subject', $keywordChain) ?>"
-                   rel="nofollow"><?= trim($this->escapeHtml($keyword[0])) ?></a>
-                <?php if (array_key_exists(1, $keyword)) : ?>
-                    <a target="_blank" class="btn-type-export" href="<?= $keyword[1] ?>"></a>
-                <?php endif; ?>
+                <a title="<?= $this->escapeHtmlAttr($keywordChain) ?>" href="<?= $this->record($this->driver)->getLink('subject', $keywordChain) ?>" rel="nofollow"><?= $this->escapeHtml($label) ?></a>
             <?php else: ?>
                 <?php /* AK: A click on a keyword (except the first one - see above) in the keyword chain opens a popup where the user can choose if he wants to search only for the current term or for the current term AND all previous terms. */ ?>
-                <a
-                        tabindex="0"
-                        role="button"
-                        data-trigger="focus"
-                        data-toggle="popover"
-                        data-keyword=<?= trim($this->escapeHtmlAttr($this->escapeHtml($keyword[0]))) ?>
-                        data-keyword-link=<?= $this->escapeHtmlAttr($this->record($this->driver)->getLink('subject', '"' . $keyword[0] . '"')) ?>
-                        data-keywordchain-separated= <?= $this->escapeHtmlAttr($keywordChainSeparated) ?>
-                        data-keywordchain-link=<?= $this->escapeHtmlAttr($this->record($this->driver)->getLink('subject', $keywordChain)) ?>
-                        rel="nofollow"
-                ><?= trim($this->escapeHtml($keyword[0])) ?></a>
-                <?php if (array_key_exists(1, $keyword)) : ?>
-                    <a target="_blank" class="btn-type-export" href="<?= $keyword[1] ?>"></a>
-                <?php endif; ?>
+
+                <?php
+                $pkeyword = $this->escapeHtml($label);
+                $pKeywordLink = $this->record($this->driver)->getLink('subject', '"' . $label . '"');
+                $pKeywordchainSeparated = $keywordChainSeparated;
+                $pKeywordchainLink = $this->record($this->driver)->getLink('subject', $keywordChain);
+                $currentTerm = $this->transEsc('currentTerm');
+                $content = "<div class='popoverEntry'>" . $currentTerm . ":<br />"
+                        . "<a href='" . $pKeywordLink . "'>" . $pkeyword . "</a>"
+                        . "</div><div class='popoverEntry'>"
+                        . $this->transEsc('currentAndPreviousTerms') . ":<br />"
+                        . "<a href='" . $pKeywordchainLink . "'>" . $pKeywordchainSeparated . "</a></div>";
+                
+                ?>
+                <a type="button"
+                   class="popover-link"
+                   tabindex="0"
+                   role="button"
+                   data-bs-title="<?= $this->transEsc('searchFor') ?>..."
+                   data-bs-trigger="focus"
+                   data-bs-placement="bottom" 
+                   data-bs-content="<?= $this->escapeHtmlAttr($content) ?>"
+                   data-bs-toggle="popover" 
+                   rel="nofollow"
+                   ><?= $this->escapeHtml($label) ?></a>
+               <?php endif; ?>
+
+            <?php if ($authority): ?>
+                <a class="small ms-1" href="<?= $this->escapeHtmlAttr($authority) ?>" target="_blank" rel="noopener noreferrer" aria-label="Authority record: <?= $this->escapeHtmlAttr($label) ?>" title="Authority record: <?= $this->escapeHtmlAttr($label) ?>"><i class="fa fa-external-link" aria-hidden="true"></i></a>
             <?php endif; ?>
 
             <?php
@@ -73,8 +104,9 @@ $keywordSeparator = ' <i class="fa fa-minus akKeywordChainSeparator" aria-hidden
             ?>
         <?php endforeach; ?>
     </div>
-    <?php
-    if ($this->driver->getOwningInstitution() == "AT-OeAW-ISA") : ?>
-            <a target="_blank" href="<?=$this->imageLink('Finke-Estate-ISA-Archive-Information.pdf')?>"><h5>Thesaurus Information: OCM adapted by ISA <i class="fa fa-info-circle" aria-hidden="true"></i></h5></a>
+    <?php if ($this->driver->getOwningInstitution() === 'AT-OeAW-ISA'): ?>
+        <a target="_blank" rel="noopener noreferrer" href="<?= $this->escapeHtmlAttr($this->imageLink('Finke-Estate-ISA-Archive-Information.pdf')) ?>">
+            <h5>Thesaurus Information: OCM adapted by ISA <i class="fa fa-info-circle" aria-hidden="true"></i></h5>
+        </a>
     <?php endif; ?>
 <?php endforeach; ?>

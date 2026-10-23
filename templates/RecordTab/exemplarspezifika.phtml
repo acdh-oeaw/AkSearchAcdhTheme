@@ -1,7 +1,7 @@
 <?php
 try {
-    $holdings = $this->driver->getHolding991992();    
-    
+    $holdings = $this->driver->getHolding991992();
+
 } catch (\VuFind\Exception\ILS $e) {
     $holdings = [
         'holdings' => [],
@@ -18,7 +18,7 @@ $str992 = array(
     "d" => $this->translate("992d"),
     "e" => $this->translate("992e"),
     "h" => $this->translate("992h"),
-    "k" => $this->translate("992k"), 
+    "k" => $this->translate("992k"),
     "l" => $this->translate("992l"),
     "m" => $this->translate("992m"),
     "p" => $this->translate("992p"),
@@ -38,16 +38,16 @@ $str991 = array(
     "i" => $this->translate("991i"),
     "l" => $this->translate("991l"),
     "j" => $this->translate("991j"),
-    "k" => $this->translate("991k"), 
-    "m" => $this->translate("991m"), 
-    "t" => $this->translate("991t"), 
-    //"e" => $this->translate("991e"), 
+    "k" => $this->translate("991k"),
+    "m" => $this->translate("991m"),
+    "t" => $this->translate("991t"),
+    //"e" => $this->translate("991e"),
     //"g" => $this->translate("991g"),
     "title" => $this->translate("exlibrisangaben")
 );
 
 
-function createRow(string $label, string $text) {    
+function createRow(string $label, string $text) {
     if(!empty($label) && !empty($text)) {
     ?>
     <tr>
@@ -59,7 +59,13 @@ function createRow(string $label, string $text) {
 }
 
 function formatRowText($text): string {
-    return is_array($text) ? implode('<br>', $text) : (string) $text;
+    if (is_array($text)) {
+        return implode('<br>', array_map(
+            static fn ($value) => htmlspecialchars((string) $value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'),
+            $text
+        ));
+    }
+    return htmlspecialchars((string) $text, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 }
 
 function createTable(array $data, array $labels) {
@@ -80,7 +86,7 @@ function createTable(array $data, array $labels) {
 
 <?php if(count($holdings) > 0) :  ?>
 <?php foreach($holdings as $name => $d) : ?>
-<?php 
+<?php
     if(isset($d['exemplarbeschreibung'])) {
         createTable($d['exemplarbeschreibung'], $str992);
     }
@@ -90,7 +96,7 @@ function createTable(array $data, array $labels) {
     }
 ?>
 
-<?php endforeach;?> 
+<?php endforeach;?>
 
 <?php else: ?>
     <div class="alert alert-info">
@@ -98,5 +104,5 @@ function createTable(array $data, array $labels) {
     </div>
 <?php endif; ?>
 
-       
-   
+
+

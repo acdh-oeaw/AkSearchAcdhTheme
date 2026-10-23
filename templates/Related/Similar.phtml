@@ -5,8 +5,8 @@
     <?php foreach ($similarRecords as $data): ?>
       <li class="list-group-item">
         <?php $formats = $data->getFormats(); ?>
-        <i class="fa fa-x<?php if (count($formats) > 0): ?> fa-<?=preg_replace('/[^a-z0-9]/', '', strtolower($formats[0]))?>" title="<?=$formats[0] ?><?php endif; ?>"></i>
-        <a href="<?=$this->recordLink()->getUrl($data)?>">
+        <i class="fa <?php if (count($formats) > 0): ?>fa-<?=preg_replace('/[^a-z0-9]/', '', strtolower($formats[0]))?>" title="<?=$this->escapeHtmlAttr($formats[0])?><?php else: ?>fa-file<?php endif; ?>" aria-hidden="true"></i>
+        <a href="<?=$this->recordLinker()->getUrl($data)?>">
           <?php // AK: Getting whole title (including part no. and part title) ?>
           <?=$data->getWholeTitle()?>
         </a>

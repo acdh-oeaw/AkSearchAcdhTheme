@@ -1,6 +1,5 @@
 <?php
 // Check for conference proceeding notes and disseration notes
-$procNotes = $this->driver->tryMethod('getMeetingNames');
 $dissNotes = $this->driver->tryMethod('getDissertationNotes');
 
 // A driver-specific template may pass in format overrides; check for these before going to the driver itself:
@@ -22,8 +21,6 @@ if (in_array('VideoDisc', $formats)) {
     in_array('MultiVolumeOnline', $formats)
     ) {
     $format = 'EBOOK';
-} else if (!empty($procNotes)) {
-    $format = 'CONF';
 } else if ($dissNotes != null && !empty($dissNotes)) {
     $format = 'THES';
 } else if (in_array('BookUnmediated', $formats)) {
@@ -257,7 +254,7 @@ if (!empty($urls)) {
 	}
 }
 
-$urlToAKsearchRecord = $this->serverUrl($this->recordLink()->getUrl($this->driver));
+$urlToAKsearchRecord = $this->serverUrl($this->recordLinker()->getUrl($this->driver));
 echo 'UR  - ' . "$urlToAKsearchRecord\r\n";
 
 echo 'DB  - ' . "AKsearch\r\n";

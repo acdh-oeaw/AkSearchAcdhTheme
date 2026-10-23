@@ -24,7 +24,7 @@
 
 /**
  * Initialize the hierarchical slide facets. This function is called on hierarchical-facet-slide.phtml
- * 
+ *
  * @param {object} baseData Basic data that is passed from the hierarchical-facet-slide.phtml page
  */
 function initSlideFacet(baseData) {
@@ -48,7 +48,7 @@ function initSlideFacet(baseData) {
         event: 'initial', // Possible values: initial, forward, back
         facetValue: 0
     };
-    
+
     // Query the facet data for the given Solr field
     $.getJSON(
         // Query the facet data. This executes the "method" of the GET parameters below.
@@ -66,7 +66,7 @@ function initSlideFacet(baseData) {
         function setInitialFacets(response) {
             // Add facets to parameter object
             params.facets = response.data.facets;
-            
+
             getAndProcessFacetsHtml(params);
         }
     );
@@ -81,7 +81,7 @@ function initSlideFacet(baseData) {
  * - Set the initial facets to the facet wrapper without slide effect.
  * - If an arrow button was clicked, slide-in the newly loaded facets from the left
  * - If the back button was clicked, slide-in the previous facet level from the right
- * @param {object} params 
+ * @param {object} params
  */
 function getAndProcessFacetsHtml(params) {
     // Get the facets as array of JS objects for building the HTML
@@ -118,7 +118,7 @@ function getAndProcessFacetsHtml(params) {
             setForwardClickHanlder(params);
         },
         'json'
-    ).error(function() {
+    ).fail(function() {
         console.error('ERROR when getting facet HTML!');
     });
 }
@@ -126,9 +126,9 @@ function getAndProcessFacetsHtml(params) {
 /**
  * Process the HTML with the facets: Set it to the facet wrapper and - if applicable - slide
  * it from left or right.
- * 
- * @param {object} params 
- * @param {string} html 
+ *
+ * @param {object} params
+ * @param {string} html
  */
 function processHtml(params, html) {
     // Set the initial facet HTML to the facet wrapper (without slide effect)
@@ -155,7 +155,7 @@ function processHtml(params, html) {
 
         // Set the new facets to the now hidden wrapper
         params.facetWrapper.html(html);
-        
+
         // Slide-in the wrapper with the facets
         params.facetWrapper.animate(
             {'margin-left': '0%'},
@@ -180,8 +180,8 @@ function processHtml(params, html) {
 
 /**
  * Set the click handler for the arrows of the facets.
- * 
- * @param {object} params 
+ *
+ * @param {object} params
  */
 function setForwardClickHanlder(params) {
     params.facetWrapper.off('click').on('click', '.slArrow:not(.slInactive)', function() {
@@ -201,8 +201,8 @@ function setForwardClickHanlder(params) {
 
 /**
  * Set the click handler for the back button
- * 
- * @param {object} params 
+ *
+ * @param {object} params
  */
 function setBackClickHandler(params) {
     params.backWrapper.off('click').click(function() {
@@ -214,7 +214,7 @@ function setBackClickHandler(params) {
         if (params.event == 'initial' || facetValue == null) {
             return;
         }
-        
+
         // Get the parent facet value and set it to the data-facet-value
         // for using it as the new back value if the back button is clicked
         // again.
@@ -231,8 +231,8 @@ function setBackClickHandler(params) {
 /**
  * Set heights to the slide menu. This is necessary because we are working with
  * "position: absolute" which does not let grow it's parent container.
- * 
- * @param {object} params 
+ *
+ * @param {object} params
  */
 function setHeights(params) {
     // Get heights of facet wrapper and button wrapper
@@ -241,15 +241,15 @@ function setHeights(params) {
     // Set the heights
     params.menuWrapper.height(facetsHeight+buttonHeight);
     params.facetWrapper.height(facetsHeight);
-    
+
 }
 
 /**
  * Get filter all facets and return a subset of it based on a facet value.
- * 
- * @param {string} event 
- * @param {array} allFacets 
- * @param {string} facetValue 
+ *
+ * @param {string} event
+ * @param {array} allFacets
+ * @param {string} facetValue
  */
 function getFilteredFacets(event, allFacets, facetValue) {
 
@@ -301,7 +301,7 @@ function getFilteredFacets(event, allFacets, facetValue) {
 /**
  * Get parent facet value from a given facet value. Example: If we would have a value of
  * "4/A/B/C/D/E/", we would get "3/A/B/C/D/".
- * 
+ *
  * @param {(string|null)} facetValue Original hierarchical facet value for calculating the parent
  */
 function getParentFacetValue(facetValue) {
@@ -337,7 +337,7 @@ function getParentFacetValue(facetValue) {
 /**
  * Get grand parent facet value from a given facet value. Example: If we would have a value of
  * "4/A/B/C/D/E/", we would get "2/A/B/C/".
- * 
+ *
  * @param {(string|null)} facetValue Original hierarchical facet value for calculating the grand parent
  */
 /*

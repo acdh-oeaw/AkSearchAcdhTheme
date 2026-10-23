@@ -6,16 +6,17 @@ $(document).ready(function () {
 
     // TODO: Check for accessibility (WCAG / ARIA)
 
-    var popoverEntityFactsTemplate = '<div class="popover popover-entity-facts" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>';
-    $('[data-toggle="popover-entity-facts"]').popover({
+    document.querySelectorAll('[data-bs-toggle="popover-entity-facts"]').forEach(function (element) {
+      new bootstrap.Popover(element, {
         html: true,
         placement: 'left',
-        container: '.mainbody',
-        template: popoverEntityFactsTemplate,
+        container: 'body',
+        customClass: 'popover-entity-facts',
+        trigger: 'focus',
         content: function() {
             var $ef = $(this);
             var authId = $(this).data('auth-id');
-            
+
             $.ajax({
 				url: 'https://hub.culturegraph.org/entityfacts/'+encodeURIComponent(authId),
 				cache: false,
@@ -25,7 +26,7 @@ $(document).ready(function () {
 					// No info was found:
 					404: function() {
                         var popoverId = $ef.attr('aria-describedby');
-                        $('#' + popoverId + ' .popover-content').html('<strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> '+escapeHtml(VuFind.translate('notfound'))+'</strong>');
+                        $('#' + popoverId + ' .popover-body').html('<strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> '+escapeHtml(VuFind.translate('notfound'))+'</strong>');
 				    }
                 },
                 success: function(result) {
@@ -101,46 +102,47 @@ $(document).ready(function () {
                     html += getTr('predecessors', predecessors);
                     html += getTr('successors', successors);
                     html += getTr('relatedOrganisations', relatedOrganisations);
-                    if (typeof homepages !== undefined && homepages !== null && homepages.length > 0) {
+                    if (Array.isArray(homepages) && homepages.length > 0) {
                         html += '<tr><th>'+escapeHtml(VuFind.translate('homepages'))+':</th><td>';
-                        for (i in homepages) {
+                        for (const i in homepages) {
                             var homepage = homepages[i];
                             html += '<a href="'+encodeURI(homepage)+'" target="_blank">'+escapeHtml(homepage)+'</a><br />';
                         }
                         html += '</td></tr>';
                     }
-                    if (typeof sameAs !== undefined && sameAs !== null && sameAs.length > 0) {
+                    if (Array.isArray(sameAs) && sameAs.length > 0) {
                         html += '<tr><th>'+escapeHtml(VuFind.translate('sameAs'))+':</th><td>';
-                        
-                        for (i in sameAs) {
+
+                        for (const i in sameAs) {
                             var samea = sameAs[i];
                             html += '<a href="'+encodeURI(samea["@id"])+'" target="_blank">'+escapeHtml(samea.collection.name)+'</a><br />';
                         }
                         html += '</td></tr>';
                     }
-                    
+
                     html += '</table>';
 
                     // Add the html to the right popover
                     var popoverId = $ef.attr('aria-describedby');
-                    $('#' + popoverId + ' .popover-content').html(html);
+                    $('#' + popoverId + ' .popover-body').html(html);
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     var popoverId = $ef.attr('aria-describedby');
-                    $('#' + popoverId + ' .popover-content').html('<strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> '+escapeHtml(VuFind.translate('serviceError'))+'</strong>');
+                    $('#' + popoverId + ' .popover-body').html('<strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> '+escapeHtml(VuFind.translate('serviceError'))+'</strong>');
                 }
             });
 
             // Show loading spinner (default)
             return '<i class="fa fa-spinner fa-pulse fa-2x"></i>';
         }
+      });
     });
 });
 
 function getPrefNames(input) {
     var output = [];
     if (input != undefined && input != null) {
-        for (i in input) {
+        for (const i in input) {
             output.push(input[i].preferredName);
         }
     }
@@ -148,13 +150,13 @@ function getPrefNames(input) {
 }
 
 function getTr(heading, array, joinChar = ', ') {
-    if (typeof array !== undefined && array !== null && array.length > 0) {
+    if (Array.isArray(array) && array.length > 0) {
         var joinedArray = array.join(joinChar);
         return '<tr><th>'+escapeHtml(VuFind.translate(heading))+':</th><td>'+escapeHtml(joinedArray)+'</td></tr>';
     }
     return '';
 }
-  
+
 function escapeHtml (string) {
     var entityMap = {
         '&': '&amp;',

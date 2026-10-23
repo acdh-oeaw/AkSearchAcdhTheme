@@ -1,8 +1,8 @@
 {
     "name": "acdh-oeaw/ak-search-acdh-theme",
-    "description": "ACDHCH THEME for VuFind/AkSearch",
+    "description": "ACDHCH Bootstrap 5 THEME for VuFind/AkSearch",
     "keywords": [],
-    "homepage": "https://github.com/acdh-oeaw/AkSearchAcdhTheme",
+    "homepage": "https://github.com/acdh-oeaw/AkSearchAcdhThemeB5",
     "license": "MIT",
     "authors": [
         {
@@ -11,7 +11,9 @@
         }
     ],
     "require": {
-        "php": ">=7"
+        "php": ">=8",
+        "scssphp/scssphp": "1.13.0",
+        "twbs/bootstrap": "5.2.3"
     },
     "autoload": {
         "psr-4": {

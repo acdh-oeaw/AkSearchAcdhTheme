@@ -1,10 +1,9 @@
 <?php
 // Check for conference proceeding notes and disseration notes
-$procNotes = $this->driver->tryMethod('getMeetingNames');
 $dissNotes = $this->driver->tryMethod('getDissertationNotes');
 
 // A driver-specific template may pass in format overrides; check for these before going to the driver itself:
-    $formats = $this->slot('refworks-formats')->get($this->driver->tryMethod('getFormats'));
+    $formats = (array) $this->slot('refworks-formats')->get($this->driver->tryMethod('getFormats'));
 
 // Initialize format variable
 $format = null;
@@ -26,7 +25,7 @@ if (is_array($formats) && !empty($formats)) {
         in_array('MultiVolumeUnmediated', $formats)
         ) {
         $format = 'Book, Whole';
-    } else if (!empty($procNotes)) {
+    } else if (in_array('ConferenceProceeding', $formats)) {
         $format = 'Conference Proceedings';
     } else if ($dissNotes != null && !empty($dissNotes)) {
         $format = 'Dissertation/Thesis';
@@ -171,7 +170,7 @@ if (!empty($edition)) {
     echo "ED $edition\n";
 }
 
-echo "UL " . $this->serverUrl($this->recordLink()->getUrl($this->driver)) . "\n";
+echo "UL " . $this->serverUrl($this->recordLinker()->getUrl($this->driver)) . "\n";
 
 foreach ($this->record($this->driver)->getUrlList() as $url) {
     echo "LK $url\n";

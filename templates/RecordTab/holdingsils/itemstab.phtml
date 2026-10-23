@@ -43,7 +43,7 @@
       <?php // Show hold or recall buttons ?>
       <?php if ($item->link ?? false): ?>
         <?php // TODO: Show message if link is false! ?>
-        <a class="placehold btn holIlsBtn" href="<?=$this->recordLink()->getRequestUrl($item->link)?>">
+        <a class="placehold btn holIlsBtn" href="<?=$this->recordLinker()->getRequestUrl($item->link)?>">
             <i class="fa fa-spinner fa-pulse" aria-hidden="true"></i>&nbsp;<?=$btn?>
         </a>
         <?=$this->relais()->renderButtonIfActive($this->driver ?? null)?>

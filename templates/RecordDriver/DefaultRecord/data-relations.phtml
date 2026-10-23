@@ -11,7 +11,7 @@
             <?php endif;?>
         <?php endif; ?>
         <?php if ($id = $value['id']) : ?>
-            <a href="<?=$this->recordLink()->getUrl($value['id'])?>"><?=$this->escapeHtml($value['title'])?></a>
+            <a href="<?=$this->recordLinker()->getUrl($value['id'])?>"><?=$this->escapeHtml($value['title'])?></a>
         <?php else: ?>
             <?=$this->escapeHtml($value['title'])?>
         <?php endif; ?>

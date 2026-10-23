@@ -2,7 +2,7 @@
 // AK: Fix pagination when the default tab is not set to Holdings. 'recordtab' is passed from
 //     e. g. '[theme]\templates\RecordTab\holdingsils.phtml'
 //     TODO: Add to VuFind master code.
-$baseUrl = ($this->recordtab) ? $this->recordLink()->getTabUrl($this->driver, 'Holdings') : $this->currentPath();
+$baseUrl = ($this->recordtab) ? $this->recordLinker()->getTabUrl($this->driver, 'Holdings') : $this->currentPath();
 ?>
 
 <?php if ($this->pageCount): ?>

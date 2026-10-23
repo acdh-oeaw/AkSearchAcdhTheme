@@ -109,7 +109,7 @@ $childsGrouped = $this->tab->getChilds();
                                     <?php if ($child['marker'] == 'noindex'): ?>
                                         <?=$this->transEsc($child['title'])?>
                                     <?php else: ?>
-                                        <a href="<?=$this->recordLink()->getUrl($child['id'])?>">
+                                        <a href="<?=$this->recordLinker()->getUrl($child['id'])?>">
                                             <?=$this->transEsc($child['title'])?>
                                         </a>
                                     <?php endif; ?>
@@ -224,7 +224,7 @@ $childsGrouped = $this->tab->getChilds();
                                                                         <?php if ($child['marker'] == 'noindex'): ?>
                                                                             <?=$this->transEsc($child['title'])?>
                                                                         <?php else: ?>
-                                                                            <a href="<?=$this->recordLink()->getUrl($child['id'])?>">
+                                                                            <a href="<?=$this->recordLinker()->getUrl($child['id'])?>">
                                                                                 <?=$this->transEsc($child['title'])?>
                                                                             </a>
                                                                         <?php endif; ?>
