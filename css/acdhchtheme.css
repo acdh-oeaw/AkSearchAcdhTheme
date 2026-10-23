@@ -903,6 +903,21 @@ footer .el-block.first {
   /* number of lines to show */
   -webkit-box-orient: vertical;
 }
+.record {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 1fr);
+  align-items: start;
+}
+.record > .mainbody {
+  grid-column: 1;
+  grid-row: 1;
+  min-width: 0;
+}
+.record > .sidebar {
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 0;
+}
 .authors-list.closed {
   overflow: hidden;
   text-overflow: ellipsis;
