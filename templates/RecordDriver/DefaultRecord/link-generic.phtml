@@ -1,0 +1,8 @@
+<?php
+$searchRoute = $this->searchOptions($this->driver->getSourceIdentifier())->getSearchAction();
+$linkOptions = is_array($this->lookfor) ? $this->lookfor : ['lookfor' => $this->lookfor];
+$phraseSearch = $linkOptions['phraseSearch'] ?? true;
+$lookFor = $linkOptions['lookfor'] ?? '';
+$searchType = $linkOptions['searchType'] ?? 'AllFields';
+?>
+<?=$this->url($searchRoute)?>?lookfor=<?=(($phraseSearch) ? '%22'.urlencode($lookFor).'%22' : urlencode($lookFor))?>&amp;type=<?=$searchType?>

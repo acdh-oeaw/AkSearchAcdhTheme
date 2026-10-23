@@ -1,0 +1,41 @@
+<?php
+  $openUrl = $this->openUrl($this->driver, 'record');
+  $openUrlActive = $openUrl->isActive();
+  $doi = $this->doi($this->driver, 'record');
+  $doiActive = $doi->isActive();
+  // Account for replace_other_urls setting
+  $urls = $this->record($this->driver)->getLinkDetails($openUrlActive);
+  // Include the MARC 856 $z note with the corresponding link.
+  $urlNotes = [];
+  $marcReader = $this->driver->getMarcReader();
+  foreach ($marcReader->getFields('856') as $urlField) {
+    if ($marcReader->getSubfield($urlField, 'u') === '') {
+      continue;
+    }
+    $urlNotes[] = $marcReader->getSubfield($urlField, 'z');
+  }
+?>
+
+<?php  if(count($urls) > 0) : ?>
+
+<div class="online-access-urls-list closed">
+    <div class="wrapper">
+        <div>
+            <?php if(count($urls) > 3) : ?>
+                <a class="entity-fact-info-link display-all-online-access" href="#"><i class="fa fa-caret-down"></i></a>
+            <?php endif; ?>
+        </div>
+        <div>
+            <?php foreach ($urls as $index => $current): ?>
+            <?php // AK: Translate the description ?>
+                <a href="<?=$this->escapeHtmlAttr($this->proxyUrl($current['url']))?>" target="_blank" rel="noopener noreferrer"><?=$this->transEsc($current['desc'])?><?php if (!empty($urlNotes[$index])): ?> (<?=$this->escapeHtml($urlNotes[$index])?>)<?php endif; ?></a><br/>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
+
+<?php if ($openUrlActive): ?>
+  <?=$openUrl->renderTemplate()?><br/>
+<?php endif; ?>
+<?php if ($doiActive): ?><?=$doi->renderTemplate()?><?php endif; ?>

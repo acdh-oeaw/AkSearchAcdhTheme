@@ -1,0 +1,16 @@
+<?php if (!empty($data)): ?>
+    <div class="wrapper">
+        <div>
+            <?php foreach ($data as $current): ?>
+                <?php
+                $relatedId = preg_replace('/^\(AT-OBV\)/', '', $current->w ?? '');
+                $title = $current->t ?? $relatedId;
+                ?>
+                <?php if ($relatedId !== ''): ?>
+                    <a href="<?= $this->escapeHtmlAttr($this->recordLinker()->getUrl($relatedId)) ?>"
+                       target="_blank" rel="noopener noreferrer"><?= $this->escapeHtml($title) ?></a><br>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        </div>
+    </div>
+<?php endif; ?>
